@@ -9,9 +9,23 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.8.1",
+    "@emotion/styled": "^11.8.1",
+    "@mui/icons-material": "^5.4.4",
+    "@mui/material": "^5.4.4",
+    "@mui/styles": "^5.4.4",
+    "draft-js": "^0.11.7",
+    "draft-js-export-html": "^1.4.1",
+    "draftjs-to-html": "^0.9.1",
+    "graphql-hooks": "^5.7.0",
+    "graphql-hooks-memcache": "^2.2.3",
+    "html-to-draftjs": "^1.5.0",
+    "mui-rte": "^2.0.1",
     "next": "12.1.0",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "react-draft-wysiwyg": "^1.14.7",
+    "react-player": "^2.10.0"
   },
   "devDependencies": {
     "eslint": "8.10.0",
