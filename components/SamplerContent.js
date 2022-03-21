@@ -6,6 +6,7 @@ import {Stack} from '@mui/material';
 import {useEffect} from 'react';
 import {useState} from 'react';
 import {Fragment} from 'react';
+import ReactPlayer from 'react-player';
 
 function SamplerContent({sampler}) {
   function youtube_parser (url) {
@@ -18,18 +19,21 @@ function SamplerContent({sampler}) {
     `https://www.youtube.com/embed/${youtube_parser (sampler.url)}`
   );
 
-  useEffect (() => {}, [urlState]);
+  const [isPlaying, setIsPlaying] = useState (false);
+
+  const playerHandler = (url, timestamp) => {
+    setUrlState (
+      `https://www.youtube.com/embed/${youtube_parser (url)}?start=${timestamp}`
+    );
+
+    setIsPlaying (true);
+  };
 
   return (
     <Fragment>
-      <Grid item>
-        <Typography component={Box} fontWeight={'medium'} color="text.primary">
-          {sampler.name}
-        </Typography>
-      </Grid>
       <Grid item sx={{mb: 2}}>
         <Box>
-          <iframe
+          {/* <iframe
             width="853"
             height="480"
             src={urlState}
@@ -37,10 +41,20 @@ function SamplerContent({sampler}) {
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
             title="Embedded youtube"
+          /> */}
+          <ReactPlayer
+            url={urlState}
+            volume={0.5}
+            controls={true}
+            playing={isPlaying}
+           
           />
         </Box>
 
         <Box>
+          <Typography component={Box} fontWeight="bold">
+            {sampler.name}
+          </Typography>
           <Typography component={Box} color={'#6F6F6F'}>
             {sampler.created_by}
           </Typography>
@@ -52,18 +66,16 @@ function SamplerContent({sampler}) {
           </Typography>
         </Box>
       </Grid>
-      <Grid item>
+      <Grid item sx={{mb: '10rem'}}>
         <Stack direction="column" spacing={2}>
           {sampler.scenes.map (scene => (
             <Box key={scene.id}>
               <Button
-                onClick={() =>
-                  setUrlState (
-                    `https://www.youtube.com/embed/${youtube_parser (sampler.url)}?start=${scene.timestamp}`
-                  )}
+                onClick={() => playerHandler (sampler.url, scene.timestamp)}
+                sx={{textAlign: 'left'}}
               >
                 <Typography component={Box} color={'#6F6F6F'}>
-                  @ {scene.timestamp} - {scene.tricks}
+                  @ {scene.timestamp}s - {scene.tricks}
                 </Typography>
               </Button>
             </Box>
