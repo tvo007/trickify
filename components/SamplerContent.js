@@ -7,8 +7,12 @@ import {useEffect} from 'react';
 import {useState} from 'react';
 import {Fragment} from 'react';
 import ReactPlayer from 'react-player';
+import useBreakpoints from '../lib/hooks/useBreakpoints';
 
 function SamplerContent({sampler}) {
+  const {handleBreakpointUp} = useBreakpoints ();
+  const mdMatches = handleBreakpointUp ('md');
+
   function youtube_parser (url) {
     var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
     var match = url.match (regExp);
@@ -32,7 +36,7 @@ function SamplerContent({sampler}) {
   return (
     <Fragment>
       <Grid item sx={{mb: 2}}>
-        <Box>
+        <Box sx={mdMatches ? null : {position: 'relative', pt: '70%'}}>
           {/* <iframe
             width="853"
             height="480"
@@ -47,7 +51,17 @@ function SamplerContent({sampler}) {
             volume={0.5}
             controls={true}
             playing={isPlaying}
-           
+            width={mdMatches ? '498px' : '100%'}
+            height={mdMatches ? '280px' : '100%'}
+            style={
+              mdMatches
+                ? null
+                : {
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                  }
+            }
           />
         </Box>
 

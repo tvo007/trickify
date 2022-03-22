@@ -1,7 +1,16 @@
 import {useState, Fragment} from 'react';
 import {useMutation, useQuery} from 'graphql-hooks';
 import {useRouter} from 'next/router';
-import {Typography, Button, TextField, Grid, Box, Stack} from '@mui/material';
+import {
+  Typography,
+  Button,
+  TextField,
+  Grid,
+  Box,
+  Stack,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 
 // import Breadcrumbs from '../components/breadcrumbs';
 
@@ -9,8 +18,16 @@ import {SAMPLER_QUERY} from '../lib/graphql-query-mutation';
 import {useEffect} from 'react';
 import SamplerContent from '../components/SamplerContent';
 import SceneForm from '../components/SceneForm';
+import useBreakpoints from '../lib/hooks/useBreakpoints';
 
 export default function SinglePage({id}) {
+  // const theme = useTheme ();
+  // const mdMatches = useMediaQuery (theme.breakpoints.up ('md'));
+
+  const {handleBreakpointUp} = useBreakpoints ();
+  const mdMatches = handleBreakpointUp ('md');
+
+
   const {data, refetch} = useQuery (SAMPLER_QUERY, {variables: {id}});
 
   if (!data) return <div>Loading...</div>;
@@ -36,22 +53,21 @@ export default function SinglePage({id}) {
           Trickify
         </Typography>
         <Stack
-          direction="row"
-          justifyContent={'space-between'}
-          sx={{maxWidth: '80%'}}
+          direction={mdMatches ? 'row' : 'column-reverse'}
+          justifyContent={mdMatches ? 'space-between' : null}
+          sx={{maxWidth: mdMatches ? '80%' : '100%'}}
         >
           <Box
             sx={{
-              maxWidth: '50%',
+              maxWidth: mdMatches ? '50%' : null,
               width: '100%',
-
               p: '1rem',
             }}
           >
             <SceneForm samplerId={sampler.id} refetch={refetch} />
 
           </Box>
-          <Box sx={{maxWidth: '40%'}}>
+          <Box sx={{maxWidth: mdMatches ? '40%' : null}}>
             <SamplerContent sampler={sampler} />
           </Box>
 
