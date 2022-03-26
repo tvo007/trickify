@@ -3,13 +3,14 @@ import {Box} from '@mui/material';
 import {Button} from '@mui/material';
 import {Grid} from '@mui/material';
 import {Stack} from '@mui/material';
-import {useEffect} from 'react';
+import {useEffect, useRef} from 'react';
 import {useState} from 'react';
 import {Fragment} from 'react';
 import ReactPlayer from 'react-player';
 import useBreakpoints from '../lib/hooks/useBreakpoints';
 
 function SamplerContent({sampler}) {
+  const playerRef = useRef ();
   const {handleBreakpointUp} = useBreakpoints ();
   const mdMatches = handleBreakpointUp ('md');
 
@@ -22,6 +23,13 @@ function SamplerContent({sampler}) {
   const [urlState, setUrlState] = useState (
     `https://www.youtube.com/embed/${youtube_parser (sampler.url)}`
   );
+
+  const [duration, setDuration] = useState ('');
+
+  const handleDuration = () => {
+    const currentTime = playerRef.current.getCurrentTime ();
+    setDuration (currentTime);
+  };
 
   const [isPlaying, setIsPlaying] = useState (false);
 
@@ -47,6 +55,7 @@ function SamplerContent({sampler}) {
             title="Embedded youtube"
           /> */}
           <ReactPlayer
+            ref={playerRef}
             url={urlState}
             volume={0.5}
             controls={true}
@@ -73,11 +82,20 @@ function SamplerContent({sampler}) {
             {sampler.created_by}
           </Typography>
           <Typography component={Box} color={'#6F6F6F'}>
-            {sampler.runtime} seconds
+            Total runtime: {sampler.runtime} seconds
           </Typography>
           <Typography component={Box} color={'#6F6F6F'}>
             {sampler.uploaded_at}
           </Typography>
+          <Box>
+            <Typography component={Box}>
+              {duration || 'Click button to get duration'}
+            </Typography>
+            <Button onClick={() => handleDuration ()}>
+              Get Duration
+            </Button>
+          </Box>
+
         </Box>
       </Grid>
       <Grid item sx={{mb: '10rem'}}>

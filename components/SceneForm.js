@@ -4,13 +4,14 @@ import {Typography} from '@mui/material';
 import {Button} from '@mui/material';
 import {CREATE_SCENE_MUTATION} from '../lib/graphql-query-mutation';
 import {useMutation} from 'graphql-hooks';
+import {useEffect} from 'react';
 
 const intitialState = {
   timestamp: '',
   tricks: '',
 };
 
-const SceneForm = ({samplerId, refetch}) => {
+const SceneForm = ({samplerId, refetch, duration, handleDuration}) => {
   const [createScene] = useMutation (CREATE_SCENE_MUTATION);
 
   const [state, setState] = useState (intitialState);
@@ -51,6 +52,14 @@ const SceneForm = ({samplerId, refetch}) => {
     setState (intitialState);
   };
 
+  useEffect (
+    () => {
+      let roundedDuration = Math.floor (duration);
+      setState ({...state, timestamp: roundedDuration});
+    },
+    [duration]
+  );
+
   return (
     <Stack direction={'column'} spacing={4}>
       <Stack direction="row" justifyContent={'space-between'}>
@@ -59,7 +68,9 @@ const SceneForm = ({samplerId, refetch}) => {
         </Typography>
 
         <Box>
-          <Button size="small">Get Current Time</Button>
+          <Button size="small" onClick={handleDuration}>
+            Get Current Time
+          </Button>
 
         </Box>
       </Stack>
@@ -78,6 +89,7 @@ const SceneForm = ({samplerId, refetch}) => {
               fullWidth
               type={'number'}
               size="small"
+              onWheel={event => event.target.blur ()}
               required
             />
 
