@@ -11,7 +11,14 @@ const intitialState = {
   tricks: '',
 };
 
-const SceneForm = ({samplerId, refetch, duration, handleDuration}) => {
+const SceneForm = ({
+  samplerId,
+  refetch,
+  duration,
+  handleDuration,
+  isMobile,
+  setMobile,
+}) => {
   const [createScene] = useMutation (CREATE_SCENE_MUTATION);
 
   const [state, setState] = useState (intitialState);
@@ -34,16 +41,6 @@ const SceneForm = ({samplerId, refetch, duration, handleDuration}) => {
     });
 
     refetch ();
-
-    // console.log ({
-    //   variables: {
-    //     timestamp: parseInt (state.timestamp),
-    //     tricks: state.tricks,
-    //     sampler_id: {
-    //       id: samplerId,
-    //     },
-    //   },
-    // });
   };
 
   const submitHandler = e => {
@@ -71,7 +68,8 @@ const SceneForm = ({samplerId, refetch, duration, handleDuration}) => {
           <Button size="small" onClick={handleDuration}>
             Get Current Time
           </Button>
-
+          {isMobile &&
+            <Button size="small" onClick={() => setMobile (false)}>X</Button>}
         </Box>
       </Stack>
 

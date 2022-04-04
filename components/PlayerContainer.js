@@ -5,16 +5,19 @@ import {Typography} from '@mui/material';
 import {Box} from '@mui/system';
 import React from 'react';
 import {useRef} from 'react';
-import {useState} from 'react';
+import {useState, useEffect, useContext} from 'react';
 import ReactPlayer from 'react-player';
 import useBreakpoints from '../lib/hooks/useBreakpoints';
 import SamplerScenes from './SamplerScenes';
 import SceneForm from './SceneForm';
+import {ClientContext} from 'graphql-hooks';
 
 const PlayerContainer = ({sampler, refetch}) => {
+  const {headers} = useContext (ClientContext);
   const playerRef = useRef ();
-  const {handleBreakpointUp} = useBreakpoints ();
+  const {handleBreakpointUp, handleBreakpointDown} = useBreakpoints ();
   const mdMatches = handleBreakpointUp ('md');
+  const mdDown = handleBreakpointDown ('md');
 
   function youtube_parser (url) {
     var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
@@ -28,7 +31,7 @@ const PlayerContainer = ({sampler, refetch}) => {
 
   const [duration, setDuration] = useState ('');
 
-  const [isPlaying, setIsPlaying] = useState (false);
+  const [isPlaying, setIsPlaying] = useState (true);
 
   const playerHandler = (url, timestamp) => {
     setUrlState (
@@ -43,26 +46,53 @@ const PlayerContainer = ({sampler, refetch}) => {
     setDuration (current);
   };
 
+  const [isMobileFormOpen, setIsMobileFormOpen] = useState (false);
+
   // console.log(playerRef.current.getCurrentTime)
+
+  useEffect (() => {
+    const handleResize = () => {
+      if (window.innerWidth > 1000) {
+        setIsMobileFormOpen (false);
+      }
+    };
+
+    window.addEventListener ('resize', handleResize);
+
+    return () => {
+      window.removeEventListener ('resize', handleResize);
+    };
+  }, []);
 
   return (
     <Stack
       direction={mdMatches ? 'row' : 'column-reverse'}
       justifyContent={mdMatches ? 'space-between' : null}
-      sx={{maxWidth: mdMatches ? '80%' : '100%'}}
+      sx={{
+        maxWidth: mdMatches ? '80%' : '100%',
+        minWidth: mdDown ? '93vw' : null,
+      }}
     >
-      <Box
-        sx={{
-          maxWidth: mdMatches ? '50%' : null,
-          width: '100%',
-          p: '1rem',
-        }}
-      >
-        <SceneForm samplerId={sampler.id} refetch={refetch} duration={duration} handleDuration={handleDuration}/>
+      {/**desktop form  */}
+      {mdMatches
+        ? <Box
+            sx={{
+              maxWidth: mdMatches ? '50%' : null,
+              width: '100%',
+              p: '1rem',
+            }}
+          >
+            {headers.Authorization &&
+              <SceneForm
+                samplerId={sampler.id}
+                refetch={refetch}
+                duration={duration}
+                handleDuration={handleDuration}
+              />}
+          </Box>
+        : null}
 
-      </Box>
-
-      <Box sx={{maxWidth: mdMatches ? '40%' : null}}>
+      <Box sx={{maxWidth: mdMatches ? '40%' : '100%'}}>
         {/**refactor out the react player away from scenes container */}
         <Grid item sx={{mb: 2}}>
           <Box sx={mdMatches ? null : {position: 'relative', pt: '70%'}}>
@@ -99,15 +129,44 @@ const PlayerContainer = ({sampler, refetch}) => {
             <Typography component={Box} color={'#6F6F6F'}>
               {sampler.uploaded_at}
             </Typography>
-            
-
+            {!mdMatches &&
+              !isMobileFormOpen &&
+              <Box
+                sx={{py: '1rem', display: 'flex', justifyContent: 'flex-end'}}
+              >
+                <Button onClick={() => setIsMobileFormOpen (!isMobileFormOpen)}>
+                  Add Scene
+                </Button>
+              </Box>}
           </Box>
         </Grid>
-        <SamplerScenes
-          scenes={sampler.scenes}
-          samplerUrl={sampler.url}
-          playerHandler={playerHandler}
-        />
+
+        {!isMobileFormOpen &&
+          <SamplerScenes
+            scenes={sampler.scenes}
+            samplerUrl={sampler.url}
+            playerHandler={playerHandler}
+          />}
+
+        {/**mobile scene form */}
+        {isMobileFormOpen &&
+          !mdMatches &&
+          <Box
+            sx={{
+              maxWidth: mdMatches ? '50%' : null,
+              width: '100%',
+            }}
+          >
+            <SceneForm
+              isMobile={isMobileFormOpen}
+              setMobile={setIsMobileFormOpen}
+              samplerId={sampler.id}
+              refetch={refetch}
+              duration={duration}
+              handleDuration={handleDuration}
+            />
+          </Box>}
+
       </Box>
 
     </Stack>
