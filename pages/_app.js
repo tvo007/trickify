@@ -1,5 +1,5 @@
 import '../styles/globals.css';
-import {ClientContext, useQuery} from 'graphql-hooks';
+import {ClientContext} from 'graphql-hooks';
 import createEmotionCache from '../lib/createEmotionCache';
 import {useGraphQLClient} from '../lib/graphql-client';
 import {Container, CssBaseline, ThemeProvider} from '@mui/material';
@@ -7,26 +7,34 @@ import theme from '../styles/theme';
 import {CacheProvider} from '@emotion/react';
 import {GET_ME_QUERY} from '../lib/graphql-query-mutation';
 import {AuthProvider} from '../lib/contexts/AuthContext';
+import {QueryClientProvider, QueryClient} from 'react-query'
 
 const clientSideEmotionCache = createEmotionCache ();
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+})
 
 export default function App({
   Component,
   pageProps,
   emotionCache = clientSideEmotionCache,
 }) {
-  const graphQLClient = useGraphQLClient ();
   return (
     <CacheProvider value={emotionCache}>
       <ThemeProvider theme={theme}>
-        <ClientContext.Provider value={graphQLClient}>
+        <QueryClientProvider client={queryClient}>
           <AuthProvider>
             <CssBaseline />
             <Container maxWidth="lg">
               <Component {...pageProps} />
             </Container>
           </AuthProvider>
-        </ClientContext.Provider>
+        </QueryClientProvider>
       </ThemeProvider>
     </CacheProvider>
   );

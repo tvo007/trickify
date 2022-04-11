@@ -1,4 +1,3 @@
-import {ClientContext, useQuery} from 'graphql-hooks';
 import Link from 'next/link';
 import {Grid, Typography, Button, TextField, Box, Stack} from '@mui/material';
 import {
@@ -13,38 +12,32 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import ExitToApp from '@mui/icons-material/ExitToApp';
 import {useContext} from 'react';
 import AuthContext from '../lib/contexts/AuthContext';
+import {useQuery} from 'react-query';
+import {request, gql} from 'graphql-request';
+import { getSamplers} from '../lib/api';
 
 export default function Home () {
-  // const sysClient = new GraphQLClient ({
-  //   url: process.env.NEXT_PUBLIC_API_URL + '/system',
-  //   headers: client.headers,
-  // });
+  /**
+   * old code 
+   // const client = useContext (ClientContext);
+ 
+   // const {user, tokens, logoutHandler} = useContext (AuthContext);
+ 
+   // const {data, refetch} = useQuery (ALL_SAMPLERS_QUERY);
+   if (!data) return <div>Loading...</div>;
+   const {Samplers: samplers} = data;
+   * 
+   */
 
-  const client = useContext (ClientContext);
+  const {
+    status,
+    data,
+    error,
+    isFetching,
+    isSuccess,
+  } = useQuery ('samplers', async () => getSamplers());
 
-  const {user, tokens, logoutHandler} = useContext (AuthContext);
-
-  const {data, refetch} = useQuery (ALL_SAMPLERS_QUERY);
-
-  // const {data: authData, error: authError} = useQuery (GET_ME_QUERY, {
-  //   client: sysClient,
-  // });
-
-  //fetch graphql data here
-  //todo: create new ALL POSTS QUERY
-
-  // const [createPost] = useMutation (CREATE_POST_MUTATION);
-
-  if (!data) return <div>Loading...</div>;
-
-  const {Samplers: samplers} = data;
-
-  // console.log (sysClient);
-  // console.log (authData);
-  // console.log (client);
-  // console.log (user);
-  // console.log (tokens);
-
+  // if (!data) return <div>Loading...</div>;
   return (
     <section>
       <Grid
@@ -67,17 +60,19 @@ export default function Home () {
           >
             Trickify
           </Typography>
-          {user &&
+          {/* {user &&
             <Box>
               <IconButton sx={{color: 'primary.main'}} onClick={logoutHandler}>
                 <ExitToApp />
               </IconButton>
-            </Box>}
+            </Box>} */}
         </Stack>
         <Stack direction="column" spacing={2}>
-          {samplers.map (sampler => (
-            <SamplerCard key={sampler.id} sampler={sampler} />
-          ))}
+          {isFetching && <h2>Loading</h2>}
+          {data &&
+            data.map (sampler => (
+              <SamplerCard key={sampler.id} sampler={sampler} />
+            ))}
 
         </Stack>
 

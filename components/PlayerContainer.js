@@ -10,10 +10,9 @@ import ReactPlayer from 'react-player';
 import useBreakpoints from '../lib/hooks/useBreakpoints';
 import SamplerScenes from './SamplerScenes';
 import SceneForm from './SceneForm';
-import {ClientContext} from 'graphql-hooks';
 
-const PlayerContainer = ({sampler, refetch}) => {
-  const {headers} = useContext (ClientContext);
+const PlayerContainer = ({sampler}) => {
+  // const {headers} = useContext (ClientContext);
   const playerRef = useRef ();
   const {handleBreakpointUp, handleBreakpointDown} = useBreakpoints ();
   const mdMatches = handleBreakpointUp ('md');
@@ -82,13 +81,12 @@ const PlayerContainer = ({sampler, refetch}) => {
               p: '1rem',
             }}
           >
-            {headers.Authorization &&
-              <SceneForm
+              {/* <SceneForm
                 samplerId={sampler.id}
-                refetch={refetch}
+              
                 duration={duration}
                 handleDuration={handleDuration}
-              />}
+              /> */}
           </Box>
         : null}
 
@@ -157,14 +155,14 @@ const PlayerContainer = ({sampler, refetch}) => {
               width: '100%',
             }}
           >
-            <SceneForm
+            {/* <SceneForm
               isMobile={isMobileFormOpen}
               setMobile={setIsMobileFormOpen}
               samplerId={sampler.id}
-              refetch={refetch}
+              // refetch={refetch}
               duration={duration}
               handleDuration={handleDuration}
-            />
+            /> */}
           </Box>}
 
       </Box>

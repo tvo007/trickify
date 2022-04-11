@@ -1,5 +1,6 @@
 import {useState, Fragment} from 'react';
-import {useMutation, useQuery} from 'graphql-hooks';
+// import {useMutation, useQuery} from 'graphql-hooks';
+import { useQuery } from 'react-query';
 import {useRouter} from 'next/router';
 import {
   Typography,
@@ -10,22 +11,30 @@ import {
 
 // import Breadcrumbs from '../components/breadcrumbs';
 
-import {SAMPLER_QUERY} from '../lib/graphql-query-mutation';
 import PlayerContainer from '../components/PlayerContainer';
+import { getSamplerById } from '../lib/api';
 
 export default function SinglePage({id}) {
   // const theme = useTheme ();
   // const mdMatches = useMediaQuery (theme.breakpoints.up ('md'));
 
-  
-
-
+  /*
+  gql code
   const {data, refetch} = useQuery (SAMPLER_QUERY, {variables: {id}});
-
   if (!data) return <div>Loading...</div>;
-
   const {Samplers_by_id: sampler} = data;
+  */
 
+
+  const {
+    status,
+    data,
+    error,
+    isFetching,
+    isSuccess,
+  } = useQuery ('sampler', async () => getSamplerById(id));
+
+  console.log(data)
   return (
     <Fragment>
 
@@ -44,7 +53,9 @@ export default function SinglePage({id}) {
         >
           Trickify
         </Typography>
-        <PlayerContainer sampler={sampler} refetch={refetch} />
+        {data && isSuccess && <PlayerContainer sampler={data} />}
+        {isFetching && <h2>Loading</h2>}
+       
       </Grid>
     </Fragment>
   );
