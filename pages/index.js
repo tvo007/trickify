@@ -21,14 +21,14 @@ export default function Home () {
    * old code 
    // const client = useContext (ClientContext);
  
-   // const {user, tokens, logoutHandler} = useContext (AuthContext);
- 
+   
    // const {data, refetch} = useQuery (ALL_SAMPLERS_QUERY);
    if (!data) return <div>Loading...</div>;
    const {Samplers: samplers} = data;
    * 
    */
-
+  
+  //  const {isAuth, logoutHandler} = useContext (AuthContext);
   const {
     status,
     data,

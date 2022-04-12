@@ -12,14 +12,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Link from 'next/link';
 import {useState, useContext} from 'react';
-import {GET_ME_QUERY, LOGIN_MUTATION} from '../lib/graphql-query-mutation';
-import {
-  useMutation,
-  ClientContext,
-  GraphQLClient,
-  useQuery,
-  useManualQuery,
-} from 'graphql-hooks';
+import {useQuery, useMutation} from 'react-query'
 import router from 'next/router';
 import AuthContext from '../lib/contexts/AuthContext';
 import {useEffect} from 'react';
@@ -34,46 +27,7 @@ const Login = () => {
     AuthContext
   );
 
-  const client = useContext (ClientContext);
-  const systemClient = new GraphQLClient ({
-    url: process.env.NEXT_PUBLIC_API_URL + '/system',
-    headers: client.headers,
-  });
-
-  const [login] = useMutation (LOGIN_MUTATION, {client: systemClient});
-  const [getMe] = useManualQuery (GET_ME_QUERY, {client: systemClient});
-
   const [values, setValues] = useState (initialValues);
-
-  const handleLogin = async () => {
-    // e.preventDefault ();
-    const {data, error} = await login ({
-      variables: {
-        email: values.email,
-        password: values.password,
-      },
-    });
-
-    if (error) {
-      console.log ('Login failed due to an error.');
-    } else {
-      const {access_token, refresh_token} = data.auth_login;
-      client.setHeader ('Authorization', `Bearer ${access_token}`);
-      // console.log ({access_token, refresh_token});
-      // router.push ('/');
-      setTokens({access_token, refresh_token})
-    }
-  };
-
-  const handleGetMe = async () => {
-    const authData = await getMe ();
-    if (authData) {
-      console.log (authData.data.users_me);
-      setUser (authData.data.users_me);
-    } else {
-      console.log ('Failed retrieving user data');
-    }
-  };
 
   const handleInputChange = e => {
     setValues ({...values, [e.target.name]: e.target.value});
@@ -81,9 +35,8 @@ const Login = () => {
 
   const handleSubmit = async e => {
     e.preventDefault ();
-    await handleLogin ();
+    await loginHandler (values.email, values.password);
     setValues (initialValues);
-    await handleGetMe ();
   };
 
   useEffect (() => {
