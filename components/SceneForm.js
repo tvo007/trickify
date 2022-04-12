@@ -2,9 +2,9 @@ import {useState} from 'react';
 import {TextField, Stack, Box} from '@mui/material';
 import {Typography} from '@mui/material';
 import {Button} from '@mui/material';
-import {CREATE_SCENE_MUTATION} from '../lib/graphql-query-mutation';
-import {useMutation} from 'graphql-hooks';
+import {useMutation, useQueryClient} from 'react-query';
 import {useEffect} from 'react';
+import {addScene} from '../lib/api';
 
 const intitialState = {
   timestamp: '',
@@ -19,9 +19,26 @@ const SceneForm = ({
   isMobile,
   setMobile,
 }) => {
-  const [createScene] = useMutation (CREATE_SCENE_MUTATION);
-
   const [state, setState] = useState (intitialState);
+
+  /**old code */
+  // const queryClient = useQueryClient ();
+  const {
+    mutateAsync,
+  } = useMutation (addScene, {
+    onSuccess: () => {
+      refetch ();
+    },
+  });
+
+  const handleCreateScene = async () => {
+    await mutateAsync ({
+      timestamp: parseInt (state.timestamp),
+      tricks: state.tricks,
+      sampler_id: samplerId,
+    });
+  };
+  /**old code */
 
   const handleChange = e => {
     const value = e.target.value;
@@ -29,18 +46,6 @@ const SceneForm = ({
       ...state,
       [e.target.name]: value,
     });
-  };
-
-  const handleCreateScene = async () => {
-    await createScene ({
-      variables: {
-        timestamp: parseInt (state.timestamp),
-        tricks: state.tricks,
-        id: samplerId,
-      },
-    });
-
-    refetch ();
   };
 
   const submitHandler = e => {

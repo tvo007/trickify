@@ -7,17 +7,18 @@ import theme from '../styles/theme';
 import {CacheProvider} from '@emotion/react';
 import {GET_ME_QUERY} from '../lib/graphql-query-mutation';
 import {AuthProvider} from '../lib/contexts/AuthContext';
-import {QueryClientProvider, QueryClient} from 'react-query'
+import {QueryClientProvider, QueryClient} from 'react-query';
+import {ReactQueryDevtools} from 'react-query/devtools';
 
 const clientSideEmotionCache = createEmotionCache ();
 
-const queryClient = new QueryClient({
+const queryClient = new QueryClient ({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
     },
   },
-})
+});
 
 export default function App({
   Component,
@@ -28,6 +29,7 @@ export default function App({
     <CacheProvider value={emotionCache}>
       <ThemeProvider theme={theme}>
         <QueryClientProvider client={queryClient}>
+          {/* <ReactQueryDevtools initialIsOpen={false} /> */}
           <AuthProvider>
             <CssBaseline />
             <Container maxWidth="lg">

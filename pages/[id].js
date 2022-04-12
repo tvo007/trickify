@@ -32,6 +32,7 @@ export default function SinglePage({id}) {
     error,
     isFetching,
     isSuccess,
+    refetch
   } = useQuery ('sampler', async () => getSamplerById(id));
 
   console.log(data)
@@ -53,7 +54,7 @@ export default function SinglePage({id}) {
         >
           Trickify
         </Typography>
-        {data && isSuccess && <PlayerContainer sampler={data} />}
+        {data && isSuccess && <PlayerContainer sampler={data} refetch={refetch} />}
         {isFetching && <h2>Loading</h2>}
        
       </Grid>

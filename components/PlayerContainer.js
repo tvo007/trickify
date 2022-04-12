@@ -11,7 +11,7 @@ import useBreakpoints from '../lib/hooks/useBreakpoints';
 import SamplerScenes from './SamplerScenes';
 import SceneForm from './SceneForm';
 
-const PlayerContainer = ({sampler}) => {
+const PlayerContainer = ({sampler, refetch}) => {
   // const {headers} = useContext (ClientContext);
   const playerRef = useRef ();
   const {handleBreakpointUp, handleBreakpointDown} = useBreakpoints ();
@@ -81,12 +81,12 @@ const PlayerContainer = ({sampler}) => {
               p: '1rem',
             }}
           >
-              {/* <SceneForm
+              <SceneForm
                 samplerId={sampler.id}
-              
+                refetch={refetch}
                 duration={duration}
                 handleDuration={handleDuration}
-              /> */}
+              />
           </Box>
         : null}
 

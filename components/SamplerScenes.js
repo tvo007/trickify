@@ -14,7 +14,7 @@ const SamplerScenes = ({scenes, samplerUrl, playerHandler}) => {
     <Grid item sx={{mb: '10rem'}}>
       <Scrollbars autoHeight style={{minWidth: isMdUp ? '135%' : '100%'}}>
         <Stack direction="column" spacing={2}>
-          {scenes.map (scene => (
+          {scenes.sort ((a, b) => a.timestamp < b.timestamp ? 1:-1 ).map (scene => (
             <Box key={scene.id}>
               <Button
                 onClick={() => playerHandler (samplerUrl, scene.timestamp)}
@@ -28,7 +28,7 @@ const SamplerScenes = ({scenes, samplerUrl, playerHandler}) => {
           ))}
         </Stack>
       </Scrollbars>
-      
+
     </Grid>
   );
 };
