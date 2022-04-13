@@ -21,8 +21,8 @@ const neutral = {
   
   const primary = {
     main: '#ff5252',
-    light: '#828DF8',
-    dark: '#3832A0',
+    light: '#ff6c6c',
+    dark: '#ff1f1f',
     contrastText: '#FFFFFF'
   };
   

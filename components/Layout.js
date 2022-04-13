@@ -7,13 +7,14 @@ import {
   Box,
   AppBar,
   Button,
-  IconButton
+  IconButton,
 } from '@mui/material';
 import AuthContext from '../lib/contexts/AuthContext';
 import {useContext} from 'react';
 import {Fragment} from 'react';
 import {useRouter} from 'next/router';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import SearchIcon from '@mui/icons-material/Search';
 
 const Layout = ({children}) => {
   const router = useRouter ();
@@ -52,7 +53,9 @@ const Layout = ({children}) => {
                   flexDirection: 'column',
                   justifyContent: 'center',
                   alignItems: 'center',
+                  cursor: 'pointer',
                 }}
+                onClick={() => router.push ('/')}
               >
 
                 <Typography
@@ -64,26 +67,43 @@ const Layout = ({children}) => {
                   Trickify
                 </Typography>
               </Box>
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
+              <Stack direction='row'>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    cursor: 'pointer',
+                  }}
+                  onClick={() => router.push ('/search')}
+                >
+                  <IconButton sx={{color: 'primary.main'}}>
+                    <SearchIcon />
+                  </IconButton>
 
-                {isAuth
-                  ? <IconButton
-                      sx={{color: 'primary.main'}}
-                      onClick={logoutHandler}
-                    >
-                      <ExitToAppIcon />
-                    </IconButton>
-                  : <Button onClick={() => router.push ('/login')}>
-                      Admins Only
-                    </Button>} {' '}
-              </Box>
+                </Box>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  {isAuth
+                    ? <IconButton
+                        sx={{color: 'primary.main'}}
+                        onClick={logoutHandler}
+                      >
+                        <ExitToAppIcon />
+                      </IconButton>
+                    : <Button onClick={() => router.push ('/login')}>
+                        Admins Only
+                      </Button>} {' '}
+                </Box>
+
+              </Stack>
             </Stack>
           </Box>
 
