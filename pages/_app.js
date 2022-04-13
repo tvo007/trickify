@@ -9,6 +9,7 @@ import {GET_ME_QUERY} from '../lib/graphql-query-mutation';
 import {AuthProvider} from '../lib/contexts/AuthContext';
 import {QueryClientProvider, QueryClient} from 'react-query';
 import {ReactQueryDevtools} from 'react-query/devtools';
+import Layout from '../components/Layout';
 
 const clientSideEmotionCache = createEmotionCache ();
 
@@ -32,9 +33,9 @@ export default function App({
           {/* <ReactQueryDevtools initialIsOpen={false} /> */}
           <AuthProvider>
             <CssBaseline />
-            <Container maxWidth="lg">
+            <Layout>
               <Component {...pageProps} />
-            </Container>
+            </Layout>
           </AuthProvider>
         </QueryClientProvider>
       </ThemeProvider>

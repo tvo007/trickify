@@ -12,7 +12,6 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Link from 'next/link';
 import {useState, useContext} from 'react';
-import {useQuery, useMutation} from 'react-query'
 import router from 'next/router';
 import AuthContext from '../lib/contexts/AuthContext';
 import {useEffect} from 'react';
