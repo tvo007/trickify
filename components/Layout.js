@@ -59,15 +59,15 @@ const Layout = ({children}) => {
               >
 
                 <Typography
-                  variant="h5"
+                  variant="h4"
                   component={Box}
                   fontWeight="bold"
-                  sx={{color: '#ff5252'}}
+                  sx={{color: '#ff5252', fontFamily: 'Permanent Marker', }}
                 >
                   Trickify
                 </Typography>
               </Box>
-              <Stack direction='row'>
+              <Stack direction="row">
                 <Box
                   sx={{
                     display: 'flex',

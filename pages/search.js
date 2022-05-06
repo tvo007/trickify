@@ -13,8 +13,7 @@ const Search = () => {
 
   const [result, setResult] = useState ([]);
 
-  const {mutateAsync, data} = useMutation (searchScenes, {
-  });
+  const {mutateAsync, data} = useMutation (searchScenes, {});
 
   const handleChange = e => {
     const value = e.target.value;
@@ -32,7 +31,7 @@ const Search = () => {
 
   const submitHandler = e => {
     e.preventDefault ();
-    handleQueryScene()
+    handleQueryScene ();
     // await mutateAsync(state.tricks)
     // console.log(state.tricks)
   };
