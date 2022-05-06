@@ -1,14 +1,11 @@
 import '../styles/globals.css';
-import {ClientContext} from 'graphql-hooks';
 import createEmotionCache from '../lib/createEmotionCache';
-import {useGraphQLClient} from '../lib/graphql-client';
-import {Container, CssBaseline, ThemeProvider} from '@mui/material';
+import {CssBaseline, ThemeProvider} from '@mui/material';
 import theme from '../styles/theme';
 import {CacheProvider} from '@emotion/react';
-import {GET_ME_QUERY} from '../lib/graphql-query-mutation';
 import {AuthProvider} from '../lib/contexts/AuthContext';
 import {QueryClientProvider, QueryClient} from 'react-query';
-import {ReactQueryDevtools} from 'react-query/devtools';
+// import {ReactQueryDevtools} from 'react-query/devtools';
 import Layout from '../components/Layout';
 
 const clientSideEmotionCache = createEmotionCache ();

@@ -11,8 +11,6 @@ const intitialState = {
 const Search = () => {
   const [state, setState] = useState (intitialState);
 
-  const [result, setResult] = useState ([]);
-
   const {mutateAsync, data} = useMutation (searchScenes, {});
 
   const handleChange = e => {
@@ -37,54 +35,57 @@ const Search = () => {
   };
 
   return (
-    <Stack sx={{width: '100%'}} spacing={4}>
-      <Box>
-        <form onSubmit={submitHandler}>
-          <Stack spacing={2}>
-            <TextField
-              label="Trick Search"
-              variant="outlined"
-              size="medium"
-              fullWidth
-              name="tricks"
-              id="tricks"
-              onChange={handleChange}
-              value={state.tricks}
-            />
-            <Grid
-              container
-              direction="column"
-              justifyContent={'center'}
-              alignItems={'flex-end'}
-            >
-              <Button
-                variant="contained"
-                sx={{
-                  '&:hover': {
-                    backgroundColor: 'primary.light',
-                  },
-                }}
-                type="submit"
-              >
-                Search
-              </Button>
-            </Grid>
-          </Stack>
-        </form>
-      </Box>
-      <Box sx={{px: '1rem'}}>
-        <Typography>
-          Search Result(s):
-        </Typography>
-        {data &&
-          data.map (item => (
-            <Typography key={item.id}>
-              {item.tricks}
-            </Typography>
-          ))}
-      </Box>
-    </Stack>
+    <Typography variant="h2">
+      Under Construction
+    </Typography>
   );
+  // <Stack sx={{width: '100%'}} spacing={4}>
+  //   <Box>
+  //     <form onSubmit={submitHandler}>
+  //       <Stack spacing={2}>
+  //         <TextField
+  //           label="Trick Search"
+  //           variant="outlined"
+  //           size="medium"
+  //           fullWidth
+  //           name="tricks"
+  //           id="tricks"
+  //           onChange={handleChange}
+  //           value={state.tricks}
+  //         />
+  //         <Grid
+  //           container
+  //           direction="column"
+  //           justifyContent={'center'}
+  //           alignItems={'flex-end'}
+  //         >
+  //           <Button
+  //             variant="contained"
+  //             sx={{
+  //               '&:hover': {
+  //                 backgroundColor: 'primary.light',
+  //               },
+  //             }}
+  //             type="submit"
+  //           >
+  //             Search
+  //           </Button>
+  //         </Grid>
+  //       </Stack>
+  //     </form>
+  //   </Box>
+  //   <Box sx={{px: '1rem'}}>
+  //     <Typography>
+  //       Search Result(s):
+  //     </Typography>
+  //     {data &&
+  //       data.map (item => (
+  //         <Typography key={item.id}>
+  //           {item.tricks}
+  //         </Typography>
+  //       ))}
+  //   </Box>
+  // </Stack>
 };
 
 export default Search;
