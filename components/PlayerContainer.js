@@ -1,5 +1,6 @@
 import {Grid} from '@mui/material';
 import {Stack} from '@mui/material';
+import { useTheme } from '@mui/material';
 import {Button} from '@mui/material';
 import {Typography} from '@mui/material';
 import {Box} from '@mui/system';
@@ -7,16 +8,17 @@ import React from 'react';
 import {useRef} from 'react';
 import {useState, useEffect, useContext} from 'react';
 import ReactPlayer from 'react-player';
-import useBreakpoints from '../lib/hooks/useBreakpoints';
+import {handleBreakpointUp, handleBreakpointDown} from '../lib/helpers/breakpoints';
 import SamplerScenes from './SamplerScenes';
 import SceneForm from './SceneForm';
+
 
 const PlayerContainer = ({sampler, refetch}) => {
   // const {headers} = useContext (ClientContext);
   const playerRef = useRef ();
-  const {handleBreakpointUp, handleBreakpointDown} = useBreakpoints ();
-  const mdMatches = handleBreakpointUp ('md');
-  const mdDown = handleBreakpointDown ('md');
+  const theme = useTheme()
+  const mdMatches = handleBreakpointUp (theme, 'md');
+  const mdDown = handleBreakpointDown (theme, 'md');
 
   function youtube_parser (url) {
     var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;

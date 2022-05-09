@@ -29,7 +29,7 @@ export default function SinglePage({id}) {
     refetch,
   } = useQuery ('sampler', async () => getSamplerById (id));
 
-  console.log (data);
+  // console.log (data);
   return (
     <Fragment>
       {data &&

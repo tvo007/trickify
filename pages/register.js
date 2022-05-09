@@ -21,7 +21,7 @@ const Register = () => {
       email: data.get ('email'),
       password: data.get ('password'),
     });
-  };
+  }; //todo
 
   return (
     <Container component="main" maxWidth="xs">
@@ -100,9 +100,9 @@ const Register = () => {
           >
             Sign Up
           </Button>
-          <Grid container justifyContent="flex-end">
+          <Grid container>
             <Grid item>
-              <Link href="/login">
+              <Link href="/login" passHref>
                 <MUILink
                   variant="body2"
                   sx={{

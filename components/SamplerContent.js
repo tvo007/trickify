@@ -2,17 +2,18 @@ import {Typography} from '@mui/material';
 import {Box} from '@mui/material';
 import {Button} from '@mui/material';
 import {Grid} from '@mui/material';
+import {useTheme} from '@mui/material';
 import {Stack} from '@mui/material';
 import {useEffect, useRef} from 'react';
 import {useState} from 'react';
 import {Fragment} from 'react';
 import ReactPlayer from 'react-player';
-import useBreakpoints from '../lib/hooks/useBreakpoints';
+import {handleBreakpointUp} from '../lib/helpers/breakpoints';
 
 function SamplerContent({sampler}) {
   const playerRef = useRef ();
-  const {handleBreakpointUp} = useBreakpoints ();
-  const mdMatches = handleBreakpointUp ('md');
+  const theme = useTheme ();
+  const mdMatches = handleBreakpointUp (theme, 'md');
 
   function youtube_parser (url) {
     var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;

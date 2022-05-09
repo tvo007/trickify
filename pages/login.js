@@ -38,9 +38,12 @@ const Login = () => {
     setValues (initialValues);
   };
 
-  useEffect (() => {
-    if (user) router.push ('/');
-  }, [user]);
+  useEffect (
+    () => {
+      if (user) router.push ('/');
+    },
+    [user]
+  );
 
   return (
     <Container component="main" maxWidth="xs">
@@ -104,11 +107,11 @@ const Login = () => {
             Sign In
           </Button>
           <Grid container>
-            <Grid item xs>
+            {/* <Grid item xs>
               <Link href="#" variant="body2">
                 Forgot password?
               </Link>
-            </Grid>
+            </Grid> todo*/}
             <Grid item>
               <Link href="/register">
                 <MUILink
@@ -119,7 +122,7 @@ const Login = () => {
                     },
                   }}
                 >
-                  Don't have an account? Sign Up
+                  Don&apos;t have an account? Sign Up
                 </MUILink>
 
               </Link>
