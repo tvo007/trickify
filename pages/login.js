@@ -113,7 +113,7 @@ const Login = () => {
               </Link>
             </Grid> todo*/}
             <Grid item>
-              <Link href="/register">
+              <Link href="/register" passHref>
                 <MUILink
                   variant="body2"
                   sx={{

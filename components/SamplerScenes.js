@@ -1,16 +1,17 @@
-import {Stack} from '@mui/material';
+import {Stack, useMediaQuery} from '@mui/material';
 import {Button} from '@mui/material';
 import {Grid} from '@mui/material';
 import {Typography} from '@mui/material';
 import {Scrollbars} from 'react-custom-scrollbars-2';
 import {Box} from '@mui/system';
 import React from 'react';
-import {handleBreakpointUp} from '../lib/helpers/breakpoints';
+import breakpoints from '../lib/helpers/breakpoints';
 import {useTheme} from '@mui/material';
 
 const SamplerScenes = ({scenes, samplerUrl, playerHandler}) => {
   const theme = useTheme ();
-  const isMdUp = handleBreakpointUp (theme, 'md');
+  // const isMdUp = handleBreakpointUp (theme, 'md');
+  const isMdUp = useMediaQuery (theme.breakpoints.up (breakpoints.medium));
   return (
     <Grid item sx={{mb: '10rem'}}>
       <Scrollbars autoHeight style={{minWidth: isMdUp ? '135%' : '100%'}}>

@@ -1,24 +1,26 @@
 import {Grid} from '@mui/material';
 import {Stack} from '@mui/material';
-import { useTheme } from '@mui/material';
+import {useTheme, useMediaQuery} from '@mui/material';
 import {Button} from '@mui/material';
 import {Typography} from '@mui/material';
 import {Box} from '@mui/system';
 import React from 'react';
 import {useRef} from 'react';
-import {useState, useEffect, useContext} from 'react';
+import {useState, useEffect} from 'react';
 import ReactPlayer from 'react-player';
-import {handleBreakpointUp, handleBreakpointDown} from '../lib/helpers/breakpoints';
+import breakpoints from '../lib/helpers/breakpoints';
 import SamplerScenes from './SamplerScenes';
 import SceneForm from './SceneForm';
-
 
 const PlayerContainer = ({sampler, refetch}) => {
   // const {headers} = useContext (ClientContext);
   const playerRef = useRef ();
-  const theme = useTheme()
-  const mdMatches = handleBreakpointUp (theme, 'md');
-  const mdDown = handleBreakpointDown (theme, 'md');
+  const theme = useTheme ();
+
+  // const mdMatches = handleBreakpointUp (theme, 'md');
+  const mdMatches = useMediaQuery (theme.breakpoints.up (breakpoints.medium));
+  // const mdDown = handleBreakpointDown (theme, 'md');3
+  const mdDown = useMediaQuery (theme.breakpoints.down (breakpoints.medium));
 
   function youtube_parser (url) {
     var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
@@ -83,12 +85,12 @@ const PlayerContainer = ({sampler, refetch}) => {
               p: '1rem',
             }}
           >
-              <SceneForm
-                samplerId={sampler.id}
-                refetch={refetch}
-                duration={duration}
-                handleDuration={handleDuration}
-              />
+            <SceneForm
+              samplerId={sampler.id}
+              refetch={refetch}
+              duration={duration}
+              handleDuration={handleDuration}
+            />
           </Box>
         : null}
 
