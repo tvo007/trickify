@@ -1,13 +1,7 @@
-import {Grid} from '@mui/material';
-import {Stack} from '@mui/material';
-import {useTheme, useMediaQuery} from '@mui/material';
-import {Button} from '@mui/material';
-import {Typography} from '@mui/material';
-import {Box} from '@mui/system';
-import React from 'react';
-import {useRef} from 'react';
-import {useState, useEffect} from 'react';
+import {Grid, Stack, useTheme, useMediaQuery, Button, Typography, Box} from '@mui/material';
+import {useState, useEffect, useContext, useRef} from 'react';
 import ReactPlayer from 'react-player';
+import AuthContext from '../lib/contexts/AuthContext';
 import breakpoints from '../lib/helpers/breakpoints';
 import SamplerScenes from './SamplerScenes';
 import SceneForm from './SceneForm';
@@ -16,7 +10,7 @@ const PlayerContainer = ({sampler, refetch}) => {
   // const {headers} = useContext (ClientContext);
   const playerRef = useRef ();
   const theme = useTheme ();
-
+  const {isAuth} = useContext (AuthContext);
   // const mdMatches = handleBreakpointUp (theme, 'md');
   const mdMatches = useMediaQuery (theme.breakpoints.up (breakpoints.medium));
   // const mdDown = handleBreakpointDown (theme, 'md');3
@@ -34,7 +28,7 @@ const PlayerContainer = ({sampler, refetch}) => {
 
   const [duration, setDuration] = useState ('');
 
-  const [isPlaying, setIsPlaying] = useState (true);
+  const [isPlaying, setIsPlaying] = useState (false);
 
   const playerHandler = (url, timestamp) => {
     setUrlState (
@@ -136,7 +130,10 @@ const PlayerContainer = ({sampler, refetch}) => {
               <Box
                 sx={{py: '1rem', display: 'flex', justifyContent: 'flex-end'}}
               >
-                <Button onClick={() => setIsMobileFormOpen (!isMobileFormOpen)}>
+                <Button
+                  onClick={() => setIsMobileFormOpen (!isMobileFormOpen)}
+                  disabled={!isAuth && true}
+                >
                   Add Scene
                 </Button>
               </Box>}
@@ -159,14 +156,14 @@ const PlayerContainer = ({sampler, refetch}) => {
               width: '100%',
             }}
           >
-            {/* <SceneForm
+            <SceneForm
               isMobile={isMobileFormOpen}
               setMobile={setIsMobileFormOpen}
               samplerId={sampler.id}
               // refetch={refetch}
               duration={duration}
               handleDuration={handleDuration}
-            /> */}
+            />
           </Box>}
 
       </Box>

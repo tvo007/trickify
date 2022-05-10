@@ -1,10 +1,9 @@
-import {useState} from 'react';
-import {TextField, Stack, Box} from '@mui/material';
-import {Typography} from '@mui/material';
-import {Button} from '@mui/material';
-import {useMutation, useQueryClient} from 'react-query';
-import {useEffect} from 'react';
+import {TextField, Stack, Box, Typography, Button} from '@mui/material';
+import {useMutation} from 'react-query';
+import {useState, useEffect, useContext} from 'react';
 import {addScene} from '../lib/api';
+import AuthContext from '../lib/contexts/AuthContext';
+import {Fragment} from 'react';
 
 const intitialState = {
   timestamp: '',
@@ -20,12 +19,10 @@ const SceneForm = ({
   setMobile,
 }) => {
   const [state, setState] = useState (intitialState);
-
+  const {isAuth} = useContext (AuthContext);
   /**old code */
   // const queryClient = useQueryClient ();
-  const {
-    mutateAsync,
-  } = useMutation (addScene, {
+  const {mutateAsync} = useMutation (addScene, {
     onSuccess: () => {
       refetch ();
     },
@@ -63,64 +60,71 @@ const SceneForm = ({
   );
 
   return (
-    <Stack direction={'column'} spacing={4}>
-      <Stack direction="row" justifyContent={'space-between'}>
-        <Typography component={Box} fontWeight={'medium'} variant={'h5'}>
-          Scene Form
-        </Typography>
-
-        <Box>
-          <Button size="small" onClick={handleDuration}>
-            Get Current Time
-          </Button>
-          {isMobile &&
-            <Button size="small" onClick={() => setMobile (false)}>X</Button>}
-        </Box>
-      </Stack>
-
-      <form onSubmit={submitHandler}>
+    <Fragment>
+      {!isAuth &&
+        <Typography variant="h3">Editor mode is for Admins Only.</Typography>}
+      {isAuth &&
         <Stack direction={'column'} spacing={4}>
-          <Box>
-            <Typography>
-              Timestamp (seconds)
+          <Stack direction="row" justifyContent={'space-between'}>
+            <Typography component={Box} fontWeight={'medium'} variant={'h5'}>
+              Scene Form
             </Typography>
-            <TextField
-              name="timestamp"
-              id="timestamp"
-              value={state.timestamp}
-              onChange={handleChange}
-              fullWidth
-              type={'number'}
-              size="small"
-              onWheel={event => event.target.blur ()}
-              required
-            />
 
-          </Box>
-          <Box>
-            <Typography>
-              Tricks
-            </Typography>
-            <TextField
-              name="tricks"
-              id="tricks"
-              fullWidth
-              onChange={handleChange}
-              value={state.tricks}
-              multiline
-              rows={4}
-              size="small"
-            />
+            <Box>
+              <Button size="small" onClick={handleDuration}>
+                Get Current Time
+              </Button>
+              {isMobile &&
+                <Button size="small" onClick={() => setMobile (false)}>
+                  X
+                </Button>}
+            </Box>
+          </Stack>
 
-          </Box>
+          <form onSubmit={submitHandler}>
+            <Stack direction={'column'} spacing={4}>
+              <Box>
+                <Typography>
+                  Timestamp (seconds)
+                </Typography>
+                <TextField
+                  name="timestamp"
+                  id="timestamp"
+                  value={state.timestamp}
+                  onChange={handleChange}
+                  fullWidth
+                  type={'number'}
+                  size="small"
+                  onWheel={event => event.target.blur ()}
+                  required
+                />
 
-          <Box sx={{display: 'flex', justifyContent: 'flex-end'}}>
-            <Button type="submit">Submit</Button>
-          </Box>
+              </Box>
+              <Box>
+                <Typography>
+                  Tricks
+                </Typography>
+                <TextField
+                  name="tricks"
+                  id="tricks"
+                  fullWidth
+                  onChange={handleChange}
+                  value={state.tricks}
+                  multiline
+                  rows={4}
+                  size="small"
+                />
 
-        </Stack>
-      </form>
-    </Stack>
+              </Box>
+
+              <Box sx={{display: 'flex', justifyContent: 'flex-end'}}>
+                <Button type="submit">Submit</Button>
+              </Box>
+
+            </Stack>
+          </form>
+        </Stack>}
+    </Fragment>
   );
 };
 

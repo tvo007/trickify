@@ -1,8 +1,6 @@
-import { Fragment} from 'react';
+import {Fragment} from 'react';
 // import {useMutation, useQuery} from 'graphql-hooks';
 import {useQuery} from 'react-query';
-import {useRouter} from 'next/router';
-import {Typography, Grid, Box} from '@mui/material';
 
 // import Breadcrumbs from '../components/breadcrumbs';
 
@@ -19,7 +17,6 @@ export default function SinglePage({id}) {
   if (!data) return <div>Loading...</div>;
   const {Samplers_by_id: sampler} = data;
   */
-
   const {
     status,
     data,
@@ -27,7 +24,10 @@ export default function SinglePage({id}) {
     isFetching,
     isSuccess,
     refetch,
-  } = useQuery ('sampler', async () => getSamplerById (id));
+  } = useQuery ('sampler', async () => getSamplerById (id), {
+    cacheTime: 0,
+    //
+  });
 
   // console.log (data);
   return (
