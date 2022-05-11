@@ -7,6 +7,7 @@ import {AuthProvider} from '../lib/contexts/AuthContext';
 import {QueryClientProvider, QueryClient} from 'react-query';
 // import {ReactQueryDevtools} from 'react-query/devtools';
 import Layout from '../components/Layout';
+import '@fontsource/permanent-marker';
 
 const clientSideEmotionCache = createEmotionCache ();
 

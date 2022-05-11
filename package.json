@@ -12,6 +12,7 @@
     "@emotion/react": "^11.8.1",
     "@emotion/server": "^11.4.0",
     "@emotion/styled": "^11.8.1",
+    "@fontsource/permanent-marker": "^4.5.5",
     "@mui/icons-material": "^5.4.4",
     "@mui/material": "^5.4.4",
     "@mui/styles": "^5.4.4",

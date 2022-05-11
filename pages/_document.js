@@ -8,12 +8,7 @@ export default class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          <link rel="preconnect" href="https://fonts.googleapis.com" />
-          <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin={true} />
-          <link
-            rel="stylesheet"
-            href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap"
-          />
+         
         </Head>
         <body>
           <Main />
