@@ -5,7 +5,7 @@ import {useQuery} from 'react-query';
 // import Breadcrumbs from '../components/breadcrumbs';
 
 import PlayerContainer from '../components/PlayerContainer';
-import {getSamplerById} from '../lib/api';
+import {getSamplerById, getSamplers} from '../lib/api';
 
 export default function SinglePage({id}) {
   // const theme = useTheme ();
@@ -39,6 +39,18 @@ export default function SinglePage({id}) {
     </Fragment>
   );
 }
+
+//statically generate paths instead of dynamically generating data
+// export async function getStaticPaths () {
+//   const data = await getSamplers ();
+
+//   return {
+//     paths: data.samplers.map (sampler => ({
+//       params: {id: sampler.id},
+//     })), //maps out each product statically to a route
+//     fallback: false,
+//   };
+// }
 
 export async function getServerSideProps (context) {
   const {id} = context.params;
