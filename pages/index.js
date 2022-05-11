@@ -18,7 +18,7 @@ export default function Home({samplers}) {
   // if (!data) return <div>Loading...</div>;
   return (
     <Stack direction="column" spacing={2}>
-      {/* {isFetching && <h2>Loading</h2>} */}
+      {isFetching && !data && <h2>Loading</h2>}
       {data.length > 0 &&
         data.map (sampler => (
           <SamplerCard key={sampler.id} sampler={sampler} />
@@ -26,6 +26,7 @@ export default function Home({samplers}) {
 
       {data.length === 0 &&
         <Typography variant="h3">No samplers available.</Typography>}
+
     </Stack>
   );
 }
