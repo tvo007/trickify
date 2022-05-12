@@ -7,7 +7,7 @@ import {useQuery} from 'react-query';
 import PlayerContainer from '../components/PlayerContainer';
 import {getSamplerById, getSamplers} from '../lib/api';
 
-export default function SinglePage({id}) {
+export default function SinglePage({sampler}) {
   // const theme = useTheme ();
   // const mdMatches = useMediaQuery (theme.breakpoints.up ('md'));
 
@@ -24,8 +24,9 @@ export default function SinglePage({id}) {
     isFetching,
     isSuccess,
     refetch,
-  } = useQuery ('sampler', async () => getSamplerById (id), {
+  } = useQuery ('sampler', getSamplerById, {
     cacheTime: 0,
+    initialData: sampler,
     //
   });
 
@@ -35,7 +36,8 @@ export default function SinglePage({id}) {
       {data &&
         isSuccess &&
         <PlayerContainer sampler={data} refetch={refetch} />}
-      {isFetching && <h2>Loading</h2>}
+      {isFetching && !data && <h2>Loading</h2>}
+      {isSuccess && !data && <h2>Does not exist.</h2>}
     </Fragment>
   );
 }
@@ -54,8 +56,8 @@ export default function SinglePage({id}) {
 
 export async function getServerSideProps (context) {
   const {id} = context.params;
-
+  const sampler = await getSamplerById (id);
   return {
-    props: {id},
+    props: {sampler},
   };
 }
