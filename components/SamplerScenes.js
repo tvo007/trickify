@@ -7,11 +7,28 @@ import {Box} from '@mui/system';
 import React from 'react';
 import breakpoints from '../lib/helpers/breakpoints';
 import {useTheme} from '@mui/material';
+import { useRouter } from 'next/router'
+import { getScenesBySamplerId } from '../lib/api';
 
-const SamplerScenes = ({scenes, samplerUrl, playerHandler}) => {
+const SamplerScenes = ({samplerUrl, playerHandler}) => {
+  const router = useRouter()
+  const {id} = router.query
   const theme = useTheme ();
   // const isMdUp = handleBreakpointUp (theme, 'md');
   const isMdUp = useMediaQuery (theme.breakpoints.up (breakpoints.medium));
+
+  const {
+    status,
+    data: scenes,
+    error,
+    isFetching,
+    isSuccess,
+    refetch,
+  } = useQuery ('scenes', async () => getScenesBySamplerId (id), {
+    cacheTime: 0,
+    //
+  });
+
   return (
     <Grid item sx={{mb: '10rem'}}>
       <Scrollbars autoHeight style={{minWidth: isMdUp ? '135%' : '100%'}}>

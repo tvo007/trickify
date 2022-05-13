@@ -1,4 +1,12 @@
-import {Grid, Stack, useTheme, useMediaQuery, Button, Typography, Box} from '@mui/material';
+import {
+  Grid,
+  Stack,
+  useTheme,
+  useMediaQuery,
+  Button,
+  Typography,
+  Box,
+} from '@mui/material';
 import {useState, useEffect, useContext, useRef} from 'react';
 import ReactPlayer from 'react-player';
 import AuthContext from '../lib/contexts/AuthContext';
@@ -141,11 +149,12 @@ const PlayerContainer = ({sampler, refetch}) => {
         </Grid>
 
         {!isMobileFormOpen &&
-          <SamplerScenes
-            scenes={sampler.scenes}
-            samplerUrl={sampler.url}
-            playerHandler={playerHandler}
-          />}
+          //sampler id is used for a
+          // <SamplerScenes
+          //   samplerUrl={sampler.url}
+          //   playerHandler={playerHandler}
+          // />
+          <h2>scenes placeholder</h2>}
 
         {/**mobile scene form */}
         {isMobileFormOpen &&

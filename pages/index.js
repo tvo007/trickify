@@ -1,12 +1,12 @@
 import {Stack} from '@mui/material';
 
 import SamplerCard from '../components/SamplerCard';
-import {useQuery} from 'react-query';
+import {useQuery, QueryClient, dehydrate} from 'react-query';
 
 import {getSamplers} from '../lib/api';
 import {Typography} from '@mui/material';
 
-export default function Home({samplers}) {
+export default function Home ({dehydratedState: samplers}) {
   const {
     status,
     data,
@@ -18,7 +18,7 @@ export default function Home({samplers}) {
   // if (!data) return <div>Loading...</div>;
   return (
     <Stack direction="column" spacing={2}>
-      {isFetching && !data && <h2>Loading</h2>}
+      {isFetching && !data && <h2>Loading...</h2>}
       {data.length > 0 &&
         data.map (sampler => (
           <SamplerCard key={sampler.id} sampler={sampler} />
@@ -32,10 +32,12 @@ export default function Home({samplers}) {
 }
 
 export async function getStaticProps () {
-  const samplers = await getSamplers ();
+  const queryClient = new QueryClient ();
+
+  await queryClient.prefetchQuery ('samplers', async () => getSamplers ());
 
   return {
-    props: {samplers},
+    props: {dehydratedState: dehydrate (queryClient)},
   };
 }
 
