@@ -149,12 +149,12 @@ const PlayerContainer = ({sampler, refetch}) => {
         </Grid>
 
         {!isMobileFormOpen &&
-          //sampler id is used for a
-          // <SamplerScenes
-          //   samplerUrl={sampler.url}
-          //   playerHandler={playerHandler}
-          // />
-          <h2>scenes placeholder</h2>}
+         
+          <SamplerScenes
+            samplerUrl={sampler.url}
+            playerHandler={playerHandler}
+          />
+       }
 
         {/**mobile scene form */}
         {isMobileFormOpen &&
