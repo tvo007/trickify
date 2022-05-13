@@ -38,9 +38,11 @@ const SamplerScenes = ({samplerUrl, playerHandler}) => {
     <Grid item sx={{mb: '10rem'}}>
       {error && <h2>Something went wrong.</h2>}
       {isFetching && <CircularProgress />}
-
       {isSuccess &&
-        scenes &&
+        scenes.length === 0 &&
+        <h2>There are currently no scenes assigned to this sampler.</h2>}
+      {isSuccess &&
+        scenes.length > 0 &&
         <Scrollbars autoHeight style={{minWidth: isMdUp ? '135%' : '100%'}}>
           <Stack direction="column" spacing={2}>
             {scenes
