@@ -12,9 +12,8 @@ import ReactPlayer from 'react-player';
 import AuthContext from '../lib/contexts/AuthContext';
 import breakpoints from '../lib/helpers/breakpoints';
 import SamplerScenes from './SamplerScenes';
-import SceneForm from './SceneForm';
 
-const PlayerContainer = ({sampler, refetch}) => {
+const PlayerContainer = ({sampler}) => {
   // const {headers} = useContext (ClientContext);
   const playerRef = useRef ();
   const theme = useTheme ();
@@ -71,15 +70,13 @@ const PlayerContainer = ({sampler, refetch}) => {
 
   return (
     <Stack
-      direction={mdMatches ? 'row' : 'column-reverse'}
-      justifyContent={mdMatches ? 'space-between' : null}
-      sx={{
-        maxWidth: mdMatches ? '80%' : '100%',
-        minWidth: mdDown ? '93vw' : null,
-      }}
+      direction={'column'}
+      justifyItems={'center'}
+      alignItems={'center'}
+      sx={{minWidth: '100%'}}
     >
-      {/**desktop form  */}
-      {mdMatches
+      {/**desktop form, phased out in client facing side*/}
+      {/* {mdMatches
         ? <Box
             sx={{
               maxWidth: mdMatches ? '50%' : null,
@@ -94,29 +91,25 @@ const PlayerContainer = ({sampler, refetch}) => {
               handleDuration={handleDuration}
             />
           </Box>
-        : null}
+        : null} */}
 
-      <Box sx={{maxWidth: mdMatches ? '40%' : '100%'}}>
+      <Box>
         {/**refactor out the react player away from scenes container */}
         <Grid item sx={{mb: 2}}>
-          <Box sx={mdMatches ? null : {position: 'relative', pt: '70%'}}>
+          <Box sx={{position: 'relative', pt: '56.25%'}}>
             <ReactPlayer
               ref={playerRef}
               url={urlState}
               volume={0.5}
               controls={true}
               playing={isPlaying}
-              width={mdMatches ? '498px' : '100%'}
-              height={mdMatches ? '280px' : '100%'}
-              style={
-                mdMatches
-                  ? null
-                  : {
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                    }
-              }
+              width={'100%'}
+              height={'100%'}
+              style={{
+                top: 0,
+                left: 0,
+                position: 'absolute',
+              }}
             />
           </Box>
 
@@ -146,18 +139,19 @@ const PlayerContainer = ({sampler, refetch}) => {
                 </Button>
               </Box>}
           </Box>
+
+          {!isMobileFormOpen &&
+            <Box sx={{maxWidth: '100%'}}>
+              <SamplerScenes
+                samplerUrl={sampler.url}
+                playerHandler={playerHandler}
+              />
+
+            </Box>}
         </Grid>
 
-        {!isMobileFormOpen &&
-         
-          <SamplerScenes
-            samplerUrl={sampler.url}
-            playerHandler={playerHandler}
-          />
-       }
-
-        {/**mobile scene form */}
-        {isMobileFormOpen &&
+        {/**mobile scene form, phased out, being moved to an admin page */}
+        {/* {isMobileFormOpen &&
           !mdMatches &&
           <Box
             sx={{
@@ -173,7 +167,7 @@ const PlayerContainer = ({sampler, refetch}) => {
               duration={duration}
               handleDuration={handleDuration}
             />
-          </Box>}
+          </Box>} */}
 
       </Box>
 

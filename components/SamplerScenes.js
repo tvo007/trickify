@@ -33,7 +33,6 @@ const SamplerScenes = ({samplerUrl, playerHandler}) => {
     cacheTime: 0,
     //
   });
-
   return (
     <Grid item sx={{mb: '10rem'}}>
       {error && <h2>Something went wrong.</h2>}
@@ -43,7 +42,7 @@ const SamplerScenes = ({samplerUrl, playerHandler}) => {
         <h2>There are currently no scenes assigned to this sampler.</h2>}
       {isSuccess &&
         scenes.length > 0 &&
-        <Scrollbars autoHeight style={{minWidth: isMdUp ? '135%' : '100%'}}>
+        <Scrollbars autoHeight>
           <Stack direction="column" spacing={2}>
             {scenes
               .sort ((a, b) => (a.timestamp < b.timestamp ? 1 : -1))
