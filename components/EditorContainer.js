@@ -13,8 +13,36 @@ import SamplerScenes from './SamplerScenes';
 import SceneForm from './SceneForm';
 import breakpoints from '../lib/helpers/breakpoints';
 import AuthContext from '../lib/contexts/AuthContext';
+import {getSamplerById} from '../lib/api';
+import {useQuery} from 'react-query';
+import EditorScenes from './EditorScenes';
+import VideoPlayer from './VideoPlayer';
 
-const EditorContainer = ({sampler, refetch}) => {
+const intitialState = {
+  id: '',
+  name: '',
+  created_by: '',
+  url: '',
+  runtime: '',
+  upload_date: '',
+  created_at: '',
+  updated_at: '',
+  deleted_at: '',
+  scenes: [],
+};
+
+const EditorContainer = ({id}) => {
+  const {
+    status,
+    data: sampler,
+    error,
+    isFetching,
+    isSuccess,
+    refetch,
+  } = useQuery ('sampler', async () => getSamplerById (id), {
+    initialData: intitialState,
+  });
+
   // const {headers} = useContext (ClientContext);
   const {isAuth} = useContext (AuthContext);
   const theme = useTheme ();
@@ -67,6 +95,8 @@ const EditorContainer = ({sampler, refetch}) => {
     };
   }, []);
 
+  console.log (sampler);
+
   return (
     <Stack
       direction={mdMatches ? 'row' : 'column-reverse'}
@@ -96,55 +126,20 @@ const EditorContainer = ({sampler, refetch}) => {
 
       <Box sx={{maxWidth: mdMatches ? '40%' : '100%'}}>
         {/**refactor out the react player away from scenes container */}
-        <Grid item sx={{mb: 2}}>
-          <Box sx={mdMatches ? null : {position: 'relative', pt: '70%'}}>
-            <ReactPlayer
-              ref={playerRef}
-              url={urlState}
-              volume={0.5}
-              controls={true}
-              playing={isPlaying}
-              width={mdMatches ? '498px' : '100%'}
-              height={mdMatches ? '280px' : '100%'}
-              style={
-                mdMatches
-                  ? null
-                  : {
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                    }
-              }
+        {sampler && isSuccess
+          ? <VideoPlayer
+              urlState={urlState}
+              playerRef={playerRef}
+              isPlaying={isPlaying}
+              mdMatches={mdMatches}
+              sampler={sampler}
+              isMobileFormOpen={isMobileFormOpen}
             />
-          </Box>
-
-          <Box>
-            <Typography component={Box} fontWeight="bold">
-              {sampler.name}
-            </Typography>
-            <Typography component={Box} color={'#6F6F6F'}>
-              {sampler.created_by}
-            </Typography>
-            <Typography component={Box} color={'#6F6F6F'}>
-              Total runtime: {sampler.runtime} seconds
-            </Typography>
-            <Typography component={Box} color={'#6F6F6F'}>
-              {sampler.uploaded_at}
-            </Typography>
-            {!mdMatches &&
-              !isMobileFormOpen &&
-              <Box
-                sx={{py: '1rem', display: 'flex', justifyContent: 'flex-end'}}
-              >
-                <Button onClick={() => setIsMobileFormOpen (!isMobileFormOpen)}>
-                  Add Scene
-                </Button>
-              </Box>}
-          </Box>
-        </Grid>
+          : null}
 
         {!isMobileFormOpen &&
-          <SamplerScenes
+          sampler.scenes &&
+          <EditorScenes
             scenes={sampler.scenes}
             samplerUrl={sampler.url}
             playerHandler={playerHandler}
@@ -162,8 +157,9 @@ const EditorContainer = ({sampler, refetch}) => {
             <SceneForm
               isMobile={isMobileFormOpen}
               setMobile={setIsMobileFormOpen}
-              samplerId={sampler.id}
-              // refetch={refetch}
+              isFetching={isFetching}
+              isSuccess={isSuccess}
+              refetch={refetch}
               duration={duration}
               handleDuration={handleDuration}
             />

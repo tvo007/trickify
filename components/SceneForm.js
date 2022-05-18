@@ -4,6 +4,7 @@ import {useState, useEffect, useContext} from 'react';
 import {addScene} from '../lib/api';
 import AuthContext from '../lib/contexts/AuthContext';
 import {Fragment} from 'react';
+import {useRouter} from 'next/router';
 
 const intitialState = {
   timestamp: '',
@@ -11,13 +12,16 @@ const intitialState = {
 };
 
 const SceneForm = ({
-  samplerId,
+  isFetching,
+  isSuccess,
   refetch,
   duration,
   handleDuration,
   isMobile,
   setMobile,
 }) => {
+  const router = useRouter ();
+  const {id: samplerId} = router.query;
   const [state, setState] = useState (intitialState);
   const {isAuth} = useContext (AuthContext);
   /**old code */
@@ -118,7 +122,9 @@ const SceneForm = ({
               </Box>
 
               <Box sx={{display: 'flex', justifyContent: 'flex-end'}}>
-                <Button type="submit">Submit</Button>
+                <Button type="submit" disabled={isFetching && true}>
+                  Submit
+                </Button>
               </Box>
 
             </Stack>
