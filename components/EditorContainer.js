@@ -94,6 +94,7 @@ const EditorContainer = ({sampler, refetch}) => {
           </Box>
         : null}
 
+      {/**right view in desktop */}
       <Box sx={{maxWidth: mdMatches ? '40%' : '100%'}}>
         {/**refactor out the react player away from scenes container */}
         <Grid item sx={{mb: 2}}>
@@ -145,6 +146,7 @@ const EditorContainer = ({sampler, refetch}) => {
 
         {!isMobileFormOpen &&
           <SamplerScenes
+            isEditor
             scenes={sampler.scenes}
             samplerUrl={sampler.url}
             playerHandler={playerHandler}

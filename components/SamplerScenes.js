@@ -15,7 +15,7 @@ import {useRouter} from 'next/router';
 import {getScenesBySamplerId} from '../lib/api';
 import {useQuery} from 'react-query';
 
-const SamplerScenes = ({samplerUrl, playerHandler}) => {
+const SamplerScenes = ({samplerUrl, playerHandler, isEditor}) => {
   const router = useRouter ();
   const {id} = router.query;
   const theme = useTheme ();
@@ -34,7 +34,23 @@ const SamplerScenes = ({samplerUrl, playerHandler}) => {
     //
   });
   return (
-    <Grid item sx={{mb: '10rem'}}>
+    <Grid
+      item
+      sx={
+        isEditor
+          ? {
+              mb: '10rem',
+              width: {
+                xs: '100%',
+                sm: '100%',
+                md: '31.3rem',
+                lg: '31.3rem',
+                xl: '31.3rem',
+              },
+            }
+          : {mb: '10rem'}
+      }
+    >
       {error && <h2>Something went wrong.</h2>}
       {isFetching && <CircularProgress />}
       {isSuccess &&
