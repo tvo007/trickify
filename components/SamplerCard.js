@@ -1,6 +1,5 @@
 import {Stack} from '@mui/material';
-import {Typography, Box, Button} from '@mui/material';
-
+import {Typography, Box, Button, Link as MUILink} from '@mui/material';
 import Link from 'next/link';
 import React from 'react';
 import {useContext} from 'react';
@@ -32,9 +31,17 @@ function SamplerCard({sampler}) {
 
       </Box>
       <Stack direction="row">
-        <Button size="small">View Sampler</Button>
+        <Link href={`/${sampler.id}`} passHref>
+          <Button size="small">
+            View Sampler
+          </Button>
 
-        {isAuth && <Button size="small">Edit Scenes</Button>}
+        </Link>
+
+        {isAuth &&
+          <Link href={`/admin/${sampler.id}`} passHref>
+            <Button size="small">Edit Scenes</Button>
+          </Link>}
       </Stack>
     </Box>
   );
