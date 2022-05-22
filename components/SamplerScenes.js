@@ -15,7 +15,7 @@ import {useRouter} from 'next/router';
 import {getScenesBySamplerId} from '../lib/api';
 import {useQuery} from 'react-query';
 
-const SamplerScenes = ({samplerUrl, playerHandler}) => {
+const SamplerScenes = ({samplerUrl, playerHandler, isEditor}) => {
   const router = useRouter ();
   const {id} = router.query;
   const theme = useTheme ();
@@ -33,9 +33,24 @@ const SamplerScenes = ({samplerUrl, playerHandler}) => {
     cacheTime: 0,
     //
   });
-
   return (
-    <Grid item sx={{mb: '10rem'}}>
+    <Grid
+      item
+      sx={
+        isEditor
+          ? {
+              mb: '10rem',
+              width: {
+                xs: '100%',
+                sm: '100%',
+                md: '31.3rem',
+                lg: '31.3rem',
+                xl: '31.3rem',
+              },
+            }
+          : {mb: '10rem'}
+      }
+    >
       {error && <h2>Something went wrong.</h2>}
       {isFetching && <CircularProgress />}
       {isSuccess &&
@@ -43,7 +58,7 @@ const SamplerScenes = ({samplerUrl, playerHandler}) => {
         <h2>There are currently no scenes assigned to this sampler.</h2>}
       {isSuccess &&
         scenes.length > 0 &&
-        <Scrollbars autoHeight style={{minWidth: isMdUp ? '135%' : '100%'}}>
+        <Scrollbars autoHeight>
           <Stack direction="column" spacing={2}>
             {scenes
               .sort ((a, b) => (a.timestamp < b.timestamp ? 1 : -1))

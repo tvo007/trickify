@@ -13,7 +13,7 @@ export default function SinglePage({sampler, id}) {
     <Fragment>
       {sampler && <PlayerContainer sampler={sampler} />}
       {!sampler && <h2>Something went wrong.</h2>}
-    </Fragment>
+    </Fragment> 
   );
 }
 

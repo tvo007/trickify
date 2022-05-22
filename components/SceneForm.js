@@ -61,9 +61,9 @@ const SceneForm = ({
 
   return (
     <Fragment>
-      {!isAuth &&
-        <Typography variant="h3">Editor mode is for Admins Only.</Typography>}
-      {isAuth &&
+      {/* {!isAuth &&
+        <Typography variant="h3">Editor mode is for Admins Only.</Typography>} */}
+      {
         <Stack direction={'column'} spacing={4}>
           <Stack direction="row" justifyContent={'space-between'}>
             <Typography component={Box} fontWeight={'medium'} variant={'h5'}>
@@ -123,7 +123,8 @@ const SceneForm = ({
 
             </Stack>
           </form>
-        </Stack>}
+        </Stack>
+      }
     </Fragment>
   );
 };
