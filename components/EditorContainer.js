@@ -13,9 +13,11 @@ import SamplerScenes from './SamplerScenes';
 import SceneForm from './SceneForm';
 import breakpoints from '../lib/helpers/breakpoints';
 import AuthContext from '../lib/contexts/AuthContext';
+import {useRouter} from 'next/router';
 
 const EditorContainer = ({sampler, refetch}) => {
   // const {headers} = useContext (ClientContext);
+  const router = useRouter ();
   const {isAuth} = useContext (AuthContext);
   const theme = useTheme ();
   const playerRef = useRef ();
@@ -66,6 +68,15 @@ const EditorContainer = ({sampler, refetch}) => {
       window.removeEventListener ('resize', handleResize);
     };
   }, []);
+
+  useEffect (
+    () => {
+      if (!isAuth) {
+        router.push ('/');
+      }
+    },
+    [isAuth]
+  );
 
   return (
     <Stack
