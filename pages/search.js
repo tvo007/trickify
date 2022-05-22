@@ -17,11 +17,18 @@ const intitialState = {
   tricks: '',
 };
 
+const initialSceneData = {
+  samplerId: '',
+  tricks: '',
+};
+
 const Search = () => {
   const theme = useTheme ();
   const mdUp = useMediaQuery (theme.breakpoints.up (breakpoints.medium));
   const mdDown = useMediaQuery (theme.breakpoints.down (breakpoints.medium));
   const [state, setState] = useState (intitialState);
+
+  const [sceneData, setSceneData] = useState (initialSceneData);
 
   const {mutateAsync, data} = useMutation (searchScenes, {});
 
@@ -46,6 +53,7 @@ const Search = () => {
     // console.log(state.tricks)
   };
 
+  console.log (data);
   return (
     // <Typography variant="h2">
     //   Under Construction
@@ -104,6 +112,11 @@ const Search = () => {
                       display: 'inline-block',
                       width: 'auto',
                     }}
+                    onClick={() =>
+                      setSceneData ({
+                        samplerId: item.sampler_id,
+                        tricks: item.tricks,
+                      })}
                   >
                     {item.tricks}
                   </Button>
@@ -111,8 +124,9 @@ const Search = () => {
             </Grid>
 
           </Grid>
-          <Grid item sx={{minHeight: '30vh', minWidth: '40vw'}}>
-            <Typography>Player</Typography>
+          <Grid item>
+            <Typography>Current Sampler Id: {sceneData.samplerId}</Typography>
+            <Typography>Current Tricks: {sceneData.tricks}</Typography>
           </Grid>
         </Grid>
 
