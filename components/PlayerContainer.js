@@ -10,17 +10,12 @@ import {useState, useContext, useRef} from 'react';
 import ReactPlayer from 'react-player';
 import AuthContext from '../lib/contexts/AuthContext';
 import SamplerScenes from './SamplerScenes';
+import { youtube_parser } from '../lib/helpers';
 
 const PlayerContainer = ({sampler}) => {
   // const {headers} = useContext (ClientContext);
   const playerRef = useRef ();
   const {isAuth} = useContext (AuthContext);
-
-  function youtube_parser (url) {
-    var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
-    var match = url.match (regExp);
-    return match && match[7].length == 11 ? match[7] : false;
-  }
 
   const [urlState, setUrlState] = useState (
     `https://www.youtube.com/embed/${youtube_parser (sampler.url)}`

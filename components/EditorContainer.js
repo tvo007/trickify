@@ -11,9 +11,10 @@ import {
 import ReactPlayer from 'react-player';
 import SamplerScenes from './SamplerScenes';
 import SceneForm from './SceneForm';
-import breakpoints from '../lib/helpers/breakpoints';
+import {breakpoints} from '../lib/helpers';
 import AuthContext from '../lib/contexts/AuthContext';
 import {useRouter} from 'next/router';
+import { youtube_parser } from '../lib/helpers';
 
 const EditorContainer = ({sampler, refetch}) => {
   // const {headers} = useContext (ClientContext);
@@ -23,12 +24,6 @@ const EditorContainer = ({sampler, refetch}) => {
   const playerRef = useRef ();
   const mdMatches = useMediaQuery (theme.breakpoints.up (breakpoints.medium));
   const mdDown = useMediaQuery (theme.breakpoints.down (breakpoints.medium));
-
-  function youtube_parser (url) {
-    var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
-    var match = url.match (regExp);
-    return match && match[7].length == 11 ? match[7] : false;
-  }
 
   const [urlState, setUrlState] = useState (
     `https://www.youtube.com/embed/${youtube_parser (sampler.url)}`

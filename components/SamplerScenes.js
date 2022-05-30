@@ -1,5 +1,5 @@
 import React from 'react';
-import breakpoints from '../lib/helpers/breakpoints';
+import {breakpoints} from '../lib/helpers';
 import {
   Stack,
   Button,

@@ -8,7 +8,7 @@ import {useEffect, useRef} from 'react';
 import {useState} from 'react';
 import {Fragment} from 'react';
 import ReactPlayer from 'react-player';
-import breakpoints from '../lib/helpers/breakpoints';
+import {breakpoints} from '../lib/helpers';
 
 function SamplerContent({sampler}) {
   const playerRef = useRef ();
