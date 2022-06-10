@@ -1,11 +1,5 @@
-import {
-  Typography,
-  TextField,
-  Box,
-  Button,
-  Grid,
-  Stack,
-} from '@mui/material';
+import {Typography, TextField, Box, Button, Grid, Stack} from '@mui/material';
+import Link from 'next/link';
 import React, {useState, useRef, Fragment} from 'react';
 import ReactPlayer from 'react-player';
 import {useMutation} from 'react-query';
@@ -41,8 +35,8 @@ const Search = () => {
       name: item.sampler.name,
       samplerId: item.sampler.id,
       tricks: item.tricks,
-      url: `https://www.youtube.com/embed/${parsedUrl}?start=${item.timestamp}`,
       timestamp: item.timestamp,
+      url: `https://www.youtube.com/watch?v=${parsedUrl}&t=${item.timestamp}s`,
     });
     // setSceneData (
     //   `https://www.youtube.com/embed/${youtube_parser (url)}?start=${timestamp}`
@@ -73,6 +67,11 @@ const Search = () => {
     // await mutateAsync(state.tricks)
     // console.log(state.tricks)
   };
+
+  const clipboardHandler = () => {
+    navigator.clipboard.writeText (sceneData.url);
+  };
+  //https://developer.mozilla.org/en-US/docs/Web/API/Clipboard/writeText
 
   // console.log (data);
   return (
@@ -154,22 +153,49 @@ const Search = () => {
                     Performed By: Some tricker
                   </Typography>
                   <Typography component={Box} color={'#6F6F6F'}>
-                    Timestamp: @ {sceneData.timestamp}s
-                  </Typography>
-                  <Typography component={Box} color={'#6F6F6F'}>
                     Trick(s) Selected: {sceneData.tricks}
                   </Typography>
+                  <Typography component={Box} color={'#6F6F6F'}>
+                    Timestamp: @ {sceneData.timestamp}
+                  </Typography>
+                  <TextField
+                    variant="standard"
+                    id="shareableUrl"
+                    value={sceneData.url}
+                    fullWidth
+                    disabled
+                    sx={{
+                      '& .MuiInputBase-input.Mui-disabled': {
+                        WebkitTextFillColor: 'black',
+                      },
+                    }}
+                  />
+                  <Box sx={{display: 'flex'}}>
+                    <Button
+                      sx={{
+                        ml: 'auto',
+                        py: 1,
+                        '&:hover': {
+                          backgroundColor: 'transparent',
+                        },
+                      }}
+                      size="small"
+                      onClick={clipboardHandler}
+                    >
+                      COPY
+                    </Button>
+                  </Box>
 
                   <Box
                     sx={{
-                      py: '1rem',
-                      display: 'flex',
-                      justifyContent: 'flex-start',
+                      py: '3rem',
                     }}
                   >
-                    <Button>
-                      Go to Sampler Page
-                    </Button>
+                    <Link href={`/${sceneData.samplerId}`} passHref>
+                      <Button sx={{width: '100%'}}>
+                        Go to Sampler Page
+                      </Button>
+                    </Link>
                   </Box>
                 </Box>
               </Fragment>}
