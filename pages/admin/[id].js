@@ -7,6 +7,7 @@ import {Typography, Grid, Box} from '@mui/material';
 // import Breadcrumbs from '../components/breadcrumbs';
 import EditorContainer from '../../components/EditorContainer';
 import {getSamplerById} from '../../lib/api';
+import Loader from '../../components/Loader';
 
 export default function SamplerEditor({id}) {
   // const theme = useTheme ();
@@ -34,7 +35,7 @@ export default function SamplerEditor({id}) {
       {isSuccess &&
         data.id === id &&
         <EditorContainer sampler={data} refetch={refetch} />}
-      {isFetching && <h2>Loading</h2>}
+      {isFetching && <Loader />}
     </Fragment>
   );
 }

@@ -116,7 +116,7 @@ const Layout = ({children}) => {
           direction="column"
           alignItems="flex-start"
           justifyContent={'flex-start'}
-          sx={{minHeight: '100vh', pt: '5rem'}}
+          sx={{minHeight: '90vh', pt: '5rem'}}
         >
           {children}
         </Grid>

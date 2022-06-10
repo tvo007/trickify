@@ -17,7 +17,6 @@ export default function App({
   pageProps,
   emotionCache = clientSideEmotionCache,
 }) {
-  
   const queryClient = useRef (
     new QueryClient ({
       defaultOptions: {
@@ -34,12 +33,12 @@ export default function App({
         <QueryClientProvider client={queryClient.current}>
           {/* <ReactQueryDevtools initialIsOpen={false} /> */}
           <Hydrate state={pageProps.dehydratedState}>
-          <AuthProvider>
-            <CssBaseline />
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
-          </AuthProvider>
+            <AuthProvider>
+              <CssBaseline />
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+            </AuthProvider>
           </Hydrate>
         </QueryClientProvider>
       </ThemeProvider>

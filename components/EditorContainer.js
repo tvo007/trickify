@@ -14,7 +14,7 @@ import SceneForm from './SceneForm';
 import {breakpoints} from '../lib/helpers';
 import AuthContext from '../lib/contexts/AuthContext';
 import {useRouter} from 'next/router';
-import { youtube_parser } from '../lib/helpers';
+import {youtube_parser} from '../lib/helpers';
 
 const EditorContainer = ({sampler, refetch}) => {
   // const {headers} = useContext (ClientContext);
@@ -101,7 +101,14 @@ const EditorContainer = ({sampler, refetch}) => {
         : null}
 
       {/**right view in desktop */}
-      <Box sx={{maxWidth: mdMatches ? '40%' : '100%'}}>
+      <Box
+        sx={{
+          maxWidth: mdMatches ? '40%' : '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          pl: {lg: '6rem'},
+        }}
+      >
         {/**refactor out the react player away from scenes container */}
         <Grid item sx={{mb: 2}}>
           <Box sx={mdMatches ? null : {position: 'relative', pt: '70%'}}>
