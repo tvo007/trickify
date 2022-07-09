@@ -1,16 +1,11 @@
-import {
-  Grid,
-  Stack,
-  Button,
-  Typography,
-  Box,
-} from '@mui/material';
+import {Grid, Stack, Button, Typography, Box} from '@mui/material';
 import Link from 'next/link';
 import {useState, useContext, useRef} from 'react';
 import ReactPlayer from 'react-player';
 import AuthContext from '../lib/contexts/AuthContext';
 import SamplerScenes from './SamplerScenes';
-import { youtube_parser } from '../lib/helpers';
+import {youtube_parser} from '../lib/helpers';
+import {samplerList, exceptionStyles} from '../lib/samplerRatioExceptions';
 
 const PlayerContainer = ({sampler}) => {
   // const {headers} = useContext (ClientContext);
@@ -31,6 +26,8 @@ const PlayerContainer = ({sampler}) => {
     setIsPlaying (true);
   };
 
+  console.log (sampler.name);
+
   return (
     <Stack
       direction={'column'}
@@ -41,7 +38,18 @@ const PlayerContainer = ({sampler}) => {
       <Box>
         {/**refactor out the react player away from scenes container */}
         <Grid container direction="column" sx={{mb: 2, maxWidth: '100%'}}>
-          <Grid sx={{position: 'relative', pt: '56.25%', mb: '1rem'}}>
+          <Grid
+            sx={
+              samplerList.includes (sampler.name)
+                ? exceptionStyles
+                : {
+                    position: 'relative',
+                    pt: '56.25%',
+                    mb: '1rem',
+                    width: '100%',
+                  }
+            }
+          >
             <ReactPlayer
               ref={playerRef}
               url={urlState}

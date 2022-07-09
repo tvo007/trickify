@@ -37,6 +37,7 @@ const Search = () => {
       tricks: item.tricks,
       timestamp: item.timestamp,
       url: `https://www.youtube.com/watch?v=${parsedUrl}&t=${item.timestamp}s`,
+      performedBy: item.performed_by
     });
     // setSceneData (
     //   `https://www.youtube.com/embed/${youtube_parser (url)}?start=${timestamp}`
@@ -150,7 +151,7 @@ const Search = () => {
                     Sampler: {sceneData.name}
                   </Typography>
                   <Typography component={Box} color={'#6F6F6F'}>
-                    Performed By: Some tricker
+                    Performed By: {sceneData.performedBy}
                   </Typography>
                   <Typography component={Box} color={'#6F6F6F'}>
                     Trick(s) Selected: {sceneData.tricks}
