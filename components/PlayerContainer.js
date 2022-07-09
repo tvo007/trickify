@@ -26,7 +26,7 @@ const PlayerContainer = ({sampler}) => {
     setIsPlaying (true);
   };
 
-  console.log (sampler.name);
+  // console.log (sampler.name);
 
   return (
     <Stack
