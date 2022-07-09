@@ -62,10 +62,9 @@ const SamplerScenes = ({samplerUrl, playerHandler, isEditor}) => {
         scenes.length > 0 &&
         <Scrollbars autoHeight>
           <Stack direction="column" spacing={2}>
-            {scenes.sort ((a, b) => (a.timestamp < b.timestamp ? 1 : -1)).map (
-              scene => 
-              // (
-              //   <Box key={scene.id}>
+            {scenes
+              .sort ((a, b) => (a.timestamp < b.timestamp ? 1 : -1))
+              .map ((scene) => //   <Box key={scene.id}> // (
               //     <Button
               //       onClick={() => playerHandler (samplerUrl, scene.timestamp)}
               //       sx={{textAlign: 'left'}}
@@ -83,8 +82,7 @@ const SamplerScenes = ({samplerUrl, playerHandler, isEditor}) => {
                   playerHandler={playerHandler}
                   samplerUrl={samplerUrl}
                 />
-              )
-            )}
+              ))}
 
           </Stack>
         </Scrollbars>}

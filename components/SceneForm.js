@@ -1,27 +1,34 @@
 import {TextField, Stack, Box, Typography, Button} from '@mui/material';
-import {useMutation} from 'react-query';
+import {useMutation, useQuery} from 'react-query';
 import {useState, useEffect, useContext} from 'react';
-import {addScene} from '../lib/api';
+import {addScene, getScenesBySamplerId} from '../lib/api';
 import AuthContext from '../lib/contexts/AuthContext';
 import {Fragment} from 'react';
 
 const intitialState = {
   timestamp: '',
   tricks: '',
+  performedBy: '',
 };
 
 const SceneForm = ({
   samplerId,
-  refetch,
   duration,
   handleDuration,
   isMobile,
   setMobile,
 }) => {
   const [state, setState] = useState (intitialState);
+  const [reuseName, setReuseName] = useState (true);
   const {isAuth} = useContext (AuthContext);
   /**old code */
   // const queryClient = useQueryClient ();
+
+  const {refetch} = useQuery ('scenes', async () => getScenesBySamplerId (samplerId), {
+    cacheTime: 0,
+    //
+  });
+
   const {mutateAsync} = useMutation (addScene, {
     onSuccess: () => {
       refetch ();
@@ -33,6 +40,7 @@ const SceneForm = ({
       timestamp: parseInt (state.timestamp),
       tricks: state.tricks,
       sampler_id: samplerId,
+      performed_by: state.performedBy,
     });
   };
   /**old code */
@@ -48,7 +56,11 @@ const SceneForm = ({
   const submitHandler = e => {
     e.preventDefault ();
     handleCreateScene ();
-    setState (intitialState);
+    if (reuseName) {
+      setState ({...intitialState, performedBy: state.performedBy});
+    } else {
+      setState (intitialState);
+    }
   };
 
   useEffect (
@@ -113,6 +125,22 @@ const SceneForm = ({
                   multiline
                   rows={4}
                   size="small"
+                />
+
+              </Box>
+
+              <Box>
+                <Typography>
+                  Performed By
+                </Typography>
+                <TextField
+                  name="performedBy"
+                  id="performedBy"
+                  fullWidth
+                  onChange={handleChange}
+                  value={state.performedBy}
+                  size="small"
+                  required
                 />
 
               </Box>

@@ -93,7 +93,6 @@ const EditorContainer = ({sampler, refetch}) => {
           >
             <SceneForm
               samplerId={sampler.id}
-              refetch={refetch}
               duration={duration}
               handleDuration={handleDuration}
             />
@@ -178,7 +177,6 @@ const EditorContainer = ({sampler, refetch}) => {
               isMobile={isMobileFormOpen}
               setMobile={setIsMobileFormOpen}
               samplerId={sampler.id}
-              // refetch={refetch}
               duration={duration}
               handleDuration={handleDuration}
             />
