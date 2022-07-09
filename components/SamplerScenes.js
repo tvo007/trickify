@@ -14,6 +14,7 @@ import {Scrollbars} from 'react-custom-scrollbars-2';
 import {useRouter} from 'next/router';
 import {getScenesBySamplerId} from '../lib/api';
 import {useQuery} from 'react-query';
+import SamplerSceneCard from './SamplerSceneCard';
 
 const SamplerScenes = ({samplerUrl, playerHandler, isEditor}) => {
   const router = useRouter ();
@@ -33,6 +34,7 @@ const SamplerScenes = ({samplerUrl, playerHandler, isEditor}) => {
     cacheTime: 0,
     //
   });
+
   return (
     <Grid
       item
@@ -60,20 +62,29 @@ const SamplerScenes = ({samplerUrl, playerHandler, isEditor}) => {
         scenes.length > 0 &&
         <Scrollbars autoHeight>
           <Stack direction="column" spacing={2}>
-            {scenes
-              .sort ((a, b) => (a.timestamp < b.timestamp ? 1 : -1))
-              .map (scene => (
-                <Box key={scene.id}>
-                  <Button
-                    onClick={() => playerHandler (samplerUrl, scene.timestamp)}
-                    sx={{textAlign: 'left'}}
-                  >
-                    <Typography component={Box} color={'#6F6F6F'}>
-                      @ {scene.timestamp}s - {scene.tricks}
-                    </Typography>
-                  </Button>
-                </Box>
-              ))}
+            {scenes.sort ((a, b) => (a.timestamp < b.timestamp ? 1 : -1)).map (
+              scene => 
+              // (
+              //   <Box key={scene.id}>
+              //     <Button
+              //       onClick={() => playerHandler (samplerUrl, scene.timestamp)}
+              //       sx={{textAlign: 'left'}}
+              //     >
+              //       <Typography component={Box} color={'#6F6F6F'}>
+              //         @ {scene.timestamp}s - {scene.tricks}
+              //       </Typography>
+              //     </Button>
+              //   </Box>
+              // )
+              (
+                <SamplerSceneCard
+                  key={scene.id}
+                  scene={scene}
+                  playerHandler={playerHandler}
+                  samplerUrl={samplerUrl}
+                />
+              )
+            )}
 
           </Stack>
         </Scrollbars>}
