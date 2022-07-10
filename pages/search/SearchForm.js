@@ -3,6 +3,7 @@ import React from 'react';
 
 const SearchForm = ({handleSubmit, handleChange, state}) => {
   return (
+    state &&
     <form onSubmit={handleSubmit}>
       <Stack spacing={2}>
         <TextField

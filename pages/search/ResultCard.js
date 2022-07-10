@@ -3,6 +3,7 @@ import React from 'react';
 
 const ResultCard = ({item, playerHandler}) => {
   return (
+    item &&
     <Box
       sx={{
         p: '10px',

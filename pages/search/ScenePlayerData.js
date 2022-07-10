@@ -2,7 +2,7 @@ import {Box, Button, IconButton, TextField, Typography} from '@mui/material';
 import Link from 'next/link';
 import {Fragment} from 'react';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import { secondsToTime } from '../../lib/helpers';
+import {secondsToTime} from '../../lib/helpers';
 
 const ScenePlayerData = ({sceneData}) => {
   const clipboardHandler = () => {
@@ -11,6 +11,7 @@ const ScenePlayerData = ({sceneData}) => {
   //https://developer.mozilla.org/en-US/docs/Web/API/Clipboard/writeText
 
   return (
+    sceneData &&
     <Fragment>
       <Typography component={Box} fontWeight="bold">
         Sampler: {sceneData.name}
