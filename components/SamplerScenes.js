@@ -54,7 +54,7 @@ const SamplerScenes = ({samplerUrl, playerHandler, isEditor}) => {
       }
     >
       {error && <h2>Something went wrong.</h2>}
-      {isFetching && <CircularProgress />}
+      {/* {isFetching && <CircularProgress />} */}
       {isSuccess &&
         scenes.length === 0 &&
         <h2>There are currently no scenes assigned to this sampler.</h2>}
@@ -64,8 +64,7 @@ const SamplerScenes = ({samplerUrl, playerHandler, isEditor}) => {
           <Stack direction="column" spacing={2}>
             {scenes
               .sort ((a, b) => (a.timestamp < b.timestamp ? 1 : -1))
-              .map ((scene) => //   <Box key={scene.id}> // (
-              //     <Button
+              .map ((scene) => //     <Button //   <Box key={scene.id}> // (
               //       onClick={() => playerHandler (samplerUrl, scene.timestamp)}
               //       sx={{textAlign: 'left'}}
               //     >
