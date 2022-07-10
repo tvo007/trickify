@@ -29,8 +29,6 @@ const EditorContainer = ({sampler, refetch}) => {
     `https://www.youtube.com/embed/${youtube_parser (sampler.url)}`
   );
 
-  const [duration, setDuration] = useState ('');
-
   const [isPlaying, setIsPlaying] = useState (true);
 
   const playerHandler = (url, timestamp) => {
@@ -43,7 +41,7 @@ const EditorContainer = ({sampler, refetch}) => {
 
   const handleDuration = () => {
     let current = playerRef.current.getCurrentTime ();
-    setDuration (current);
+    return current
   };
 
   const [isMobileFormOpen, setIsMobileFormOpen] = useState (false);
@@ -93,7 +91,7 @@ const EditorContainer = ({sampler, refetch}) => {
           >
             <SceneForm
               samplerId={sampler.id}
-              duration={duration}
+            
               handleDuration={handleDuration}
             />
           </Box>
@@ -177,7 +175,7 @@ const EditorContainer = ({sampler, refetch}) => {
               isMobile={isMobileFormOpen}
               setMobile={setIsMobileFormOpen}
               samplerId={sampler.id}
-              duration={duration}
+             
               handleDuration={handleDuration}
             />
           </Box>}

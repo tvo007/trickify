@@ -1,4 +1,12 @@
-import {TextField, Stack, Box, Typography, Button} from '@mui/material';
+import {
+  TextField,
+  Stack,
+  Box,
+  Typography,
+  Button,
+  IconButton,
+} from '@mui/material';
+import AccessTime from '@mui/icons-material/AccessTime';
 import {useMutation, useQuery} from 'react-query';
 import {useState, useEffect, useContext} from 'react';
 import {addScene, getScenesBySamplerId} from '../lib/api';
@@ -7,27 +15,26 @@ import {Fragment} from 'react';
 
 const intitialState = {
   timestamp: '',
+  endstamp: '',
   tricks: '',
   performedBy: '',
 };
 
-const SceneForm = ({
-  samplerId,
-  duration,
-  handleDuration,
-  isMobile,
-  setMobile,
-}) => {
+const SceneForm = ({samplerId, handleDuration, isMobile, setMobile}) => {
   const [state, setState] = useState (intitialState);
   const [reuseName, setReuseName] = useState (true);
   const {isAuth} = useContext (AuthContext);
   /**old code */
   // const queryClient = useQueryClient ();
 
-  const {refetch} = useQuery ('scenes', async () => getScenesBySamplerId (samplerId), {
-    cacheTime: 0,
-    //
-  });
+  const {refetch} = useQuery (
+    'scenes',
+    async () => getScenesBySamplerId (samplerId),
+    {
+      cacheTime: 0,
+      //
+    }
+  );
 
   const {mutateAsync} = useMutation (addScene, {
     onSuccess: () => {
@@ -63,13 +70,25 @@ const SceneForm = ({
     }
   };
 
-  useEffect (
-    () => {
-      let roundedDuration = Math.floor (duration);
-      setState ({...state, timestamp: roundedDuration});
-    },
-    [duration]
-  );
+  const handleTimestamp = () => {
+    let time = handleDuration ();
+    let roundedTimestamp = Math.floor (time);
+    setState ({...state, timestamp: roundedTimestamp});
+  };
+
+  const handleEndstamp = () => {
+    let time = handleDuration ();
+    let roundedTimestamp = Math.floor (time);
+    setState ({...state, endstamp: roundedTimestamp});
+  };
+
+  // useEffect (
+  //   () => {
+  //     let roundedDuration = Math.floor (duration);
+  //     setState ({...state, timestamp: roundedDuration});
+  //   },
+  //   [duration]
+  // );
 
   return (
     <Fragment>
@@ -83,9 +102,7 @@ const SceneForm = ({
             </Typography>
 
             <Box>
-              <Button size="small" onClick={handleDuration}>
-                Get Current Time
-              </Button>
+
               {isMobile &&
                 <Button size="small" onClick={() => setMobile (false)}>
                   X
@@ -109,6 +126,53 @@ const SceneForm = ({
                   size="small"
                   onWheel={event => event.target.blur ()}
                   required
+                  InputProps={{
+                    endAdornment: (
+                      <IconButton
+                        sx={{visibility: 'visible'}}
+                        onClick={handleTimestamp}
+                      >
+                        <AccessTime />
+                      </IconButton>
+                    ),
+                  }}
+                  sx={{
+                    '& .Mui-focused .MuiIconButton-root': {
+                      color: 'primary.main',
+                    },
+                  }}
+                />
+
+              </Box>
+
+              <Box>
+                <Typography>
+                  Endstamp (seconds)
+                </Typography>
+                <TextField
+                  name="endstamp"
+                  id="endstamp"
+                  value={state.endstamp}
+                  onChange={handleChange}
+                  fullWidth
+                  type={'number'}
+                  size="small"
+                  onWheel={event => event.target.blur ()}
+                  InputProps={{
+                    endAdornment: (
+                      <IconButton
+                        sx={{visibility: 'visible'}}
+                        onClick={handleEndstamp}
+                      >
+                        <AccessTime />
+                      </IconButton>
+                    ),
+                  }}
+                  sx={{
+                    '& .Mui-focused .MuiIconButton-root': {
+                      color: 'primary.main',
+                    },
+                  }}
                 />
 
               </Box>
