@@ -14,53 +14,72 @@ import SceneForm from './SceneForm';
 import {breakpoints} from '../lib/helpers';
 import AuthContext from '../lib/contexts/AuthContext';
 import {useRouter} from 'next/router';
-import {youtube_parser} from '../lib/helpers';
+import useMobile from '../lib/hooks/useMobile';
+import usePlayer from '../lib/hooks/usePlayer';
 
 const EditorContainer = ({sampler, refetch}) => {
-  // const {headers} = useContext (ClientContext);
   const router = useRouter ();
   const {isAuth} = useContext (AuthContext);
   const theme = useTheme ();
   const playerRef = useRef ();
   const mdMatches = useMediaQuery (theme.breakpoints.up (breakpoints.medium));
   const mdDown = useMediaQuery (theme.breakpoints.down (breakpoints.medium));
+  const {isMobile, setIsMobile} = useMobile ();
+  // const [editorController, setEditorController] = useState (0);
+  /**
+   * editorController
+   * 0: view
+   * 1: add scene
+   * 2: edit scene
+   */
+  const [currentScene, setCurrentScene] = useState ({
+    id: '',
+    timestamp: 0,
+    endstamp: 0,
+    tricks: '',
+    performedBy: '',
+  }); //used for edit scene mode
 
-  const [urlState, setUrlState] = useState (
-    `https://www.youtube.com/embed/${youtube_parser (sampler.url)}`
+  const currentSceneHandler = sceneData => {
+    setCurrentScene ({
+      id: sceneData.id,
+      timestamp: sceneData.timestamp,
+      endstamp: sceneData.endstamp,
+      tricks: sceneData.tricks,
+      performedBy: sceneData.performedBy,
+    });
+  }; //use for edit scene mode
+
+  //how to extract playerHandler, isPlaying, handleDuration, and getRef into its own
+  //custom hook??
+  //react player stuff
+
+  // const [urlState, setUrlState] = useState (
+  //   `https://www.youtube.com/embed/${youtube_parser (sampler.url)}`
+  // );
+
+  // const [isPlaying, setIsPlaying] = useState (true);
+
+  // const handleDuration = () => {
+  //   let current = playerRef.current.getCurrentTime ();
+  //   return current;
+  // };
+
+  const {isPlaying, handleDuration, urlState, handlePlayer} = usePlayer (
+    sampler,
+    playerRef
   );
 
-  const [isPlaying, setIsPlaying] = useState (true);
-
-  const playerHandler = (url, timestamp) => {
-    setUrlState (
-      `https://www.youtube.com/embed/${youtube_parser (url)}?start=${timestamp}`
-    );
-
-    setIsPlaying (true);
-  };
-
-  const handleDuration = () => {
-    let current = playerRef.current.getCurrentTime ();
-    return current
-  };
-
-  const [isMobileFormOpen, setIsMobileFormOpen] = useState (false);
-
-  // console.log(playerRef.current.getCurrentTime)
-
-  useEffect (() => {
-    const handleResize = () => {
-      if (window.innerWidth > 1000) {
-        setIsMobileFormOpen (false);
-      }
-    };
-
-    window.addEventListener ('resize', handleResize);
-
-    return () => {
-      window.removeEventListener ('resize', handleResize);
-    };
-  }, []);
+  // const handlePlayer = (url, timestamp) => {
+  //   setUrlState (
+  //     `https://www.youtube.com/embed/${youtube_parser (url)}?start=${timestamp}`
+  //   );
+  //   setIsPlaying (true);
+  // };
+  //how to pass and change useRef inside custom hook
+  //react player stuff
+  //how to extract playerHandler, isPlaying, handleDuration, and getRef into its own
+  //custom hook??
 
   useEffect (
     () => {
@@ -91,8 +110,8 @@ const EditorContainer = ({sampler, refetch}) => {
           >
             <SceneForm
               samplerId={sampler.id}
-            
               handleDuration={handleDuration}
+              currentScene={currentScene}
             />
           </Box>
         : null}
@@ -143,27 +162,28 @@ const EditorContainer = ({sampler, refetch}) => {
               {sampler.uploaded_at}
             </Typography>
             {!mdMatches &&
-              !isMobileFormOpen &&
+              !isMobile &&
               <Box
                 sx={{py: '1rem', display: 'flex', justifyContent: 'flex-end'}}
               >
-                <Button onClick={() => setIsMobileFormOpen (!isMobileFormOpen)}>
+                <Button onClick={() => setIsMobile (true)}>
                   Add Scene
                 </Button>
               </Box>}
           </Box>
         </Grid>
 
-        {!isMobileFormOpen &&
+        {!isMobile &&
           <SamplerScenes
-            isEditor
+            isEditor={true}
             scenes={sampler.scenes}
             samplerUrl={sampler.url}
-            playerHandler={playerHandler}
+            handlePlayer={handlePlayer}
+            currentSceneHandler={currentSceneHandler}
           />}
 
         {/**mobile scene form */}
-        {isMobileFormOpen &&
+        {isMobile &&
           !mdMatches &&
           <Box
             sx={{
@@ -172,11 +192,11 @@ const EditorContainer = ({sampler, refetch}) => {
             }}
           >
             <SceneForm
-              isMobile={isMobileFormOpen}
-              setMobile={setIsMobileFormOpen}
+              isMobile={isMobile}
+              setMobile={setIsMobile}
               samplerId={sampler.id}
-             
               handleDuration={handleDuration}
+              currentScene={currentScene}
             />
           </Box>}
 

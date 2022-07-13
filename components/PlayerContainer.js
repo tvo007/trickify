@@ -1,30 +1,18 @@
 import {Grid, Stack, Button, Typography, Box} from '@mui/material';
 import Link from 'next/link';
-import {useState, useContext, useRef} from 'react';
+import {useContext, useRef} from 'react';
 import ReactPlayer from 'react-player';
 import AuthContext from '../lib/contexts/AuthContext';
 import SamplerScenes from './SamplerScenes';
-import {youtube_parser} from '../lib/helpers';
 import {samplerList, exceptionStyles} from '../lib/samplerRatioExceptions';
+import usePlayer from '../lib/hooks/usePlayer';
 
 const PlayerContainer = ({sampler}) => {
   // const {headers} = useContext (ClientContext);
   const playerRef = useRef ();
   const {isAuth} = useContext (AuthContext);
 
-  const [urlState, setUrlState] = useState (
-    `https://www.youtube.com/embed/${youtube_parser (sampler.url)}`
-  );
-
-  const [isPlaying, setIsPlaying] = useState (false);
-
-  const playerHandler = (url, timestamp) => {
-    setUrlState (
-      `https://www.youtube.com/embed/${youtube_parser (url)}?start=${timestamp}`
-    );
-
-    setIsPlaying (true);
-  };
+  const {isPlaying, urlState, handlePlayer} = usePlayer (sampler, playerRef);
 
   // console.log (sampler.name);
 
@@ -94,7 +82,7 @@ const PlayerContainer = ({sampler}) => {
           <Grid item sx={{maxWidth: '100%'}}>
             <SamplerScenes
               samplerUrl={sampler.url}
-              playerHandler={playerHandler}
+              handlePlayer={handlePlayer}
             />
           </Grid>
         </Grid>

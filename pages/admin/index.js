@@ -1,14 +1,5 @@
 import React from 'react';
-import {
-  Stack,
-  Button,
-  Box,
-  Grid,
-  useMediaQuery,
-  Typography,
-  useTheme,
-  CircularProgress,
-} from '@mui/material';
+import {Stack, Box, Typography} from '@mui/material';
 
 const Dashboard = () => {
   return (
@@ -20,7 +11,6 @@ const Dashboard = () => {
       <Typography component={Box} variant="body2">Admin settings</Typography>
       <Typography component={Box} variant="body2">Admin settings</Typography>
       <Typography component={Box} variant="body2">Analytics??</Typography>
-
     </Stack>
   );
 };

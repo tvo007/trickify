@@ -20,7 +20,15 @@ const intitialState = {
   performedBy: '',
 };
 
-const SceneForm = ({samplerId, handleDuration, isMobile, setMobile}) => {
+const isUpdating = false;
+
+const SceneForm = ({
+  samplerId,
+  handleDuration,
+  isMobile,
+  setMobile,
+  currentScene,
+}) => {
   const [state, setState] = useState (intitialState);
   const [reuseName, setReuseName] = useState (true);
   const {isAuth} = useContext (AuthContext);
@@ -82,13 +90,15 @@ const SceneForm = ({samplerId, handleDuration, isMobile, setMobile}) => {
     setState ({...state, endstamp: roundedTimestamp});
   };
 
-  // useEffect (
-  //   () => {
-  //     let roundedDuration = Math.floor (duration);
-  //     setState ({...state, timestamp: roundedDuration});
-  //   },
-  //   [duration]
-  // );
+  //enabled if is isUpdating
+  useEffect (
+    () => {
+      if (isUpdating) {
+        setState (currentScene);
+      }
+    },
+    [currentScene]
+  );
 
   return (
     <Fragment>
