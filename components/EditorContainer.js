@@ -50,36 +50,11 @@ const EditorContainer = ({sampler, refetch}) => {
     });
   }; //use for edit scene mode
 
-  //how to extract playerHandler, isPlaying, handleDuration, and getRef into its own
-  //custom hook??
-  //react player stuff
-
-  // const [urlState, setUrlState] = useState (
-  //   `https://www.youtube.com/embed/${youtube_parser (sampler.url)}`
-  // );
-
-  // const [isPlaying, setIsPlaying] = useState (true);
-
-  // const handleDuration = () => {
-  //   let current = playerRef.current.getCurrentTime ();
-  //   return current;
-  // };
 
   const {isPlaying, handleDuration, urlState, handlePlayer} = usePlayer (
     sampler,
     playerRef
   );
-
-  // const handlePlayer = (url, timestamp) => {
-  //   setUrlState (
-  //     `https://www.youtube.com/embed/${youtube_parser (url)}?start=${timestamp}`
-  //   );
-  //   setIsPlaying (true);
-  // };
-  //how to pass and change useRef inside custom hook
-  //react player stuff
-  //how to extract playerHandler, isPlaying, handleDuration, and getRef into its own
-  //custom hook??
 
   useEffect (
     () => {
@@ -199,9 +174,7 @@ const EditorContainer = ({sampler, refetch}) => {
               currentScene={currentScene}
             />
           </Box>}
-
       </Box>
-
     </Stack>
   );
 };

@@ -42,7 +42,7 @@ const Search = () => {
 
   const [sceneData, setSceneData] = useState (initialSceneData);
 
-  const {isPlaying, setIsPlaying} = usePlayer ();
+  const [isPlaying, setIsPlaying] = useState (false);
 
   const {isLooping, setIsLooping} = useLooper ();
 
