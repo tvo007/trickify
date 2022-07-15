@@ -53,6 +53,7 @@ const SceneForm = ({
   const handleCreateScene = async () => {
     await mutateAsync ({
       timestamp: parseInt (state.timestamp),
+      endstamp: parseInt (state.endstamp),
       tricks: state.tricks,
       sampler_id: samplerId,
       performed_by: state.performedBy,

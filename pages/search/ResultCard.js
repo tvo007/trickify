@@ -1,7 +1,8 @@
 import {Button, Card, Typography, Box, Stack, Divider} from '@mui/material';
 import React from 'react';
+import Highlighter from 'react-highlight-words';
 
-const ResultCard = ({item, playerHandler}) => {
+const ResultCard = ({item, playerHandler, searchInput}) => {
   return item
     ? <Box
         sx={{
@@ -21,17 +22,23 @@ const ResultCard = ({item, playerHandler}) => {
         onClick={() => playerHandler (item)}
       >
         <Stack direction="column">
-
           <Box>
-
             <Typography
               component={Box}
               fontWeight={'medium'}
               variant="subtitle2"
               sx={{color: '#ff5252'}}
             >
+              <Highlighter
+                searchWords={[searchInput.tricks]}
+                autoEscape={true}
+                textToHighlight={item.tricks}
+                highlightStyle={{
+                  textDecoration: 'underline',
+                }}
+                highlightTag={'strong'}
+              />
 
-              {item.tricks}
             </Typography>
           </Box>
 

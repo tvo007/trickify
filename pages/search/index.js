@@ -19,7 +19,7 @@ import ScenePlayerData from './ScenePlayerData';
 import SearchForm from './SearchForm';
 import usePlayer from '../../lib/hooks/usePlayer';
 
-const intitialState = {
+const initialSearchState = {
   tricks: '',
 };
 
@@ -38,7 +38,7 @@ const Search = () => {
   const playerRef = useRef ();
   // const mdUp = useMediaQuery (theme.breakpoints.up (breakpoints.medium));
   // const mdDown = useMediaQuery (theme.breakpoints.down (breakpoints.medium));
-  const [state, setState] = useState (intitialState); //searchbar state
+  const [searchInput, setSearchInput] = useState (initialSearchState); //searchbar state
 
   const [sceneData, setSceneData] = useState (initialSceneData);
 
@@ -76,15 +76,15 @@ const Search = () => {
 
   const handleChange = e => {
     const value = e.target.value;
-    setState ({
-      ...state,
+    setSearchInput ({
+      ...searchInput,
       [e.target.name]: value,
     });
   };
 
   const handleQueryScene = async () => {
     await mutateAsync ({
-      tricks: state.tricks,
+      tricks: searchInput.tricks,
     });
   };
 
@@ -102,7 +102,7 @@ const Search = () => {
         <SearchForm
           handleSubmit={handleSubmit}
           handleChange={handleChange}
-          state={state}
+          searchInput={searchInput}
         />
       </Box>
       <Grid
@@ -165,6 +165,7 @@ const Search = () => {
                       key={item.id}
                       item={item}
                       playerHandler={playerHandler}
+                      searchInput={searchInput}
                     />
                   ))}
 

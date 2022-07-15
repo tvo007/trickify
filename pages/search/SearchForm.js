@@ -1,8 +1,8 @@
 import {Button, Grid, Stack, TextField} from '@mui/material';
 import React from 'react';
 
-const SearchForm = ({handleSubmit, handleChange, state}) => {
-  return state
+const SearchForm = ({handleSubmit, handleChange, searchInput}) => {
+  return searchInput
     ? <form onSubmit={handleSubmit}>
         <Stack spacing={2}>
           <TextField
@@ -13,8 +13,9 @@ const SearchForm = ({handleSubmit, handleChange, state}) => {
             name="tricks"
             id="tricks"
             onChange={handleChange}
-            value={state.tricks}
+            value={searchInput.tricks}
             required
+            inputProps={{spellCheck: 'false'}}
           />
           <Grid
             container
