@@ -168,6 +168,7 @@ const SceneForm = ({
                   fullWidth
                   type={'number'}
                   size="small"
+                  required
                   onWheel={event => event.target.blur ()}
                   InputProps={{
                     endAdornment: (
