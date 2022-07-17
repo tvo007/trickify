@@ -77,29 +77,7 @@ function SamplerContent({sampler}) {
           />
         </Box>
 
-        <Box>
-          <Typography component={Box} fontWeight="bold">
-            {sampler.name}
-          </Typography>
-          <Typography component={Box} color={'#6F6F6F'}>
-            {sampler.created_by}
-          </Typography>
-          <Typography component={Box} color={'#6F6F6F'}>
-            Total runtime: {sampler.runtime} seconds
-          </Typography>
-          <Typography component={Box} color={'#6F6F6F'}>
-            {sampler.uploaded_at}
-          </Typography>
-          <Box>
-            <Typography component={Box}>
-              {duration || 'Click button to get duration'}
-            </Typography>
-            <Button onClick={() => handleDuration ()}>
-              Get Duration
-            </Button>
-          </Box>
-
-        </Box>
+        <SamplerCard sampler={sampler} />
       </Grid>
       <Grid item sx={{mb: '10rem'}}>
         <Stack direction="column" spacing={2}>

@@ -1,13 +1,13 @@
 import {Grid, Stack, Button, Typography, Box} from '@mui/material';
-import Link from 'next/link';
 import {useContext, useRef} from 'react';
 import ReactPlayer from 'react-player';
-import AuthContext from '../lib/contexts/AuthContext';
-import SamplerScenes from './SamplerScenes';
-import {samplerList, exceptionStyles} from '../lib/samplerRatioExceptions';
-import usePlayer from '../lib/hooks/usePlayer';
+import AuthContext from '../../lib/contexts/AuthContext';
+import SamplerScenes from '../../components/SamplerScenes';
+import {samplerList, exceptionStyles} from '../../lib/samplerRatioExceptions';
+import usePlayer from '../../lib/hooks/usePlayer';
+import SamplerPageInfo from './SamplerPageInfo';
 
-const PlayerContainer = ({sampler}) => {
+const SamplerPageContainer = ({sampler}) => {
   // const {headers} = useContext (ClientContext);
   const playerRef = useRef ();
   const {isAuth} = useContext (AuthContext);
@@ -55,29 +55,7 @@ const PlayerContainer = ({sampler}) => {
           </Grid>
           {/**sampler info menu */}
           <Grid item sx={{my: '1rem'}}>
-            <Grid container direction="row" justifyContent={'space-between'}>
-              <Grid item>
-                <Typography component={Box} fontWeight="bold">
-                  {sampler.name}
-                </Typography>
-                <Typography component={Box} color={'#6F6F6F'}>
-                  {sampler.created_by}
-                </Typography>
-                <Typography component={Box} color={'#6F6F6F'}>
-                  Total runtime: {sampler.runtime} seconds
-                </Typography>
-                <Typography component={Box} color={'#6F6F6F'}>
-                  {sampler.uploaded_at}
-                </Typography>
-              </Grid>
-              {/**editor button, auth only */}
-              {isAuth &&
-                <Grid item>
-                  <Link href={`/admin/${sampler.id}`} passHref>
-                    <Button size="small">View in Editor</Button>
-                  </Link>
-                </Grid>}
-            </Grid>
+            <SamplerPageInfo isAuth={isAuth} sampler={sampler} />
           </Grid>
           <Grid item sx={{maxWidth: '100%'}}>
             <SamplerScenes
@@ -91,4 +69,4 @@ const PlayerContainer = ({sampler}) => {
   );
 };
 
-export default PlayerContainer;
+export default SamplerPageContainer;

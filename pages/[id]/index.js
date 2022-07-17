@@ -4,14 +4,14 @@ import {useQuery} from 'react-query';
 
 // import Breadcrumbs from '../components/breadcrumbs';
 
-import PlayerContainer from '../components/PlayerContainer';
-import {getSamplerById, getSamplers} from '../lib/api';
+import SamplerPageContainer from './SamplerPageContainer'
+import {getSamplerById, getSamplers} from '../../lib/api';
 
 export default function SinglePage({sampler, id}) {
   // console.log (data);
   return (
     <Fragment>
-      {sampler && <PlayerContainer sampler={sampler} />}
+      {sampler && <SamplerPageContainer sampler={sampler} />}
       {!sampler && <h2>Something went wrong.</h2>}
     </Fragment> 
   );

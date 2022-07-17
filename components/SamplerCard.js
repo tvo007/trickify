@@ -31,13 +31,6 @@ function SamplerCard({sampler}) {
 
       </Box>
       <Stack direction="row">
-        <Link href={`/${sampler.id}`} passHref>
-          <Button size="small">
-            View Sampler
-          </Button>
-
-        </Link>
-
         {isAuth &&
           <Link href={`/admin/${sampler.id}`} passHref>
             <Button size="small">Edit Scenes</Button>
