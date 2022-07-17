@@ -5,6 +5,7 @@ import React from 'react';
 import {useContext} from 'react';
 import AuthContext from '../lib/contexts/AuthContext';
 
+//represents each sampler on main index page
 function SamplerCard({sampler}) {
   const {isAuth} = useContext (AuthContext);
   return (
@@ -31,13 +32,6 @@ function SamplerCard({sampler}) {
 
       </Box>
       <Stack direction="row">
-        <Link href={`/${sampler.id}`} passHref>
-          <Button size="small">
-            View Sampler
-          </Button>
-
-        </Link>
-
         {isAuth &&
           <Link href={`/admin/${sampler.id}`} passHref>
             <Button size="small">Edit Scenes</Button>
