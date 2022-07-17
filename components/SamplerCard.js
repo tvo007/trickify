@@ -5,6 +5,7 @@ import React from 'react';
 import {useContext} from 'react';
 import AuthContext from '../lib/contexts/AuthContext';
 
+//represents each sampler on main index page
 function SamplerCard({sampler}) {
   const {isAuth} = useContext (AuthContext);
   return (
