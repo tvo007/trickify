@@ -1,11 +1,13 @@
 import {Grid, Stack, Button, Typography, Box} from '@mui/material';
-import {useContext, useRef} from 'react';
+import {useContext, useRef, useState} from 'react';
 import ReactPlayer from 'react-player';
 import AuthContext from '../../lib/contexts/AuthContext';
 import SamplerScenes from '../../components/SamplerScenes';
 import {samplerList, exceptionStyles} from '../../lib/samplerRatioExceptions';
 import usePlayer from '../../lib/hooks/usePlayer';
 import SamplerPageInfo from './SamplerPageInfo';
+import LooperToggle from '../../components/LooperToggle';
+import useLooper from '../../lib/hooks/useLooper';
 
 const SamplerPageContainer = ({sampler}) => {
   // const {headers} = useContext (ClientContext);
@@ -13,9 +15,37 @@ const SamplerPageContainer = ({sampler}) => {
   const {isAuth} = useContext (AuthContext);
 
   const {isPlaying, urlState, handlePlayer} = usePlayer (sampler, playerRef);
+  const {
+    isLooping,
+    setIsLooping,
+    handleLooperToggle,
+    handleProgress,
+  } = useLooper (playerRef);
+
+  const [currentScene, setCurrentScene] = useState (null);
+
+  const handleCurrentScene = sceneData => {
+    setCurrentScene ({
+      id: sceneData.id,
+      timestamp: sceneData.timestamp,
+      endstamp: sceneData.endstamp,
+      tricks: sceneData.tricks,
+      performedBy: sceneData.performedBy,
+    });
+  };
+
+  //todo: incorporate into useLooper
+  // const handleProgress = (e, start, end) => {
+  //   if (!start && !end) {
+  //     setIsLooping (false);
+  //   }
+
+  //   if (e.playedSeconds > end && end) {
+  //     playerRef.current.seekTo (start, 'seconds');
+  //   }
+  // };
 
   // console.log (sampler.name);
-
   return (
     <Stack
       direction={'column'}
@@ -46,6 +76,14 @@ const SamplerPageContainer = ({sampler}) => {
               playing={isPlaying}
               width={'100%'}
               height={'100%'}
+              onProgress={e =>
+                isLooping &&
+                currentScene &&
+                handleProgress (
+                  e,
+                  currentScene.timestamp,
+                  currentScene.endstamp
+                )}
               style={{
                 top: 0,
                 left: 0,
@@ -55,12 +93,20 @@ const SamplerPageContainer = ({sampler}) => {
           </Grid>
           {/**sampler info menu */}
           <Grid item sx={{my: '1rem'}}>
+
             <SamplerPageInfo isAuth={isAuth} sampler={sampler} />
+
           </Grid>
           <Grid item sx={{maxWidth: '100%'}}>
+            <LooperToggle
+              isLooping={isLooping}
+              handleLooperToggle={handleLooperToggle}
+            />
+
             <SamplerScenes
               samplerUrl={sampler.url}
               handlePlayer={handlePlayer}
+              handleCurrentScene={handleCurrentScene}
             />
           </Grid>
         </Grid>

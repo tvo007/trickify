@@ -9,7 +9,7 @@ const LooperToggle = ({isLooping, handleLooperToggle}) => {
         <Switch
           color="primary"
           checked={isLooping}
-          onChange={handleLooperToggle}
+          onChange={e => handleLooperToggle (e)}
         />
       }
       label={
@@ -18,6 +18,7 @@ const LooperToggle = ({isLooping, handleLooperToggle}) => {
         </Typography>
       }
       labelPlacement="start"
+      sx={{pb: '1rem'}}
     />
   );
 };

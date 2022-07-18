@@ -9,20 +9,19 @@ const SamplerSceneCard = ({
   samplerUrl,
   handlePlayer,
   isEditor,
-  currentSceneHandler,
+  handleCurrentScene,
 }) => {
   const handleClick = () => {
     handlePlayer (samplerUrl, scene.timestamp);
-    if (isEditor && scene) {
-      currentSceneHandler ({
-        id: scene.id || '',
-        timestamp: scene.timestamp || 0,
-        endstamp: scene.endstamp || 0,
-        tricks: scene.tricks || '',
-        performedBy: scene.performed_by || '',
-      });
-    }
-    console.log (scene.id);
+    handleCurrentScene ({
+      id: scene.id || '',
+      timestamp: scene.timestamp || 0,
+      endstamp: scene.endstamp || 0,
+      tricks: scene.tricks || '',
+      performedBy: scene.performed_by || '',
+    });
+
+    // console.log (scene.id);
   };
   return (
     <Box>
