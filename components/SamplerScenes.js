@@ -20,7 +20,7 @@ const SamplerScenes = ({
   samplerUrl,
   handlePlayer,
   isEditor,
-  currentSceneHandler,
+  handleCurrentScene,
 }) => {
   const router = useRouter ();
   const {id} = router.query;
@@ -69,29 +69,24 @@ const SamplerScenes = ({
           <Stack direction="column" spacing={2}>
             {scenes
               .sort ((a, b) => (a.timestamp < b.timestamp ? 1 : -1))
-              .map (
-                (
-                  scene //     <Button //   <Box key={scene.id}> // (
-                ) => //       onClick={() => playerHandler (samplerUrl, scene.timestamp)}
-                //       sx={{textAlign: 'left'}}
-                //     >
-                //       <Typography component={Box} color={'#6F6F6F'}>
-                //         @ {scene.timestamp}s - {scene.tricks}
-                //       </Typography>
-                //     </Button>
-                //   </Box>
-                // )
-                (
-                  <SamplerSceneCard
-                    key={scene.id}
-                    scene={scene}
-                    handlePlayer={handlePlayer}
-                    samplerUrl={samplerUrl}
-                    isEditor={isEditor}
-                    currentSceneHandler={currentSceneHandler}
-                  />
-                )
-              )}
+              .map ((scene) => //       sx={{textAlign: 'left'}} //     <Button //   <Box key={scene.id}> // ( //       onClick={() => playerHandler (samplerUrl, scene.timestamp)}
+              //     >
+              //       <Typography component={Box} color={'#6F6F6F'}>
+              //         @ {scene.timestamp}s - {scene.tricks}
+              //       </Typography>
+              //     </Button>
+              //   </Box>
+              // )
+              (
+                <SamplerSceneCard
+                  key={scene.id}
+                  scene={scene}
+                  handlePlayer={handlePlayer}
+                  samplerUrl={samplerUrl}
+                  isEditor={isEditor}
+                  handleCurrentScene={handleCurrentScene}
+                />
+              ))}
 
           </Stack>
         </Scrollbars>}

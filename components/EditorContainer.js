@@ -40,7 +40,7 @@ const EditorContainer = ({sampler, refetch}) => {
     performedBy: '',
   }); //used for edit scene mode
 
-  const currentSceneHandler = sceneData => {
+  const handleCurrentScene = sceneData => {
     setCurrentScene ({
       id: sceneData.id,
       timestamp: sceneData.timestamp,
@@ -49,7 +49,6 @@ const EditorContainer = ({sampler, refetch}) => {
       performedBy: sceneData.performedBy,
     });
   }; //use for edit scene mode
-
 
   const {isPlaying, handleDuration, urlState, handlePlayer} = usePlayer (
     sampler,
@@ -154,7 +153,7 @@ const EditorContainer = ({sampler, refetch}) => {
             scenes={sampler.scenes}
             samplerUrl={sampler.url}
             handlePlayer={handlePlayer}
-            currentSceneHandler={currentSceneHandler}
+            handleCurrentScene={handleCurrentScene}
           />}
 
         {/**mobile scene form */}
