@@ -13,7 +13,6 @@ const SamplerPageContainer = ({sampler}) => {
   // const {headers} = useContext (ClientContext);
   const playerRef = useRef ();
   const {isAuth} = useContext (AuthContext);
-
   const {isPlaying, urlState, handlePlayer} = usePlayer (sampler, playerRef);
   const {
     isLooping,
@@ -93,7 +92,7 @@ const SamplerPageContainer = ({sampler}) => {
           </Grid>
           {/**sampler info menu */}
           <Grid item sx={{my: '1rem'}}>
-            {sampler && <SamplerPageInfo isAuth={isAuth} sampler={sampler} />}
+            <SamplerPageInfo isAuth={isAuth} sampler={sampler} />
           </Grid>
           <Grid item sx={{maxWidth: '100%'}}>
             <LooperToggle
@@ -101,12 +100,11 @@ const SamplerPageContainer = ({sampler}) => {
               handleLooperToggle={handleLooperToggle}
             />
 
-            {sampler &&
-              <SamplerScenes
-                samplerUrl={sampler.url}
-                handlePlayer={handlePlayer}
-                handleCurrentScene={handleCurrentScene}
-              />}
+            <SamplerScenes
+              samplerUrl={sampler.url}
+              handlePlayer={handlePlayer}
+              handleCurrentScene={handleCurrentScene}
+            />
           </Grid>
         </Grid>
       </Box>
