@@ -1,6 +1,7 @@
-import {Grid, Typography} from '@mui/material';
+import {Grid, Typography, Button} from '@mui/material';
 import {Box} from '@mui/system';
 import React from 'react';
+import Link from 'next/link';
 
 const SamplerPageInfo = ({sampler, isAuth}) => {
   return (
