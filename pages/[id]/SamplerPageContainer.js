@@ -1,4 +1,4 @@
-import {Grid, Stack, Button, Typography, Box} from '@mui/material';
+import {Grid, Stack, Box} from '@mui/material';
 import {useContext, useRef, useState} from 'react';
 import ReactPlayer from 'react-player';
 import AuthContext from '../../lib/contexts/AuthContext';
@@ -93,9 +93,7 @@ const SamplerPageContainer = ({sampler}) => {
           </Grid>
           {/**sampler info menu */}
           <Grid item sx={{my: '1rem'}}>
-
-            <SamplerPageInfo isAuth={isAuth} sampler={sampler} />
-
+            {sampler && <SamplerPageInfo isAuth={isAuth} sampler={sampler} />}
           </Grid>
           <Grid item sx={{maxWidth: '100%'}}>
             <LooperToggle
@@ -103,11 +101,12 @@ const SamplerPageContainer = ({sampler}) => {
               handleLooperToggle={handleLooperToggle}
             />
 
-            <SamplerScenes
-              samplerUrl={sampler.url}
-              handlePlayer={handlePlayer}
-              handleCurrentScene={handleCurrentScene}
-            />
+            {sampler &&
+              <SamplerScenes
+                samplerUrl={sampler.url}
+                handlePlayer={handlePlayer}
+                handleCurrentScene={handleCurrentScene}
+              />}
           </Grid>
         </Grid>
       </Box>
