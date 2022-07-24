@@ -1,4 +1,4 @@
-import {Button, Card, Typography, Box, Stack, Divider} from '@mui/material';
+import {Typography, Box, Stack, Divider} from '@mui/material';
 import React from 'react';
 import Highlighter from 'react-highlight-words';
 

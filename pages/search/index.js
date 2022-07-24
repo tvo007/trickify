@@ -10,14 +10,13 @@ import React, {useState, useRef, Fragment} from 'react';
 import Scrollbars from 'react-custom-scrollbars-2';
 import ReactPlayer from 'react-player';
 import {useMutation} from 'react-query';
-import ResultCard from './ResultCard';
+import ResultCard from '../../components/search-page/ResultCard';
 import {searchScenes} from '../../lib/api';
 import {breakpoints, youtube_parser} from '../../lib/helpers';
 import LooperToggle from '../../components/LooperToggle';
 import useLooper from '../../lib/hooks/useLooper';
-import ScenePlayerData from './ScenePlayerData';
-import SearchForm from './SearchForm';
-import usePlayer from '../../lib/hooks/usePlayer';
+import ScenePlayerData from '../../components/search-page/ScenePlayerData';
+import SearchForm from '../../components/search-page/SearchForm';
 
 const initialSearchState = {
   tricks: '',
