@@ -1,4 +1,4 @@
-import {Grid, Stack, Button, Typography, Box} from '@mui/material';
+import {Grid, Stack, Box} from '@mui/material';
 import {useContext, useRef, useState} from 'react';
 import ReactPlayer from 'react-player';
 import AuthContext from '../../lib/contexts/AuthContext';
@@ -13,7 +13,6 @@ const SamplerPageContainer = ({sampler}) => {
   // const {headers} = useContext (ClientContext);
   const playerRef = useRef ();
   const {isAuth} = useContext (AuthContext);
-
   const {isPlaying, urlState, handlePlayer} = usePlayer (sampler, playerRef);
   const {
     isLooping,
@@ -93,9 +92,7 @@ const SamplerPageContainer = ({sampler}) => {
           </Grid>
           {/**sampler info menu */}
           <Grid item sx={{my: '1rem'}}>
-
             <SamplerPageInfo isAuth={isAuth} sampler={sampler} />
-
           </Grid>
           <Grid item sx={{maxWidth: '100%'}}>
             <LooperToggle

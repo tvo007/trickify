@@ -4,7 +4,7 @@ import {useQuery} from 'react-query';
 
 // import Breadcrumbs from '../components/breadcrumbs';
 
-import SamplerPageContainer from './SamplerPageContainer'
+import SamplerPageContainer from '../../components/sampler-page/SamplerPageContainer';
 import {getSamplerById, getSamplers} from '../../lib/api';
 
 export default function SinglePage({sampler, id}) {
