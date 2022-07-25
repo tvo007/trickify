@@ -9,13 +9,13 @@ import {
   Box,
 } from '@mui/material';
 import ReactPlayer from 'react-player';
-import SamplerScenes from './SamplerScenes';
-import SceneForm from './SceneForm';
-import {breakpoints} from '../lib/helpers';
-import AuthContext from '../lib/contexts/AuthContext';
+import SamplerScenes from '../SamplerScenes';
+import SceneForm from '../SceneForm';
+import {breakpoints} from '../../lib/helpers';
+import AuthContext from '../../lib/contexts/AuthContext';
 import {useRouter} from 'next/router';
-import useMobile from '../lib/hooks/useMobile';
-import usePlayer from '../lib/hooks/usePlayer';
+import useMobile from '../../lib/hooks/useMobile';
+import usePlayer from '../../lib/hooks/usePlayer';
 
 const EditorContainer = ({sampler, refetch}) => {
   const router = useRouter ();
