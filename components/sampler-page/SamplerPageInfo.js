@@ -3,7 +3,7 @@ import {Box} from '@mui/system';
 import React from 'react';
 import Link from 'next/link';
 
-const SamplerPageInfo = ({sampler, isAuth}) => {
+const SamplerPageInfo = ({sampler}) => {
   return (
     <Grid container direction="row" justifyContent={'space-between'}>
       <Grid item>
@@ -13,20 +13,9 @@ const SamplerPageInfo = ({sampler, isAuth}) => {
         <Typography component={Box} color={'#6F6F6F'}>
           {sampler.created_by}
         </Typography>
-        <Typography component={Box} color={'#6F6F6F'}>
-          Total runtime: {sampler.runtime} seconds
-        </Typography>
-        <Typography component={Box} color={'#6F6F6F'}>
-          {sampler.uploaded_at}
-        </Typography>
       </Grid>
       {/**editor button, auth only */}
-      {isAuth &&
-        <Grid item>
-          <Link href={`/admin/${sampler.id}`} passHref>
-            <Button size="small">View in Editor</Button>
-          </Link>
-        </Grid>}
+      
     </Grid>
   );
 };

@@ -25,11 +25,27 @@ const SamplerSceneCard = ({
   };
   return (
     <Box>
-      <Button onClick={handleClick} sx={{textAlign: 'left'}}>
-        <Typography component={Box} color={'#6F6F6F'}>
+      <Card
+        onClick={handleClick}
+        sx={{
+          p: '1rem',
+          width: '95%',
+          justifyContent: 'flex-start',
+        }}
+        disableRipple={false}
+        component={Button}
+      >
+        <Typography
+          component={Box}
+          color={'#6F6F6F'}
+          variant="body2"
+          fontWeight={500}
+          align="left"
+        >
           {secondsToTime (scene.timestamp)} - {scene.tricks}
         </Typography>
-      </Button>
+
+      </Card>
     </Box>
   );
 };

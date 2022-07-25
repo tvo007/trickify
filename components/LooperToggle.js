@@ -18,7 +18,7 @@ const LooperToggle = ({isLooping, handleLooperToggle}) => {
         </Typography>
       }
       labelPlacement="start"
-      sx={{pb: '1rem'}}
+      sx={{pb: '8px'}}
     />
   );
 };

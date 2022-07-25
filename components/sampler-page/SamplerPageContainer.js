@@ -1,4 +1,4 @@
-import {Grid, Stack, Box} from '@mui/material';
+import {Grid, Stack, Box, Button} from '@mui/material';
 import {useContext, useRef, useState} from 'react';
 import ReactPlayer from 'react-player';
 import AuthContext from '../../lib/contexts/AuthContext';
@@ -8,6 +8,7 @@ import usePlayer from '../../lib/hooks/usePlayer';
 import SamplerPageInfo from './SamplerPageInfo';
 import LooperToggle from '../../components/LooperToggle';
 import useLooper from '../../lib/hooks/useLooper';
+import Link from 'next/link';
 
 const SamplerPageContainer = ({sampler}) => {
   // const {headers} = useContext (ClientContext);
@@ -55,6 +56,9 @@ const SamplerPageContainer = ({sampler}) => {
       <Box>
         {/**refactor out the react player away from scenes container */}
         <Grid container direction="column" sx={{mb: 2, maxWidth: '100%'}}>
+          <Grid item sx={{my: '1rem'}}>
+            <SamplerPageInfo isAuth={isAuth} sampler={sampler} />
+          </Grid>
           <Grid
             sx={
               samplerList.includes (sampler.name)
@@ -91,15 +95,20 @@ const SamplerPageContainer = ({sampler}) => {
             />
           </Grid>
           {/**sampler info menu */}
-          <Grid item sx={{my: '1rem'}}>
-            <SamplerPageInfo isAuth={isAuth} sampler={sampler} />
-          </Grid>
-          <Grid item sx={{maxWidth: '100%'}}>
-            <LooperToggle
-              isLooping={isLooping}
-              handleLooperToggle={handleLooperToggle}
-            />
 
+          <Grid item sx={{maxWidth: '100%'}}>
+            <Stack direction='row' justifyContent={'space-between'}>
+              <LooperToggle
+                isLooping={isLooping}
+                handleLooperToggle={handleLooperToggle}
+              />
+              {isAuth &&
+                <Grid item>
+                  <Link href={`/admin/${sampler.id}`} passHref>
+                    <Button size="small">View in Editor</Button>
+                  </Link>
+                </Grid>}
+            </Stack>
             <SamplerScenes
               samplerUrl={sampler.url}
               handlePlayer={handlePlayer}
