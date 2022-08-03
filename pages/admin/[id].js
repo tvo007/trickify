@@ -1,11 +1,7 @@
-import {useState, Fragment} from 'react';
-// import {useMutation, useQuery} from 'graphql-hooks';
+import {Fragment} from 'react';
 import {useQuery} from 'react-query';
-import {useRouter} from 'next/router';
-import {Typography, Grid, Box} from '@mui/material';
-
-// import Breadcrumbs from '../components/breadcrumbs';
-import EditorContainer from '../../components/EditorContainer';
+import EditorContainer
+  from '../../components/admin-sampler-page/EditorContainer';
 import {getSamplerById} from '../../lib/api';
 import Loader from '../../components/Loader';
 
