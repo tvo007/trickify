@@ -1,7 +1,7 @@
-import React from 'react';
+import {FC} from 'react';
 import {Stack, Box, Typography} from '@mui/material';
 
-const Dashboard = () => {
+const Dashboard: FC = () => {
   return (
     <Stack>
       <Typography component={Box} variant="body2">
