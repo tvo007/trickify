@@ -6,8 +6,13 @@ import { GetStaticProps, GetStaticPaths, GetServerSideProps } from "next";
 
 import SamplerPageContainer from "../../components/sampler-page/SamplerPageContainer";
 import { getSamplerById, getSamplers } from "../../lib/api";
+import { ISampler } from "../../lib/interfaces";
 
-export default function SinglePage({ sampler, id }) {
+interface SinglePageProps {
+  sampler: ISampler
+}
+
+export default function SinglePage({ sampler }: SinglePageProps) {
   // console.log (data);
   return (
     <Fragment>
