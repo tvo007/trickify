@@ -25,3 +25,11 @@ export interface IScene {
         created_by: string;
     }
 }
+
+export interface ICurrentScene {
+    id: string;
+    tricks: string;
+    timestamp: number;
+    endstamp: number;
+    performed_by: string;
+}

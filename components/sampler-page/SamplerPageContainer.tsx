@@ -10,6 +10,7 @@ import LooperToggle from "../LooperToggle";
 import useLooper from "../../lib/hooks/useLooper";
 import Link from "next/link";
 import { ISampler } from "../../lib/interfaces";
+import CurrentScene from "./CurrentScene";
 
 interface SamplerPageContainerProps {
   sampler: ISampler;
@@ -19,34 +20,24 @@ const SamplerPageContainer = ({ sampler }: SamplerPageContainerProps) => {
   // const {headers} = useContext (ClientContext);
   const playerRef = useRef();
   const { isAuth } = useContext(AuthContext);
-  const { isPlaying, urlState, handlePlayer } = usePlayer(sampler, playerRef);
+  const {
+    isPlaying,
+    urlState,
+    handlePlayer,
+    currentScene,
+    handleCurrentScene,
+  } = usePlayer(sampler, playerRef);
   const { isLooping, setIsLooping, handleLooperToggle, handleProgress } =
     useLooper(playerRef);
 
-  const [currentScene, setCurrentScene] = useState(null);
+  /**
+   * old on progress           
+   * (e) =>
+                isLooping &&
+                currentScene &&
+                handleProgress(e, currentScene.timestamp, currentScene.endstamp)
+   */
 
-  const handleCurrentScene = (sceneData) => {
-    setCurrentScene({
-      id: sceneData.id,
-      timestamp: sceneData.timestamp,
-      endstamp: sceneData.endstamp,
-      tricks: sceneData.tricks,
-      performedBy: sceneData.performedBy,
-    });
-  };
-
-  //todo: incorporate into useLooper
-  // const handleProgress = (e, start, end) => {
-  //   if (!start && !end) {
-  //     setIsLooping (false);
-  //   }
-
-  //   if (e.playedSeconds > end && end) {
-  //     playerRef.current.seekTo (start, 'seconds');
-  //   }
-  // };
-
-  // console.log (sampler.name);
   return (
     <Stack
       direction={"column"}
@@ -95,6 +86,10 @@ const SamplerPageContainer = ({ sampler }: SamplerPageContainerProps) => {
           {/**sampler info menu */}
 
           <Grid item sx={{ maxWidth: "100%" }}>
+            {/**current scene */}
+            <Stack>
+              <CurrentScene currentScene={currentScene} />
+            </Stack>
             <Stack direction="row" justifyContent={"space-between"}>
               <LooperToggle
                 isLooping={isLooping}
