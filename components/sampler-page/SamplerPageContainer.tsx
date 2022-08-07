@@ -11,6 +11,8 @@ import useLooper from "../../lib/hooks/useLooper";
 import Link from "next/link";
 import { ISampler } from "../../lib/interfaces";
 import CurrentScene from "./CurrentScene";
+import useScenes from "../../lib/hooks/useScenes";
+import { findScene } from "../../lib/helpers";
 
 interface SamplerPageContainerProps {
   sampler: ISampler;
@@ -20,6 +22,21 @@ const SamplerPageContainer = ({ sampler }: SamplerPageContainerProps) => {
   // const {headers} = useContext (ClientContext);
   const playerRef = useRef();
   const { isAuth } = useContext(AuthContext);
+  const { data: scenes } = useScenes(sampler.id);
+  /**
+   * how to derive auto location of current scene based off timestamps?
+   * currentTime,
+   * stampWindows state,
+   * currentWindow state??,
+   * currentTime is updated every second
+   * checks to see currentTime is in currentWindow,
+   * if currentTime in currentWindow, nothing,
+   * if currrentTime not in currentWindow, search where in stampWindows
+   * currentTime is in, that is NOT the current window and greater than current window end stamp,
+   * and set corresponding stampWindow
+   * we dont need all scenes?
+   * we only need current scene and next
+   */
   const {
     isPlaying,
     urlState,
@@ -36,7 +53,20 @@ const SamplerPageContainer = ({ sampler }: SamplerPageContainerProps) => {
                 isLooping &&
                 currentScene &&
                 handleProgress(e, currentScene.timestamp, currentScene.endstamp)
+          
    */
+
+  const progressController = (e, isLooping, currentScene) => {
+    if (isLooping && currentScene) {
+      handleProgress(e, currentScene.timestamp, currentScene.endstamp);
+    } else if (!isLooping) {
+      // console.log(e.playedSeconds);
+      // console.log(findScene(e.playedSeconds, scenes));
+      handleCurrentScene(findScene(e.playedSeconds, scenes));
+    }
+  };
+
+  //how to check if current number is part of currentScene
 
   return (
     <Stack
@@ -71,11 +101,7 @@ const SamplerPageContainer = ({ sampler }: SamplerPageContainerProps) => {
               playing={isPlaying}
               width={"100%"}
               height={"100%"}
-              onProgress={(e) =>
-                isLooping &&
-                currentScene &&
-                handleProgress(e, currentScene.timestamp, currentScene.endstamp)
-              }
+              onProgress={(e) => progressController(e, isLooping, currentScene)}
               style={{
                 top: 0,
                 left: 0,
