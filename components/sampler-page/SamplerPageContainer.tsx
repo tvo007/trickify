@@ -23,20 +23,7 @@ const SamplerPageContainer = ({ sampler }: SamplerPageContainerProps) => {
   const playerRef = useRef();
   const { isAuth } = useContext(AuthContext);
   const { data: scenes } = useScenes(sampler.id);
-  /**
-   * how to derive auto location of current scene based off timestamps?
-   * currentTime,
-   * stampWindows state,
-   * currentWindow state??,
-   * currentTime is updated every second
-   * checks to see currentTime is in currentWindow,
-   * if currentTime in currentWindow, nothing,
-   * if currrentTime not in currentWindow, search where in stampWindows
-   * currentTime is in, that is NOT the current window and greater than current window end stamp,
-   * and set corresponding stampWindow
-   * we dont need all scenes?
-   * we only need current scene and next
-   */
+
   const {
     isPlaying,
     urlState,
