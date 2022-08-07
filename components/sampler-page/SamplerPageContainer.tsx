@@ -1,5 +1,5 @@
 import { Grid, Stack, Box, Button } from "@mui/material";
-import { useContext, useRef, useState } from "react";
+import { useContext, useRef } from "react";
 import ReactPlayer from "react-player";
 import AuthContext from "../../lib/contexts/AuthContext";
 import SamplerScenes from "../SamplerScenes";
@@ -19,7 +19,6 @@ interface SamplerPageContainerProps {
 }
 
 const SamplerPageContainer = ({ sampler }: SamplerPageContainerProps) => {
-  // const {headers} = useContext (ClientContext);
   const playerRef = useRef();
   const { isAuth } = useContext(AuthContext);
   const { data: scenes } = useScenes(sampler.id);
@@ -30,18 +29,13 @@ const SamplerPageContainer = ({ sampler }: SamplerPageContainerProps) => {
     handlePlayer,
     currentScene,
     handleCurrentScene,
+    handleOnPlay,
+    handleOnPause,
+    isPlayerEnabled,
+    handleOnStart,
   } = usePlayer(sampler, playerRef);
-  const { isLooping, setIsLooping, handleLooperToggle, handleProgress } =
+  const { isLooping, handleLooperToggle, handleProgress } =
     useLooper(playerRef);
-
-  /**
-   * old on progress           
-   * (e) =>
-                isLooping &&
-                currentScene &&
-                handleProgress(e, currentScene.timestamp, currentScene.endstamp)
-          
-   */
 
   const progressController = (e, isLooping, currentScene) => {
     if (isLooping && currentScene) {
@@ -49,12 +43,12 @@ const SamplerPageContainer = ({ sampler }: SamplerPageContainerProps) => {
     } else if (!isLooping) {
       // console.log(e.playedSeconds);
       // console.log(findScene(e.playedSeconds, scenes));
-      handleCurrentScene(findScene(e.playedSeconds, scenes));
+      let sceneData = findScene(e.playedSeconds, scenes);
+      handleCurrentScene(sceneData);
     }
   };
 
-  //how to check if current number is part of currentScene
-
+  // console.log(playerRef);
   return (
     <Stack
       direction={"column"}
@@ -63,7 +57,6 @@ const SamplerPageContainer = ({ sampler }: SamplerPageContainerProps) => {
       sx={{ minWidth: "100%" }}
     >
       <Box>
-        {/**refactor out the react player away from scenes container */}
         <Grid container direction="column" sx={{ mb: 2, maxWidth: "100%" }}>
           <Grid item sx={{ my: "1rem" }}>
             <SamplerPageInfo sampler={sampler} />
@@ -88,7 +81,12 @@ const SamplerPageContainer = ({ sampler }: SamplerPageContainerProps) => {
               playing={isPlaying}
               width={"100%"}
               height={"100%"}
-              onProgress={(e) => progressController(e, isLooping, currentScene)}
+              onProgress={(e) =>
+                isPlaying && progressController(e, isLooping, currentScene)
+              }
+              onPlay={() => !isPlaying && handleOnPlay()}
+              onPause={() => isPlaying && handleOnPause()}
+              onStart={() => !isPlayerEnabled && handleOnStart()}
               style={{
                 top: 0,
                 left: 0,
@@ -100,8 +98,14 @@ const SamplerPageContainer = ({ sampler }: SamplerPageContainerProps) => {
 
           <Grid item sx={{ maxWidth: "100%" }}>
             {/**current scene */}
+            {/* <Box>
+              {isPlaying ? "isPlaying is true" : "isPlaying is not true"}
+            </Box>
+            <Box>
+              {isPlayerEnabled ? "Player is enabled" : "Player is not enabled"}
+            </Box> */}
             <Stack>
-              <CurrentScene currentScene={currentScene} />
+              <CurrentScene currentScene={currentScene} url={sampler.url} />
             </Stack>
             <Stack direction="row" justifyContent={"space-between"}>
               <LooperToggle
