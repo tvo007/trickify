@@ -13,6 +13,7 @@ import { ISampler } from "../../lib/interfaces";
 import CurrentScene from "./CurrentScene";
 import useScenes from "../../lib/hooks/useScenes";
 import { findScene } from "../../lib/helpers";
+import { useRouter } from "next/router";
 
 interface SamplerPageContainerProps {
   sampler: ISampler;
@@ -22,6 +23,15 @@ const SamplerPageContainer = ({ sampler }: SamplerPageContainerProps) => {
   const playerRef = useRef();
   const { isAuth } = useContext(AuthContext);
   const { data: scenes } = useScenes(sampler.id);
+  const router = useRouter();
+
+  const { start, play, loop } = router.query;
+
+  const { startParam, playParam, loopParam } = {
+    startParam: Number(start) || 0,
+    playParam: play === "true" ? true : false,
+    loopParam: loop === "true" ? true : false,
+  };
 
   const {
     isPlaying,
@@ -33,7 +43,8 @@ const SamplerPageContainer = ({ sampler }: SamplerPageContainerProps) => {
     handleOnPause,
     isPlayerEnabled,
     handleOnStart,
-  } = usePlayer(sampler, playerRef);
+    handleOnReady,
+  } = usePlayer(sampler, playerRef, startParam, playParam);
   const { isLooping, handleLooperToggle, handleProgress } =
     useLooper(playerRef);
 
@@ -48,7 +59,6 @@ const SamplerPageContainer = ({ sampler }: SamplerPageContainerProps) => {
     }
   };
 
-  // console.log(playerRef);
   return (
     <Stack
       direction={"column"}
@@ -57,6 +67,11 @@ const SamplerPageContainer = ({ sampler }: SamplerPageContainerProps) => {
       sx={{ minWidth: "100%" }}
     >
       <Box>
+        {/* <h2>{startParam || "Nothing"}</h2>
+        <h2>{playParam ? "should be playing" : "Uh oh"}</h2>
+        <h2>{isPlayerEnabled ? "isEnabled" : "notEnabled"}</h2>
+        <h2>{isPlaying ? "isPlaying" : "notPlaying"}</h2> */}
+
         <Grid container direction="column" sx={{ mb: 2, maxWidth: "100%" }}>
           <Grid item sx={{ my: "1rem" }}>
             <SamplerPageInfo sampler={sampler} />
@@ -76,7 +91,7 @@ const SamplerPageContainer = ({ sampler }: SamplerPageContainerProps) => {
             <ReactPlayer
               ref={playerRef}
               url={urlState}
-              volume={0.5}
+              volume={0}
               controls={true}
               playing={isPlaying}
               width={"100%"}
@@ -87,6 +102,7 @@ const SamplerPageContainer = ({ sampler }: SamplerPageContainerProps) => {
               onPlay={() => !isPlaying && handleOnPlay()}
               onPause={() => isPlaying && handleOnPause()}
               onStart={() => !isPlayerEnabled && handleOnStart()}
+              onReady={handleOnReady}
               style={{
                 top: 0,
                 left: 0,

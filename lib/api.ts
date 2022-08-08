@@ -3,6 +3,8 @@ import { ISampler, IScene } from "./interfaces";
 
 export const restAPI = process.env.NEXT_PUBLIC_REST_URL;
 
+export const siteUrl = process.env.NEXT_PUBLIC_CLIENT_URL
+
 
 //rest api
 export const getSamplers = async () => {
