@@ -2,17 +2,16 @@ import { Stack } from "@mui/material";
 import { Typography, Box, Button } from "@mui/material";
 import Link from "next/link";
 import React from "react";
-import { useContext } from "react";
-import AuthContext from "../lib/contexts/AuthContext";
+import { useAuth } from "../lib/contexts/AuthContext";
 import { ISampler } from "../lib/interfaces";
 
 interface SamplerCardProps {
-  sampler: ISampler
+  sampler: ISampler;
 }
 
 //represents each sampler on main index page
-function SamplerCard({ sampler } : SamplerCardProps) {
-  const { isAuth } = useContext(AuthContext);
+function SamplerCard({ sampler }: SamplerCardProps) {
+  const { isAuth } = useAuth();
   return (
     <Box>
       <Box sx={{ pl: ".7rem" }}>

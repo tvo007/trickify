@@ -1,15 +1,15 @@
 import { Grid, Stack, Box, Button } from "@mui/material";
-import { useContext, useRef } from "react";
+import { useRef } from "react";
 import ReactPlayer from "react-player";
-import AuthContext from "../../lib/contexts/AuthContext";
+import { useAuth } from "../../lib/contexts/AuthContext";
 import SamplerScenes from "../SamplerScenes";
 import { samplerList, exceptionStyles } from "../../lib/samplerRatioExceptions";
 import usePlayer from "../../lib/hooks/usePlayer";
 import SamplerPageInfo from "./SamplerPageInfo";
 import LooperToggle from "../LooperToggle";
-import useLooper from "../../lib/hooks/useLooper";
+import useLooper, { OnProgressProps } from "../../lib/hooks/useLooper";
 import Link from "next/link";
-import { ISampler } from "../../lib/interfaces";
+import { ICurrentScene, ISampler, IScene } from "../../lib/interfaces";
 import CurrentScene from "./CurrentScene";
 import useScenes from "../../lib/hooks/useScenes";
 import { findScene } from "../../lib/helpers";
@@ -20,8 +20,8 @@ interface SamplerPageContainerProps {
 }
 
 const SamplerPageContainer = ({ sampler }: SamplerPageContainerProps) => {
-  const playerRef = useRef();
-  const { isAuth } = useContext(AuthContext);
+  const playerRef = useRef<ReactPlayer>();
+  const { isAuth } = useAuth();
   const { data: scenes } = useScenes(sampler.id);
   const router = useRouter();
 
@@ -48,7 +48,12 @@ const SamplerPageContainer = ({ sampler }: SamplerPageContainerProps) => {
   const { isLooping, handleLooperToggle, handleProgress } =
     useLooper(playerRef);
 
-  const progressController = (e, isLooping, currentScene) => {
+  const progressController = (
+    e: OnProgressProps,
+    isLooping: boolean,
+    currentScene: ICurrentScene
+  ) => {
+    console.log(playerRef);
     if (isLooping && currentScene) {
       handleProgress(e, currentScene.timestamp, currentScene.endstamp);
     } else if (!isLooping) {
@@ -138,7 +143,6 @@ const SamplerPageContainer = ({ sampler }: SamplerPageContainerProps) => {
             </Stack>
             <SamplerScenes
               isEditor={false}
-              samplerUrl={sampler.url}
               handlePlayer={handlePlayer}
               handleCurrentScene={handleCurrentScene}
             />

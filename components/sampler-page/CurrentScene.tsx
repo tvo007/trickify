@@ -34,7 +34,7 @@ const CurrentScene: VFC<CurrentSceneProps> = ({ currentScene, url }) => {
 
   const trickifyUrl = `${siteUrl}/${samplerId}?start=${currentScene.timestamp}`;
 
-  const clipboardHandler = (url) => {
+  const clipboardHandler = (url: string) => {
     navigator.clipboard.writeText(url);
   };
 

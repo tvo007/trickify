@@ -1,33 +1,51 @@
-import {createContext} from 'react';
-import router from 'next/router';
-import {useState} from 'react';
-import {login} from '../api';
+import { createContext, ReactNode, useContext } from "react";
+import router from "next/router";
+import { useState } from "react";
+import { loginAsAdmin } from "../api";
+import { IUser } from "../interfaces";
 
-const AuthContext = createContext ({
+export interface IAuthContext {
+  user: IUser;
+  tokens: string;
+  isAuth: boolean;
+  login: (email: string, password: string) => void;
+  logout: () => void;
+}
+
+export interface AuthContextProviderProps {
+  children: ReactNode;
+  value: IAuthContext;
+}
+
+const authContextDefaultValues: IAuthContext = {
   user: null,
   tokens: null,
-  isAuth: false
-});
+  isAuth: false,
+  login: () => Promise<void>,
+  logout: () => {},
+};
 
-export const AuthProvider = ({children}) => {
-  const [user, setUser] = useState (null);
-  const [tokens, setTokens] = useState (null);
-  const [isAuth, setIsAuth] = useState(false)
+const AuthContext = createContext<IAuthContext>(authContextDefaultValues);
+
+export const AuthProvider = ({ children }: AuthContextProviderProps) => {
+  const [user, setUser] = useState<IUser>(null);
+  const [tokens, setTokens] = useState<string>(null);
+  const [isAuth, setIsAuth] = useState(false);
 
   /**login api call*/
 
   /**logout api call */
 
-  const loginHandler = async (email, password) => {
-    const formData = {email, password};
-    const {user, token, error} = await login (formData);
+  const login = async (email: string, password: string) => {
+    const formData = { email, password };
+    const { user, token, error } = await loginAsAdmin(formData);
 
     if (error) {
-      console.log (error);
+      console.log(error);
     } else if (token && user) {
-      setUser (user);
-      setTokens (token);
-      setIsAuth(true)
+      setUser(user);
+      setTokens(token);
+      setIsAuth(true);
     }
   };
   //graphql mutation here
@@ -65,7 +83,7 @@ export const AuthProvider = ({children}) => {
   //       });
   //   };
 
-  const logoutHandler = async () => {
+  const logout = async () => {
     // const {error} = await logout ({
     //   variables: {
     //     refresh_token: tokens.refresh_token,
@@ -79,9 +97,9 @@ export const AuthProvider = ({children}) => {
     //   setTokens (null);
     //   router.push ('/login');
     // }
-    setUser (null);
-    setTokens (null);
-    setIsAuth(false)
+    setUser(null);
+    setTokens(null);
+    setIsAuth(false);
   };
 
   const context = {
@@ -89,16 +107,18 @@ export const AuthProvider = ({children}) => {
     setUser,
     tokens,
     setTokens,
-    loginHandler,
-    logoutHandler,
-    isAuth
+    login,
+    logout,
+    isAuth,
   };
 
   return (
-    <AuthContext.Provider value={context}>
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={context}>{children}</AuthContext.Provider>
   );
+};
+
+export const useAuth = () => {
+  return useContext(AuthContext);
 };
 
 export default AuthContext;

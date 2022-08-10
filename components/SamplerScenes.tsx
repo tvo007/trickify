@@ -12,33 +12,24 @@ import {
 } from "@mui/material";
 import { Scrollbars } from "react-custom-scrollbars-2";
 import { useRouter } from "next/router";
-import { getScenesBySamplerId } from "../lib/api";
-import { useQuery } from "react-query";
 import SamplerSceneCard from "./SamplerSceneCard";
+import useScenes from "../lib/hooks/useScenes";
+import { ICurrentScene } from "../lib/interfaces";
+
+interface SamplerScenesProps {
+  isEditor: boolean;
+  handlePlayer(timestamp: number): void;
+  handleCurrentScene(scene: ICurrentScene): void;
+}
 
 const SamplerScenes = ({
-  samplerUrl,
   handlePlayer,
   isEditor,
   handleCurrentScene,
-}) => {
+}: SamplerScenesProps) => {
   const router = useRouter();
   const { id } = router.query;
-  const theme = useTheme();
-  // const isMdUp = handleBreakpointUp (theme, 'md');
-  const isMdUp = useMediaQuery(theme.breakpoints.up(breakpoints.medium));
-
-  const {
-    status,
-    data: scenes,
-    error,
-    isFetching,
-    isSuccess,
-    refetch,
-  } = useQuery("scenes", async () => getScenesBySamplerId(id), {
-    cacheTime: 0,
-    //
-  });
+  const { data: scenes, error, isSuccess } = useScenes(id);
 
   return (
     <Grid
@@ -83,8 +74,6 @@ const SamplerScenes = ({
                     key={scene.id}
                     scene={scene}
                     handlePlayer={handlePlayer}
-                    samplerUrl={samplerUrl}
-                    isEditor={isEditor}
                     handleCurrentScene={handleCurrentScene}
                   />
                 )

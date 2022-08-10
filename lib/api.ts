@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ISampler, IScene } from "./interfaces";
+import { IAuthDTO, IAuthRes, ISampler, IScene } from "./interfaces";
 
 export const restAPI = process.env.NEXT_PUBLIC_REST_URL;
 
@@ -17,7 +17,7 @@ export const getSamplerById = async (id) => {
   return data;
 };
 
-export const getScenesBySamplerId = async (id) => {
+export const getScenesBySamplerId = async (id)  => {
   const { data } = await axios.get<IScene[]>(`${restAPI}/scenes/sampler/${id}`);
   return data;
 };
@@ -30,8 +30,8 @@ export const addScene = async (formData) => {
 };
 
 //auth
-export const login = async (formData) => {
-  const { data } = await axios.post(`${restAPI}/auth/signin`, formData);
+export const loginAsAdmin = async (formData: IAuthDTO) => {
+  const { data } = await axios.post<IAuthRes>(`${restAPI}/auth/signin`, formData);
   return data;
 };
 

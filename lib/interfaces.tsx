@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 export interface ISampler {
   id: string;
   name: string;
@@ -32,4 +33,20 @@ export interface ICurrentScene {
   timestamp: number;
   endstamp: number;
   performed_by: string;
+}
+
+export interface IUser {
+  id: string;
+  email: string;
+}
+
+export interface IAuthRes {
+  user: IUser;
+  token: string;
+  error: AxiosError;
+}
+
+export interface IAuthDTO {
+  email: string;
+  password: string;
 }

@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
+import { MutableRefObject, useEffect, useState } from "react";
+import ReactPlayer from "react-player";
 import { youtube_parser } from "../helpers";
+import { ICurrentScene, ISampler } from "../interfaces";
 
-export default function usePlayer(sampler, ref, startParam, playParam) {
+export default function usePlayer(sampler: ISampler, ref:MutableRefObject<ReactPlayer>, startParam: number, playParam:boolean) {
   const [isPlaying, setIsPlaying] = useState(playParam);
   const [isPlayerEnabled, setIsPlayerEnabled] = useState(playParam);
 
@@ -15,7 +17,7 @@ export default function usePlayer(sampler, ref, startParam, playParam) {
 
   // `https://www.youtube.com/embed/${youtube_parser(url)}?start=${timestamp}&mute=1`
 
-  const [currentScene, setCurrentScene] = useState({
+  const [currentScene, setCurrentScene] = useState<ICurrentScene>({
     id: "",
     timestamp: 0,
     endstamp: 0,
@@ -28,7 +30,7 @@ export default function usePlayer(sampler, ref, startParam, playParam) {
     return current;
   };
 
-  const handlePlayer = (timestamp) => {
+  const handlePlayer = (timestamp: number) => {
     ref.current.seekTo(timestamp, "seconds");
     if (!isPlayerEnabled) {
       setIsPlaying(true);
@@ -37,7 +39,7 @@ export default function usePlayer(sampler, ref, startParam, playParam) {
     // setIsPlaying(false);
   };
 
-  const handleCurrentScene = (sceneData) => {
+  const handleCurrentScene = (sceneData: ICurrentScene) => {
     if (!sceneData) {
       setCurrentScene(currentScene);
     } else {
