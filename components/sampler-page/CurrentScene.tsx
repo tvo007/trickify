@@ -1,4 +1,4 @@
-import { VFC } from "react";
+import { useState, VFC } from "react";
 import { ICurrentScene } from "../../lib/interfaces";
 import {
   Stack,
@@ -8,11 +8,14 @@ import {
   CardActionArea,
   TextField,
   IconButton,
+  Button,
 } from "@mui/material";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { secondsToTime, generateUrl } from "../../lib/helpers";
 import { useRouter } from "next/router";
 import { siteUrl } from "../../lib/api";
+import CurrentSceneUrl from "./CurrentSceneUrl";
+import CurrentSceneControls from "./CurrentSceneControls";
+import CurrentSceneOptions from "./CurrentSceneOptions";
 
 interface CurrentSceneProps {
   currentScene?: ICurrentScene;
@@ -30,13 +33,20 @@ const CurrentScene: VFC<CurrentSceneProps> = ({ currentScene, url }) => {
 
   //example param: ...?start=11&play=true&loop=true
 
-  const youtubeUrl = generateUrl(url, currentScene.timestamp);
-
   const trickifyUrl = `${siteUrl}/${samplerId}?start=${currentScene.timestamp}`;
+  const youtubeUrl = generateUrl(url, currentScene.timestamp);
+  const [option, setOption] = useState(0);
 
-  const clipboardHandler = (url: string) => {
-    navigator.clipboard.writeText(url);
-  };
+  function showSharableUrl(step) {
+    switch (step) {
+      case 0:
+        return <CurrentSceneUrl url={trickifyUrl} />;
+      case 1:
+        return <CurrentSceneUrl url={youtubeUrl} />;
+      default:
+        return <CurrentSceneUrl url={trickifyUrl} />;
+    }
+  }
 
   // console.log(router);
 
@@ -54,77 +64,29 @@ const CurrentScene: VFC<CurrentSceneProps> = ({ currentScene, url }) => {
           <Typography
             component={Box}
             color={"black"}
-            variant="h6"
+            variant="body1"
             fontWeight={600}
-            align="left"
-            sx={{ pb: "1rem" }}
+            align="center"
           >
-            {secondsToTime(currentScene.timestamp)} - {currentScene.tricks}
+            {secondsToTime(currentScene.timestamp)} -{" "}
+            {currentScene.performed_by} - {currentScene.tricks}
           </Typography>
-          <Stack sx={{ maxWidth: { lg: "50%" }, pb: "1rem" }} direction="row">
-            <TextField
-              size="small"
-              variant="outlined"
-              id="shareableUrl"
-              value={trickifyUrl}
-              multiline
-              rows={2}
-              fullWidth
-              disabled
-              sx={{
-                pb: "5px",
-                "& .MuiInputBase-input.Mui-disabled": {
-                  WebkitTextFillColor: "#6F6F6F",
-                },
-              }}
-            />
-            <Box sx={{ display: "flex" }}>
-              <IconButton
-                sx={{
-                  ml: "auto",
-                  py: 1,
-                }}
-                size="small"
-                onClick={() => clipboardHandler(trickifyUrl)}
-                color="primary"
-                disableRipple
-              >
-                <ContentCopyIcon />
-              </IconButton>
-            </Box>
-          </Stack>
-
-          <Stack sx={{ maxWidth: { lg: "50%" }, pb: "1rem" }} direction="row">
-            <TextField
-              size="small"
-              variant="outlined"
-              id="shareableUrl"
-              value={youtubeUrl}
-              multiline
-              rows={2}
-              fullWidth
-              disabled
-              sx={{
-                pb: "5px",
-                "& .MuiInputBase-input.Mui-disabled": {
-                  WebkitTextFillColor: "#6F6F6F",
-                },
-              }}
-            />
-            <Box sx={{ display: "flex" }}>
-              <IconButton
-                sx={{
-                  ml: "auto",
-                  py: 1,
-                }}
-                size="small"
-                onClick={() => clipboardHandler(youtubeUrl)}
-                color="primary"
-                disableRipple
-              >
-                <ContentCopyIcon />
-              </IconButton>
-            </Box>
+          <CurrentSceneControls />
+          <CurrentSceneOptions />
+          {showSharableUrl(option)}
+          <Stack sx={{ width: "50%" }} direction="row">
+            <Button
+              onClick={() => setOption(0)}
+              sx={option !== 0 ? { color: "#6F6F6F" } : {}}
+            >
+              trickify
+            </Button>
+            <Button
+              onClick={() => setOption(1)}
+              sx={option !== 1 ? { color: "#6F6F6F" } : {}}
+            >
+              youtube
+            </Button>
           </Stack>
         </Card>
       </Stack>

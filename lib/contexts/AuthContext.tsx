@@ -25,6 +25,8 @@ const authContextDefaultValues: IAuthContext = {
   logout: () => {},
 };
 
+
+
 const AuthContext = createContext<IAuthContext>(authContextDefaultValues);
 
 export const AuthProvider = ({ children }: AuthContextProviderProps) => {
@@ -32,9 +34,6 @@ export const AuthProvider = ({ children }: AuthContextProviderProps) => {
   const [tokens, setTokens] = useState<string>(null);
   const [isAuth, setIsAuth] = useState(false);
 
-  /**login api call*/
-
-  /**logout api call */
 
   const login = async (email: string, password: string) => {
     const formData = { email, password };
@@ -122,3 +121,7 @@ export const useAuth = () => {
 };
 
 export default AuthContext;
+
+/**
+ * article on doing auth context with ts
+ */
