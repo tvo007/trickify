@@ -26,14 +26,18 @@ export default function usePlayer(sampler: ISampler, ref:MutableRefObject<ReactP
   });
 
   const handleDuration = () => {
-    let current = ref.current.getCurrentTime();
+    let current = ref.current?.getCurrentTime();
     return current;
   };
 
-  const handlePlayer = (timestamp: number) => {
-    ref.current.seekTo(timestamp, "seconds");
-    if (!isPlayerEnabled) {
-      setIsPlaying(true);
+  const handlePlayer = (timestamp?: number) => {
+    if (timestamp) {
+      //auto plays when applied a timestamp
+      //otherwise toggles
+      ref.current.seekTo(timestamp, "seconds");
+      setIsPlaying(true)
+    } else {
+      setIsPlaying(!isPlaying);
     }
     // setUrlState(`https://www.youtube.com/embed/${youtube_parser(url)}`);
     // setIsPlaying(false);
@@ -41,7 +45,7 @@ export default function usePlayer(sampler: ISampler, ref:MutableRefObject<ReactP
 
   const handleCurrentScene = (sceneData: ICurrentScene) => {
     if (!sceneData) {
-      setCurrentScene(currentScene);
+      setCurrentScene(prevState => prevState);
     } else {
       setCurrentScene({
         id: sceneData.id,
@@ -80,7 +84,7 @@ export default function usePlayer(sampler: ISampler, ref:MutableRefObject<ReactP
   const handleOnPlay = () => {
     setIsPlaying(true);
   };
-
+  
   const handleOnPause = () => {
     setIsPlaying(false);
   };

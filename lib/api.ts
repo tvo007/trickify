@@ -17,7 +17,7 @@ export const getSamplerById = async (id) => {
   return data;
 };
 
-export const getScenesBySamplerId = async (id)  => {
+export const getScenesBySamplerId = async (id: string)  => {
   const { data } = await axios.get<IScene[]>(`${restAPI}/scenes/sampler/${id}`);
   return data;
 };

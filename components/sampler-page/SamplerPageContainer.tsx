@@ -1,5 +1,5 @@
-import { Grid, Stack, Box, Button } from "@mui/material";
-import { useRef } from "react";
+import { Grid, Stack, Box, Button, Typography } from "@mui/material";
+import { useMemo, useRef } from "react";
 import ReactPlayer from "react-player";
 import { useAuth } from "../../lib/contexts/AuthContext";
 import SamplerScenes from "../SamplerScenes";
@@ -11,7 +11,7 @@ import useLooper, { OnProgressProps } from "../../lib/hooks/useLooper";
 import Link from "next/link";
 import { ICurrentScene, ISampler, IScene } from "../../lib/interfaces";
 import CurrentScene from "./CurrentScene";
-import useScenes from "../../lib/hooks/useScenes";
+import useScenes, { earliestTimestamp } from "../../lib/hooks/useScenes";
 import { findScene } from "../../lib/helpers";
 import { useRouter } from "next/router";
 
@@ -48,21 +48,46 @@ const SamplerPageContainer = ({ sampler }: SamplerPageContainerProps) => {
   const { isLooping, handleLooperToggle, handleProgress } =
     useLooper(playerRef);
 
+  const memoizedFirstTimestamp = useMemo(
+    () => earliestTimestamp(scenes),
+    [scenes]
+  );
+
   const progressController = (
     e: OnProgressProps,
     isLooping: boolean,
-    currentScene: ICurrentScene
+    currentScene: ICurrentScene,
+    earliest: number
   ) => {
-    console.log(playerRef);
+    // console.log(playerRef);
     if (isLooping && currentScene) {
       handleProgress(e, currentScene.timestamp, currentScene.endstamp);
     } else if (!isLooping) {
       // console.log(e.playedSeconds);
       // console.log(findScene(e.playedSeconds, scenes));
-      let sceneData = findScene(e.playedSeconds, scenes);
-      handleCurrentScene(sceneData);
+      if (e.playedSeconds < earliest) {
+        handleCurrentScene({
+          id: "",
+          timestamp: 0,
+          endstamp: 0,
+          tricks: "",
+          performed_by: "",
+        });
+      } else {
+        let sceneData = findScene(e.playedSeconds, scenes);
+        if (sceneData) {
+          handleCurrentScene(sceneData);
+        } else {
+          handleCurrentScene(currentScene);
+        }
+      }
+
+      ///
     }
   };
+  // console.log(
+  //   scenes ? Math.min(...scenes.map((scene) => scene.timestamp)) : "bruh"
+  // );
 
   return (
     <Stack
@@ -76,7 +101,6 @@ const SamplerPageContainer = ({ sampler }: SamplerPageContainerProps) => {
         <h2>{playParam ? "should be playing" : "Uh oh"}</h2>
         <h2>{isPlayerEnabled ? "isEnabled" : "notEnabled"}</h2>
         <h2>{isPlaying ? "isPlaying" : "notPlaying"}</h2> */}
-
         <Grid container direction="column" sx={{ mb: 2, maxWidth: "100%" }}>
           <Grid item sx={{ my: "1rem" }}>
             <SamplerPageInfo sampler={sampler} />
@@ -102,7 +126,13 @@ const SamplerPageContainer = ({ sampler }: SamplerPageContainerProps) => {
               width={"100%"}
               height={"100%"}
               onProgress={(e) =>
-                isPlaying && progressController(e, isLooping, currentScene)
+                isPlaying &&
+                progressController(
+                  e,
+                  isLooping,
+                  currentScene,
+                  memoizedFirstTimestamp
+                )
               }
               onPlay={() => !isPlaying && handleOnPlay()}
               onPause={() => isPlaying && handleOnPause()}
@@ -125,14 +155,18 @@ const SamplerPageContainer = ({ sampler }: SamplerPageContainerProps) => {
             <Box>
               {isPlayerEnabled ? "Player is enabled" : "Player is not enabled"}
             </Box> */}
-            <Stack>
-              <CurrentScene currentScene={currentScene} url={sampler.url} />
-            </Stack>
-            <Stack direction="row" justifyContent={"space-between"}>
-              <LooperToggle
+            <Stack sx={{ pb: "2rem" }}>
+              <CurrentScene
+                currentScene={currentScene}
+                url={sampler.url}
+                handlePlayer={handlePlayer}
+                isPlaying={isPlaying}
+                handleOnPause={handleOnPause}
                 isLooping={isLooping}
                 handleLooperToggle={handleLooperToggle}
               />
+            </Stack>
+            <Stack direction="row" justifyContent={"space-between"}>
               {isAuth && (
                 <Grid item>
                   <Link href={`/admin/${sampler.id}`} passHref>

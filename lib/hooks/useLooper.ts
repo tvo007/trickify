@@ -13,9 +13,13 @@ export interface OnProgressProps {
 export default function useLooper(ref: MutableRefObject<ReactPlayer>) {
   const [isLooping, setIsLooping] = useState(false);
 
-  const handleLooperToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIsLooping(e.target.checked);
-  };
+  // const handleLooperToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setIsLooping(e.target.checked);
+  // };
+
+  const handleLooperToggle = () => {
+    setIsLooping(!isLooping)
+  }
 
   const handleProgress = (e: OnProgressProps, start: number, end: number) => {
     if (!start && !end) {

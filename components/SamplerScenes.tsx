@@ -29,7 +29,10 @@ const SamplerScenes = ({
 }: SamplerScenesProps) => {
   const router = useRouter();
   const { id } = router.query;
-  const { data: scenes, error, isSuccess } = useScenes(id);
+
+  const samplerId = id.toString(); //todo  stop gap
+
+  const { data: scenes, error, isSuccess } = useScenes(samplerId);
 
   return (
     <Grid

@@ -1,28 +1,33 @@
 import { useState, VFC } from "react";
 import { ICurrentScene } from "../../lib/interfaces";
-import {
-  Stack,
-  Typography,
-  Box,
-  Card,
-  CardActionArea,
-  TextField,
-  IconButton,
-  Button,
-} from "@mui/material";
+import { Stack, Typography, Box, Card, Button } from "@mui/material";
 import { secondsToTime, generateUrl } from "../../lib/helpers";
 import { useRouter } from "next/router";
 import { siteUrl } from "../../lib/api";
 import CurrentSceneUrl from "./CurrentSceneUrl";
 import CurrentSceneControls from "./CurrentSceneControls";
 import CurrentSceneOptions from "./CurrentSceneOptions";
+import ShareUrlModal from "./ShareUrlModal";
 
 interface CurrentSceneProps {
   currentScene?: ICurrentScene;
   url: string;
+  handlePlayer: () => void;
+  handleOnPause: () => void;
+  handleLooperToggle: () => void;
+  isPlaying: boolean;
+  isLooping: boolean;
 }
 
-const CurrentScene: VFC<CurrentSceneProps> = ({ currentScene, url }) => {
+const CurrentScene: VFC<CurrentSceneProps> = ({
+  currentScene,
+  url,
+  handlePlayer,
+  isPlaying,
+  handleOnPause,
+  isLooping,
+  handleLooperToggle,
+}) => {
   const router = useRouter();
   const {
     // start: startParam,
@@ -37,6 +42,17 @@ const CurrentScene: VFC<CurrentSceneProps> = ({ currentScene, url }) => {
   const youtubeUrl = generateUrl(url, currentScene.timestamp);
   const [option, setOption] = useState(0);
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleModalOpen = () => {
+    handleOnPause();
+    setIsModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+  };
+
   function showSharableUrl(step) {
     switch (step) {
       case 0:
@@ -48,10 +64,30 @@ const CurrentScene: VFC<CurrentSceneProps> = ({ currentScene, url }) => {
     }
   }
 
-  // console.log(router);
+  // console.log(currentScene);
 
-  if (currentScene && currentScene.timestamp !== 0) {
-    return (
+  return (
+    <>
+      <ShareUrlModal
+        isModalOpen={isModalOpen}
+        handleModalClose={handleModalClose}
+      >
+        {showSharableUrl(option)}
+        <Stack sx={{ width: "50%" }} direction="row">
+          <Button
+            onClick={() => setOption(0)}
+            sx={option !== 0 ? { color: "#6F6F6F" } : {}}
+          >
+            trickify
+          </Button>
+          <Button
+            onClick={() => setOption(1)}
+            sx={option !== 1 ? { color: "#6F6F6F" } : {}}
+          >
+            youtube
+          </Button>
+        </Stack>
+      </ShareUrlModal>
       <Stack sx={{ pb: "1rem" }}>
         <Card
           sx={{
@@ -68,53 +104,23 @@ const CurrentScene: VFC<CurrentSceneProps> = ({ currentScene, url }) => {
             fontWeight={600}
             align="center"
           >
-            {secondsToTime(currentScene.timestamp)} -{" "}
-            {currentScene.performed_by} - {currentScene.tricks}
+            {`${secondsToTime(currentScene.timestamp)} - ${
+              currentScene.performed_by
+            } - ${currentScene.tricks}`}
           </Typography>
-          <CurrentSceneControls />
-          <CurrentSceneOptions />
-          {showSharableUrl(option)}
-          <Stack sx={{ width: "50%" }} direction="row">
-            <Button
-              onClick={() => setOption(0)}
-              sx={option !== 0 ? { color: "#6F6F6F" } : {}}
-            >
-              trickify
-            </Button>
-            <Button
-              onClick={() => setOption(1)}
-              sx={option !== 1 ? { color: "#6F6F6F" } : {}}
-            >
-              youtube
-            </Button>
-          </Stack>
+          <CurrentSceneControls
+            handlePlayer={handlePlayer}
+            isPlaying={isPlaying}
+          />
+          <CurrentSceneOptions
+            handleModalOpen={handleModalOpen}
+            handleLooperToggle={handleLooperToggle}
+            isLooping={isLooping}
+          />
         </Card>
       </Stack>
-    );
-  } else if (!currentScene || currentScene.timestamp === 0) {
-    return (
-      <Stack sx={{ pb: "1rem" }}>
-        <Card
-          sx={{
-            p: "1rem",
-            width: "95%",
-            justifyContent: "flex-start",
-            minHeight: "7rem",
-          }}
-        >
-          <Typography
-            component={Box}
-            color={"#6F6F6F"}
-            variant="body2"
-            fontWeight={500}
-            align="left"
-          >
-            Scene not selected.
-          </Typography>
-        </Card>
-      </Stack>
-    );
-  }
+    </>
+  );
 };
 
 export default CurrentScene;

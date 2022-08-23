@@ -12,7 +12,7 @@ const CurrentSceneUrl: VFC<CurrentSceneUrlProps> = ({ url }) => {
   };
 
   return (
-    <Stack sx={{ maxWidth: { lg: "50%" } }} direction="row">
+    <Stack sx={{}} direction="row">
       <TextField
         size="small"
         variant="outlined"

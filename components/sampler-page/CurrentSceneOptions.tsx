@@ -1,9 +1,25 @@
-import { Stack, Box, Button } from "@mui/material";
+import { Stack, Box, Button, IconButton } from "@mui/material";
 import React from "react";
+import LoopIcon from "@mui/icons-material/Loop";
 
-const CurrentSceneOptions = () => {
+interface CurrentSceneOptionsProps {
+  handleModalOpen: () => void;
+  handleLooperToggle: () => void;
+  isLooping: boolean;
+}
+
+const CurrentSceneOptions = ({
+  handleModalOpen,
+  handleLooperToggle,
+  isLooping,
+}: CurrentSceneOptionsProps) => {
   return (
-    <Stack direction={"row"} justifyContent="center" alignItems={"center"}>
+    <Stack
+      direction={"row"}
+      justifyContent="center"
+      alignItems={"center"}
+      sx={{ pr: { xs: "11px", lg: "9px" } }}
+    >
       <Box>
         <Button
           sx={{
@@ -12,8 +28,15 @@ const CurrentSceneOptions = () => {
             },
           }}
         >
-          Loop
+          Restart
         </Button>
+        <IconButton
+          size="small"
+          onClick={() => handleLooperToggle()}
+          sx={isLooping ? { color: "primary.main" } : { color: "#6B7280" }}
+        >
+          <LoopIcon />
+        </IconButton>
       </Box>
       <Box>
         <Button
@@ -22,6 +45,7 @@ const CurrentSceneOptions = () => {
               bgcolor: "transparent",
             },
           }}
+          onClick={handleModalOpen}
         >
           Share
         </Button>

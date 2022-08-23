@@ -13,6 +13,7 @@ const LooperToggle = ({ isLooping, handleLooperToggle }: LooperToggleProps) => {
       control={
         <Switch
           color="primary"
+          size="small"
           checked={isLooping}
           onChange={(e) => handleLooperToggle(e)}
         />

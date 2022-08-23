@@ -7,8 +7,15 @@ import SkipNextIcon from "@mui/icons-material/SkipNext";
 import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
 import React, { useState } from "react";
 
-const CurrentSceneControls = () => {
-  const [isPlaying, setIsPlaying] = useState(false);
+interface CurrentSceneControlsProps {
+  handlePlayer: () => void;
+  isPlaying: boolean;
+}
+
+const CurrentSceneControls = ({
+  handlePlayer,
+  isPlaying,
+}: CurrentSceneControlsProps) => {
   return (
     <Stack direction={"row"} justifyContent="center" alignItems={"center"}>
       <Box>
@@ -17,7 +24,7 @@ const CurrentSceneControls = () => {
         </IconButton>
       </Box>
       <Box>
-        <IconButton onClick={() => setIsPlaying(!isPlaying)}>
+        <IconButton onClick={() => handlePlayer()}>
           {isPlaying ? (
             <PauseCircleIcon fontSize="large" />
           ) : (
