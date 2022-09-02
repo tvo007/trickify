@@ -5,6 +5,7 @@ import LoopIcon from "@mui/icons-material/Loop";
 interface CurrentSceneOptionsProps {
   handleModalOpen: () => void;
   handleLooperToggle: () => void;
+  handleRestart: () => void;
   isLooping: boolean;
 }
 
@@ -12,6 +13,7 @@ const CurrentSceneOptions = ({
   handleModalOpen,
   handleLooperToggle,
   isLooping,
+  handleRestart,
 }: CurrentSceneOptionsProps) => {
   return (
     <Stack
@@ -27,6 +29,7 @@ const CurrentSceneOptions = ({
               bgcolor: "transparent",
             },
           }}
+          onClick={handleRestart}
         >
           Restart
         </Button>

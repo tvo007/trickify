@@ -19,6 +19,7 @@ export interface IScene {
   upload_date: string;
   created_at: string;
   updated_at: string;
+  index?: number;
   sampler: {
     id: string;
     name: string;
@@ -33,6 +34,7 @@ export interface ICurrentScene {
   timestamp: number;
   endstamp: number;
   performed_by: string;
+  index?: number;
 }
 
 export interface IUser {

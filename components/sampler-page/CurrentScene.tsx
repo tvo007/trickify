@@ -8,6 +8,7 @@ import CurrentSceneUrl from "./CurrentSceneUrl";
 import CurrentSceneControls from "./CurrentSceneControls";
 import CurrentSceneOptions from "./CurrentSceneOptions";
 import ShareUrlModal from "./ShareUrlModal";
+import { getSceneByIndex } from "../../lib/hooks/useScenes";
 
 interface CurrentSceneProps {
   currentScene?: ICurrentScene;
@@ -17,6 +18,9 @@ interface CurrentSceneProps {
   handleLooperToggle: () => void;
   isPlaying: boolean;
   isLooping: boolean;
+  handleNext: () => void;
+  handlePrev: () => void;
+  handleRestart: () => void;
 }
 
 const CurrentScene: VFC<CurrentSceneProps> = ({
@@ -27,6 +31,9 @@ const CurrentScene: VFC<CurrentSceneProps> = ({
   handleOnPause,
   isLooping,
   handleLooperToggle,
+  handleNext,
+  handlePrev,
+  handleRestart,
 }) => {
   const router = useRouter();
   const {
@@ -111,11 +118,14 @@ const CurrentScene: VFC<CurrentSceneProps> = ({
           <CurrentSceneControls
             handlePlayer={handlePlayer}
             isPlaying={isPlaying}
+            handleNext={handleNext}
+            handlePrev={handlePrev}
           />
           <CurrentSceneOptions
             handleModalOpen={handleModalOpen}
             handleLooperToggle={handleLooperToggle}
             isLooping={isLooping}
+            handleRestart={handleRestart}
           />
         </Card>
       </Stack>

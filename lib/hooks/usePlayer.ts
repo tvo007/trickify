@@ -3,7 +3,12 @@ import ReactPlayer from "react-player";
 import { youtube_parser } from "../helpers";
 import { ICurrentScene, ISampler } from "../interfaces";
 
-export default function usePlayer(sampler: ISampler, ref:MutableRefObject<ReactPlayer>, startParam: number, playParam:boolean) {
+export default function usePlayer(
+  sampler: ISampler,
+  ref: MutableRefObject<ReactPlayer>,
+  startParam: number,
+  playParam: boolean
+) {
   const [isPlaying, setIsPlaying] = useState(playParam);
   const [isPlayerEnabled, setIsPlayerEnabled] = useState(playParam);
 
@@ -23,6 +28,7 @@ export default function usePlayer(sampler: ISampler, ref:MutableRefObject<ReactP
     endstamp: 0,
     tricks: "",
     performed_by: "",
+    index: 0,
   });
 
   const handleDuration = () => {
@@ -35,7 +41,7 @@ export default function usePlayer(sampler: ISampler, ref:MutableRefObject<ReactP
       //auto plays when applied a timestamp
       //otherwise toggles
       ref.current.seekTo(timestamp, "seconds");
-      setIsPlaying(true)
+      setIsPlaying(true);
     } else {
       setIsPlaying(!isPlaying);
     }
@@ -45,7 +51,7 @@ export default function usePlayer(sampler: ISampler, ref:MutableRefObject<ReactP
 
   const handleCurrentScene = (sceneData: ICurrentScene) => {
     if (!sceneData) {
-      setCurrentScene(prevState => prevState);
+      setCurrentScene((prevState) => prevState);
     } else {
       setCurrentScene({
         id: sceneData.id,
@@ -53,6 +59,7 @@ export default function usePlayer(sampler: ISampler, ref:MutableRefObject<ReactP
         endstamp: sceneData.endstamp,
         tricks: sceneData.tricks,
         performed_by: sceneData.performed_by,
+        index: sceneData.index,
       });
     }
 
@@ -84,7 +91,7 @@ export default function usePlayer(sampler: ISampler, ref:MutableRefObject<ReactP
   const handleOnPlay = () => {
     setIsPlaying(true);
   };
-  
+
   const handleOnPause = () => {
     setIsPlaying(false);
   };

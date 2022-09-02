@@ -1,18 +1,20 @@
 import { Grid, Stack, Box, Button, Typography } from "@mui/material";
-import { useMemo, useRef } from "react";
+import { useCallback, useMemo, useRef } from "react";
 import ReactPlayer from "react-player";
 import { useAuth } from "../../lib/contexts/AuthContext";
 import SamplerScenes from "../SamplerScenes";
 import { samplerList, exceptionStyles } from "../../lib/samplerRatioExceptions";
 import usePlayer from "../../lib/hooks/usePlayer";
 import SamplerPageInfo from "./SamplerPageInfo";
-import LooperToggle from "../LooperToggle";
 import useLooper, { OnProgressProps } from "../../lib/hooks/useLooper";
 import Link from "next/link";
-import { ICurrentScene, ISampler, IScene } from "../../lib/interfaces";
+import { ICurrentScene, ISampler } from "../../lib/interfaces";
 import CurrentScene from "./CurrentScene";
-import useScenes, { earliestTimestamp } from "../../lib/hooks/useScenes";
-import { findScene } from "../../lib/helpers";
+import useScenes, {
+  earliestTimestamp,
+  getSceneByIndex,
+  calcSceneByTimePlayed,
+} from "../../lib/hooks/useScenes";
 import { useRouter } from "next/router";
 
 interface SamplerPageContainerProps {
@@ -53,6 +55,58 @@ const SamplerPageContainer = ({ sampler }: SamplerPageContainerProps) => {
     [scenes]
   );
 
+  // const handleNext = () => {
+  //   let next = getSceneByIndex(currentScene.index + 1, scenes);
+  //   console.log(next.tricks);
+  // };
+
+  const handleNext = useCallback(() => {
+    let next = getSceneByIndex(currentScene.index + 1, scenes);
+    if (next) {
+      // console.log(next);
+      handlePlayer(next.timestamp);
+      handleCurrentScene({
+        id: next.id,
+        timestamp: next.timestamp,
+        endstamp: next.endstamp,
+        tricks: next.tricks,
+        performed_by: next.performed_by,
+        index: next.index,
+      });
+    } else console.log("End of sampler!");
+  }, [scenes, currentScene.index, handleCurrentScene, handlePlayer]);
+
+  const handlePrev = useCallback(() => {
+    let prev = getSceneByIndex(currentScene.index - 1, scenes);
+    if (prev) {
+      // console.log(prev);
+      handlePlayer(prev.timestamp);
+      handleCurrentScene({
+        id: prev.id,
+        timestamp: prev.timestamp,
+        endstamp: prev.endstamp,
+        tricks: prev.tricks,
+        performed_by: prev.performed_by,
+        index: prev.index,
+      });
+    } else {
+      console.log("No prev timestamp detected");
+    }
+  }, [scenes, currentScene.index, handleCurrentScene, handlePlayer]);
+
+  const handleRestart = useCallback(() => {
+    handlePlayer(0.1);
+    //passing 0 returns null
+    handleCurrentScene({
+      id: "",
+      timestamp: 0,
+      endstamp: 0,
+      tricks: "",
+      performed_by: "",
+      index: 0,
+    });
+  }, [handlePlayer, handleCurrentScene]);
+
   const progressController = (
     e: OnProgressProps,
     isLooping: boolean,
@@ -72,22 +126,18 @@ const SamplerPageContainer = ({ sampler }: SamplerPageContainerProps) => {
           endstamp: 0,
           tricks: "",
           performed_by: "",
+          index: 0,
         });
       } else {
-        let sceneData = findScene(e.playedSeconds, scenes);
+        let sceneData = calcSceneByTimePlayed(e.playedSeconds, scenes);
         if (sceneData) {
           handleCurrentScene(sceneData);
         } else {
           handleCurrentScene(currentScene);
         }
       }
-
-      ///
     }
   };
-  // console.log(
-  //   scenes ? Math.min(...scenes.map((scene) => scene.timestamp)) : "bruh"
-  // );
 
   return (
     <Stack
@@ -97,10 +147,6 @@ const SamplerPageContainer = ({ sampler }: SamplerPageContainerProps) => {
       sx={{ minWidth: "100%" }}
     >
       <Box>
-        {/* <h2>{startParam || "Nothing"}</h2>
-        <h2>{playParam ? "should be playing" : "Uh oh"}</h2>
-        <h2>{isPlayerEnabled ? "isEnabled" : "notEnabled"}</h2>
-        <h2>{isPlaying ? "isPlaying" : "notPlaying"}</h2> */}
         <Grid container direction="column" sx={{ mb: 2, maxWidth: "100%" }}>
           <Grid item sx={{ my: "1rem" }}>
             <SamplerPageInfo sampler={sampler} />
@@ -148,13 +194,6 @@ const SamplerPageContainer = ({ sampler }: SamplerPageContainerProps) => {
           {/**sampler info menu */}
 
           <Grid item sx={{ maxWidth: "100%" }}>
-            {/**current scene */}
-            {/* <Box>
-              {isPlaying ? "isPlaying is true" : "isPlaying is not true"}
-            </Box>
-            <Box>
-              {isPlayerEnabled ? "Player is enabled" : "Player is not enabled"}
-            </Box> */}
             <Stack sx={{ pb: "2rem" }}>
               <CurrentScene
                 currentScene={currentScene}
@@ -164,6 +203,9 @@ const SamplerPageContainer = ({ sampler }: SamplerPageContainerProps) => {
                 handleOnPause={handleOnPause}
                 isLooping={isLooping}
                 handleLooperToggle={handleLooperToggle}
+                handleNext={handleNext}
+                handlePrev={handlePrev}
+                handleRestart={handleRestart}
               />
             </Stack>
             <Stack direction="row" justifyContent={"space-between"}>
