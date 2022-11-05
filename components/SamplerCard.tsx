@@ -25,7 +25,7 @@ function SamplerCard({ sampler }: SamplerCardProps) {
           </Typography>
         </Box>
         <Typography component={Box} color={"#6F6F6F"}>
-          {sampler.created_by}
+          {sampler.sampler_author}
         </Typography>
         <Typography component={Box} color={"#6F6F6F"}>
           {sampler.upload_date}
