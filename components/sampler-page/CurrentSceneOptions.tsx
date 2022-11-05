@@ -3,14 +3,16 @@ import React from "react";
 import LoopIcon from "@mui/icons-material/Loop";
 
 interface CurrentSceneOptionsProps {
-  handleModalOpen: () => void;
+  handleShareModalOpen: () => void;
+  handleScenesModalOpen: () => void;
   handleLooperToggle: () => void;
   handleRestart: () => void;
   isLooping: boolean;
 }
 
 const CurrentSceneOptions = ({
-  handleModalOpen,
+  handleShareModalOpen,
+  handleScenesModalOpen,
   handleLooperToggle,
   isLooping,
   handleRestart,
@@ -48,9 +50,21 @@ const CurrentSceneOptions = ({
               bgcolor: "transparent",
             },
           }}
-          onClick={handleModalOpen}
+          onClick={handleShareModalOpen}
         >
           Share
+        </Button>
+      </Box>
+      <Box>
+        <Button
+          sx={{
+            "&.MuiButtonBase-root:hover": {
+              bgcolor: "transparent",
+            },
+          }}
+          onClick={handleScenesModalOpen}
+        >
+          Scenes
         </Button>
       </Box>
     </Stack>

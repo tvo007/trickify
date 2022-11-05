@@ -2,7 +2,7 @@
 import { useCallback, useMemo } from "react";
 import { useQuery } from "react-query";
 import { getScenesBySamplerId } from "../api";
-import { IScene } from "../interfaces";
+import { IScene, IScenesResponse } from "../interfaces";
 
 // console.log(
 //   scenes ? Math.min(...scenes.map((scene) => scene.timestamp)) : "bruh"
@@ -33,9 +33,9 @@ export const getSceneByIndex = (index: number, arr: IScene[]) => {
 }; //if index is less than 1 return scene @ index 1
 //if index doesnt exist, then return null??
 
-const useScenes = (id: string, isAdmin: boolean = false) =>
+const useScenes = (id: string) =>
   useQuery<IScene[], Error>(["scenes"], async () => getScenesBySamplerId(id), {
-    cacheTime: isAdmin ? 0 : 60000,
+    refetchOnMount: true,
     select: (data) =>
       data.map((scene, index) => {
         return { ...scene, index: index + 1 };

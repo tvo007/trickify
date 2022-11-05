@@ -4,10 +4,11 @@ import React from "react";
 import { ISampler } from "../../lib/interfaces";
 
 interface SamplerPageInfoProps {
-  sampler: ISampler
+  sampler: ISampler;
 }
 
 const SamplerPageInfo = ({ sampler }: SamplerPageInfoProps) => {
+  // console.log(sampler);
   return (
     <Grid container direction="row" justifyContent={"space-between"}>
       <Grid item>
@@ -15,7 +16,7 @@ const SamplerPageInfo = ({ sampler }: SamplerPageInfoProps) => {
           {sampler.name}
         </Typography>
         <Typography component={Box} color={"#6F6F6F"}>
-          {sampler.created_by}
+          {sampler.sampler_author}
         </Typography>
       </Grid>
       {/**editor button, auth only */}

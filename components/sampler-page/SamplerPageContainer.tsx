@@ -46,7 +46,7 @@ const SamplerPageContainer = ({ sampler }: SamplerPageContainerProps) => {
     isPlayerEnabled,
     handleOnStart,
     handleOnReady,
-  } = usePlayer(sampler, playerRef, startParam, playParam);
+  } = usePlayer(playerRef, sampler.url, startParam, playParam);
   const { isLooping, handleLooperToggle, handleProgress } =
     useLooper(playerRef);
 
@@ -152,16 +152,13 @@ const SamplerPageContainer = ({ sampler }: SamplerPageContainerProps) => {
             <SamplerPageInfo sampler={sampler} />
           </Grid>
           <Grid
-            sx={
-              samplerList.includes(sampler.name)
-                ? exceptionStyles
-                : {
-                    position: "relative",
-                    pt: "56.25%",
-                    mb: "1rem",
-                    width: "100%",
-                  }
-            }
+            sx={{
+              position: "relative",
+              pt: "56.25%",
+              mb: "1rem",
+              width: { xs: "90vw", md: "93vw" },
+              maxWidth: { xs: "90vw", md: "93vw", lg: "72rem" },
+            }}
           >
             <ReactPlayer
               ref={playerRef}
@@ -196,6 +193,7 @@ const SamplerPageContainer = ({ sampler }: SamplerPageContainerProps) => {
           <Grid item sx={{ maxWidth: "100%" }}>
             <Stack sx={{ pb: "2rem" }}>
               <CurrentScene
+                handleCurrentScene={handleCurrentScene}
                 currentScene={currentScene}
                 url={sampler.url}
                 handlePlayer={handlePlayer}
@@ -217,11 +215,11 @@ const SamplerPageContainer = ({ sampler }: SamplerPageContainerProps) => {
                 </Grid>
               )}
             </Stack>
-            <SamplerScenes
+            {/* <SamplerScenes
               isEditor={false}
               handlePlayer={handlePlayer}
               handleCurrentScene={handleCurrentScene}
-            />
+            /> */}
           </Grid>
         </Grid>
       </Box>

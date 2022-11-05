@@ -4,20 +4,21 @@ import { youtube_parser } from "../helpers";
 import { ICurrentScene, ISampler } from "../interfaces";
 
 export default function usePlayer(
-  sampler: ISampler,
   ref: MutableRefObject<ReactPlayer>,
-  startParam: number,
-  playParam: boolean
+  initialSamplerUrl?: string,
+  startParam?: number,
+  playParam?: boolean
 ) {
-  const [isPlaying, setIsPlaying] = useState(playParam);
-  const [isPlayerEnabled, setIsPlayerEnabled] = useState(playParam);
+  const [isPlaying, setIsPlaying] = useState(playParam || false);
+  const [isPlayerEnabled, setIsPlayerEnabled] = useState(playParam || false);
 
   // const [currentSceneId, setCurrentSceneId] = useState(null);
   // const [urlState, setUrlState] = useState (
   //   ``
-  // );
+  // );z`
   const [urlState, setUrlState] = useState(
-    `https://www.youtube.com/embed/${youtube_parser(sampler.url)}`
+    // `https://www.youtube.com/embed/${youtube_parser(initialSamplerUrl)}`
+    ""
   );
 
   // `https://www.youtube.com/embed/${youtube_parser(url)}?start=${timestamp}&mute=1`
@@ -31,6 +32,13 @@ export default function usePlayer(
     index: 0,
   });
 
+  //useful for switching samplers in the search page
+  const handleUrl = (url: string, timestamp: string) => {
+    let parsed = youtube_parser(url);
+
+    setUrlState(`https://www.youtube.com/watch?v=${parsed}&t=${timestamp}s`);
+  };
+
   const handleDuration = () => {
     let current = ref.current?.getCurrentTime();
     return current;
@@ -40,7 +48,7 @@ export default function usePlayer(
     if (timestamp) {
       //auto plays when applied a timestamp
       //otherwise toggles
-      ref.current.seekTo(timestamp, "seconds");
+      ref?.current?.seekTo(timestamp, "seconds");
       setIsPlaying(true);
     } else {
       setIsPlaying(!isPlaying);
@@ -49,7 +57,7 @@ export default function usePlayer(
     // setIsPlaying(false);
   };
 
-  const handleCurrentScene = (sceneData: ICurrentScene) => {
+  const handleCurrentScene = (sceneData: any) => {
     if (!sceneData) {
       setCurrentScene((prevState) => prevState);
     } else {
@@ -59,7 +67,10 @@ export default function usePlayer(
         endstamp: sceneData.endstamp,
         tricks: sceneData.tricks,
         performed_by: sceneData.performed_by,
-        index: sceneData.index,
+        index: sceneData.index || 0,
+        url: sceneData?.sampler?.url || "",
+        samplerId: sceneData.sampler_id || "",
+        samplerName: sceneData.sampler?.name || "",
       });
     }
 
@@ -73,7 +84,7 @@ export default function usePlayer(
       setIsPlaying(true);
       setUrlState(
         `https://www.youtube.com/embed/${youtube_parser(
-          sampler.url
+          initialSamplerUrl
         )}?start=${startParam}&autoplay=1&mute=1`
       );
     }
@@ -100,6 +111,14 @@ export default function usePlayer(
     setCurrentScene(currentScene);
   }, [currentScene]);
 
+  //sets sampler page url to url state
+  useEffect(() => {
+    if (initialSamplerUrl)
+      setUrlState(
+        `https://www.youtube.com/embed/${youtube_parser(initialSamplerUrl)}`
+      );
+  }, [initialSamplerUrl]);
+
   return {
     isPlaying,
     isPlayerEnabled,
@@ -107,6 +126,7 @@ export default function usePlayer(
     handleDuration,
     urlState,
     setUrlState,
+    handleUrl,
     handlePlayer,
     currentScene,
     handleCurrentScene,

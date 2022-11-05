@@ -9,12 +9,14 @@ interface SamplerSceneCardProps {
   scene: IScene;
   handlePlayer(timestamp: number): void;
   handleCurrentScene(scene: ICurrentScene): void;
+  handleModalClose(): void;
 }
 
 const SamplerSceneCard = ({
   scene,
   handlePlayer,
   handleCurrentScene,
+  handleModalClose,
 }: SamplerSceneCardProps) => {
   const handleClick = (scene: IScene) => {
     handlePlayer(scene.timestamp);
@@ -25,6 +27,7 @@ const SamplerSceneCard = ({
       tricks: scene.tricks || "",
       performed_by: scene.performed_by || "",
     });
+    handleModalClose();
 
     // console.log (scene.id);
   };

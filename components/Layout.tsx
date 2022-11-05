@@ -12,12 +12,11 @@ import {
 import { useAuth } from "../lib/contexts/AuthContext";
 import { Fragment } from "react";
 import { useRouter } from "next/router";
-import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+
 import SearchIcon from "@mui/icons-material/Search";
 
 const Layout = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
-  const { isAuth, logout: handleLogout } = useAuth();
   return (
     <Fragment>
       <Box sx={{ flexGrow: 1 }}>
@@ -78,27 +77,6 @@ const Layout = ({ children }: { children: ReactNode }) => {
                   <IconButton sx={{ color: "primary.main" }}>
                     <SearchIcon />
                   </IconButton>
-                </Box>
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  {isAuth ? (
-                    <IconButton
-                      sx={{ color: "primary.main" }}
-                      onClick={handleLogout}
-                    >
-                      <ExitToAppIcon />
-                    </IconButton>
-                  ) : (
-                    <Button onClick={() => router.push("/login")}>
-                      Admins Only
-                    </Button>
-                  )}{" "}
                 </Box>
               </Stack>
             </Stack>

@@ -9,7 +9,7 @@ import { getSamplerById, getSamplers } from "../../lib/api";
 import { ISampler } from "../../lib/interfaces";
 
 interface SinglePageProps {
-  sampler: ISampler
+  sampler: ISampler;
 }
 
 export default function SinglePage({ sampler }: SinglePageProps) {
@@ -34,11 +34,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export const getStaticProps:GetStaticProps = async (context) => {
+export const getStaticProps: GetStaticProps = async (context) => {
   const { id } = context.params;
   const sampler = await getSamplerById(id);
 
   return {
     props: { sampler },
   };
-}
+};

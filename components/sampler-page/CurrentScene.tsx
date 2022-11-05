@@ -1,5 +1,5 @@
 import { useState, VFC } from "react";
-import { ICurrentScene } from "../../lib/interfaces";
+import { ICurrentScene, IScene } from "../../lib/interfaces";
 import { Stack, Typography, Box, Card, Button } from "@mui/material";
 import { secondsToTime, generateUrl } from "../../lib/helpers";
 import { useRouter } from "next/router";
@@ -9,6 +9,7 @@ import CurrentSceneControls from "./CurrentSceneControls";
 import CurrentSceneOptions from "./CurrentSceneOptions";
 import ShareUrlModal from "./ShareUrlModal";
 import { getSceneByIndex } from "../../lib/hooks/useScenes";
+import ScenesModal from "./ScenesModal";
 
 interface CurrentSceneProps {
   currentScene?: ICurrentScene;
@@ -21,6 +22,7 @@ interface CurrentSceneProps {
   handleNext: () => void;
   handlePrev: () => void;
   handleRestart: () => void;
+  handleCurrentScene: (scene: ICurrentScene) => void;
 }
 
 const CurrentScene: VFC<CurrentSceneProps> = ({
@@ -34,6 +36,7 @@ const CurrentScene: VFC<CurrentSceneProps> = ({
   handleNext,
   handlePrev,
   handleRestart,
+  handleCurrentScene,
 }) => {
   const router = useRouter();
   const {
@@ -45,14 +48,18 @@ const CurrentScene: VFC<CurrentSceneProps> = ({
 
   //example param: ...?start=11&play=true&loop=true
 
-  const trickifyUrl = `${siteUrl}/${samplerId}?start=${currentScene.timestamp}`;
-  const youtubeUrl = generateUrl(url, currentScene.timestamp);
-  const [option, setOption] = useState(0);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [activeModal, setActiveModal] = useState(0);
 
-  const handleModalOpen = () => {
+  const handleShareModalOpen = () => {
     handleOnPause();
+    setActiveModal(0);
+    setIsModalOpen(true);
+  };
+
+  const handleScenesModalOpen = () => {
+    handleOnPause();
+    setActiveModal(1);
     setIsModalOpen(true);
   };
 
@@ -60,14 +67,37 @@ const CurrentScene: VFC<CurrentSceneProps> = ({
     setIsModalOpen(false);
   };
 
-  function showSharableUrl(step) {
-    switch (step) {
+  function selectModal(option) {
+    switch (option) {
       case 0:
-        return <CurrentSceneUrl url={trickifyUrl} />;
+        return (
+          <ShareUrlModal
+            isModalOpen={isModalOpen}
+            handleModalClose={handleModalClose}
+            samplerId={samplerId as string}
+            currentScene={currentScene}
+            url={url}
+          />
+        );
       case 1:
-        return <CurrentSceneUrl url={youtubeUrl} />;
+        return (
+          <ScenesModal
+            isModalOpen={isModalOpen}
+            handlePlayer={handlePlayer}
+            handleModalClose={handleModalClose}
+            handleCurrentScene={handleCurrentScene}
+          />
+        );
       default:
-        return <CurrentSceneUrl url={trickifyUrl} />;
+        return (
+          <ShareUrlModal
+            isModalOpen={isModalOpen}
+            handleModalClose={handleModalClose}
+            samplerId={samplerId as string}
+            currentScene={currentScene}
+            url={url}
+          />
+        );
     }
   }
 
@@ -75,26 +105,7 @@ const CurrentScene: VFC<CurrentSceneProps> = ({
 
   return (
     <>
-      <ShareUrlModal
-        isModalOpen={isModalOpen}
-        handleModalClose={handleModalClose}
-      >
-        {showSharableUrl(option)}
-        <Stack sx={{ width: "50%" }} direction="row">
-          <Button
-            onClick={() => setOption(0)}
-            sx={option !== 0 ? { color: "#6F6F6F" } : {}}
-          >
-            trickify
-          </Button>
-          <Button
-            onClick={() => setOption(1)}
-            sx={option !== 1 ? { color: "#6F6F6F" } : {}}
-          >
-            youtube
-          </Button>
-        </Stack>
-      </ShareUrlModal>
+      {selectModal(activeModal)}
       <Stack sx={{ pb: "1rem" }}>
         <Card
           sx={{
@@ -122,7 +133,8 @@ const CurrentScene: VFC<CurrentSceneProps> = ({
             handlePrev={handlePrev}
           />
           <CurrentSceneOptions
-            handleModalOpen={handleModalOpen}
+            handleShareModalOpen={handleShareModalOpen}
+            handleScenesModalOpen={handleScenesModalOpen}
             handleLooperToggle={handleLooperToggle}
             isLooping={isLooping}
             handleRestart={handleRestart}
