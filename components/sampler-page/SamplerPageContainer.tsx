@@ -8,7 +8,7 @@ import usePlayer from "../../lib/hooks/usePlayer";
 import SamplerPageInfo from "./SamplerPageInfo";
 import useLooper, { OnProgressProps } from "../../lib/hooks/useLooper";
 import Link from "next/link";
-import { ICurrentScene, ISampler } from "../../lib/interfaces";
+import { ICurrentScene, ISampler, IScene } from "../../lib/interfaces";
 import CurrentScene from "./CurrentScene";
 import useScenes, {
   earliestTimestamp,
@@ -19,12 +19,15 @@ import { useRouter } from "next/router";
 
 interface SamplerPageContainerProps {
   sampler: ISampler;
+  scenes: IScene[];
 }
 
-const SamplerPageContainer = ({ sampler }: SamplerPageContainerProps) => {
+const SamplerPageContainer = ({
+  sampler,
+  scenes,
+}: SamplerPageContainerProps) => {
   const playerRef = useRef<ReactPlayer>();
   const { isAuth } = useAuth();
-  const { data: scenes } = useScenes(sampler.id);
   const router = useRouter();
 
   const { start, play, loop } = router.query;
@@ -193,6 +196,7 @@ const SamplerPageContainer = ({ sampler }: SamplerPageContainerProps) => {
           <Grid item sx={{ maxWidth: "100%" }}>
             <Stack sx={{ pb: "2rem" }}>
               <CurrentScene
+                scenes={scenes}
                 handleCurrentScene={handleCurrentScene}
                 currentScene={currentScene}
                 url={sampler.url}
@@ -205,15 +209,6 @@ const SamplerPageContainer = ({ sampler }: SamplerPageContainerProps) => {
                 handlePrev={handlePrev}
                 handleRestart={handleRestart}
               />
-            </Stack>
-            <Stack direction="row" justifyContent={"space-between"}>
-              {isAuth && (
-                <Grid item>
-                  <Link href={`/admin/${sampler.id}`} passHref>
-                    <Button size="small">View in Editor</Button>
-                  </Link>
-                </Grid>
-              )}
             </Stack>
             {/* <SamplerScenes
               isEditor={false}

@@ -12,6 +12,7 @@ import { getSceneByIndex } from "../../lib/hooks/useScenes";
 import ScenesModal from "./ScenesModal";
 
 interface CurrentSceneProps {
+  scenes: IScene[];
   currentScene?: ICurrentScene;
   url: string;
   handlePlayer: () => void;
@@ -37,6 +38,7 @@ const CurrentScene: VFC<CurrentSceneProps> = ({
   handlePrev,
   handleRestart,
   handleCurrentScene,
+  scenes,
 }) => {
   const router = useRouter();
   const {
@@ -82,6 +84,7 @@ const CurrentScene: VFC<CurrentSceneProps> = ({
       case 1:
         return (
           <ScenesModal
+            scenes={scenes}
             isModalOpen={isModalOpen}
             handlePlayer={handlePlayer}
             handleModalClose={handleModalClose}

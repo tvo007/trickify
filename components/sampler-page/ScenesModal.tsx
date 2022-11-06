@@ -10,16 +10,16 @@ import {
   Button,
   TextField,
 } from "@mui/material";
-import React, { ReactNode, useState } from "react";
+import React, { useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
-import SamplerScenes from "../SamplerScenes";
 import { ICurrentScene, IScene } from "../../lib/interfaces";
 import Scrollbars from "react-custom-scrollbars-2";
 import SamplerSceneCard from "../SamplerSceneCard";
-import useScenes from "../../lib/hooks/useScenes";
+// import useScenes from "../../lib/hooks/useScenes";
 import { useRouter } from "next/router";
 
 interface ScenesModalProps {
+  scenes: IScene[];
   isModalOpen: boolean;
   handleModalClose: () => void;
   handlePlayer: () => void;
@@ -33,11 +33,12 @@ const ScenesModal = ({
   handleModalClose,
   handlePlayer,
   handleCurrentScene,
+  scenes,
 }: ScenesModalProps) => {
   const router = useRouter();
-  const { id } = router.query;
-  const samplerId = id.toString();
-  const { data: scenes, error, isSuccess } = useScenes(samplerId);
+  // const { id } = router.query;
+  // const samplerId = id.toString();
+  // const { data: scenes, error, isSuccess } = useScenes(samplerId);
 
   const [sortState, setSortState] = useState<number>(0);
   function selectSort(option: number) {
@@ -115,11 +116,11 @@ const ScenesModal = ({
             </Stack> */}
           </Stack>
           <Grid item>
-            {error && <h2>Something went wrong.</h2>}
-            {isSuccess && scenes.length === 0 && (
+            {/* {error && <h2>Something went wrong.</h2>} */}
+            {scenes.length === 0 && (
               <h2>There are currently no scenes assigned to this sampler.</h2>
             )}
-            {isSuccess && scenes.length > 0 && (
+            {scenes.length > 0 && (
               <Scrollbars autoHeight autoHeightMin={300}>
                 <Stack direction="column" spacing={2}>
                   {searchInput.length > 1

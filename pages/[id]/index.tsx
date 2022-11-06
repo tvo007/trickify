@@ -5,19 +5,26 @@ import { GetStaticProps, GetStaticPaths, GetServerSideProps } from "next";
 // import Breadcrumbs from '../components/breadcrumbs';
 
 import SamplerPageContainer from "../../components/sampler-page/SamplerPageContainer";
-import { getSamplerById, getSamplers } from "../../lib/api";
-import { ISampler } from "../../lib/interfaces";
+import {
+  getSamplerById,
+  getSamplers,
+  getScenesBySamplerId,
+} from "../../lib/api";
+import { ISampler, IScene } from "../../lib/interfaces";
 
 interface SinglePageProps {
   sampler: ISampler;
+  scenes: IScene[];
 }
 
-export default function SinglePage({ sampler }: SinglePageProps) {
-  // console.log (data);
+export default function SinglePage({ sampler, scenes }: SinglePageProps) {
+  // console.log(scenes);
   return (
     <Fragment>
-      {sampler && <SamplerPageContainer sampler={sampler} />}
-      {!sampler && <h2>Something went wrong.</h2>}
+      {sampler && scenes && (
+        <SamplerPageContainer sampler={sampler} scenes={scenes} />
+      )}
+      {!sampler || (!scenes && <h2>Something went wrong.</h2>)}
     </Fragment>
   );
 }
@@ -37,8 +44,18 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async (context) => {
   const { id } = context.params;
   const sampler = await getSamplerById(id);
+  const rawScenes = await getScenesBySamplerId(sampler.id);
+
+  //copy rawScenes and create copy with index value
+  const scenes = rawScenes.map((scene, index) => {
+    return { ...scene, index: index + 1 };
+  });
+
+  // data.map((scene, index) => {
+  //   return { ...scene, index: index + 1 };
+  // }),
 
   return {
-    props: { sampler },
+    props: { sampler, scenes },
   };
 };
