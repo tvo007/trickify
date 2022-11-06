@@ -41,4 +41,4 @@ export const getStaticProps: GetStaticProps = async () => {
   };
 };
 
-//init
+//vanilla
