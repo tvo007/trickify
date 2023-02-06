@@ -44,25 +44,70 @@ const Layout = ({ children }: { children: ReactNode }) => {
                 maxWidth: "1200px",
               }}
             >
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  cursor: "pointer",
-                }}
-                onClick={() => router.push("/")}
-              >
-                <Typography
-                  variant="h4"
-                  component={Box}
-                  fontWeight="bold"
-                  sx={{ color: "#ff5252", fontFamily: "Permanent Marker" }}
+              <Stack direction="row" spacing={8}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => router.push("/")}
                 >
-                  Trickify
-                </Typography>
-              </Box>
+                  <Typography
+                    variant="h4"
+                    component={Box}
+                    fontWeight="bold"
+                    sx={{ color: "#ff5252", fontFamily: "Permanent Marker" }}
+                  >
+                    Trickify
+                  </Typography>
+                </Box>
+                <Stack direction="row" spacing={4}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      cursor: "pointer",
+                      pt: "8px",
+                    }}
+                    onClick={() => router.push("/samplers")}
+                  >
+                    <Typography
+                      variant="body2"
+                      component={Box}
+                      fontWeight="medium"
+                      sx={{ color: "black" }}
+                    >
+                      SAMPLERS
+                    </Typography>
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      cursor: "pointer",
+                      pt: "8px",
+                    }}
+                    onClick={() => router.push("/faq")}
+                  >
+                    <Typography
+                      variant="body2"
+                      component={Box}
+                      fontWeight="medium"
+                      sx={{ color: "black" }}
+                    >
+                      FAQ
+                    </Typography>
+                  </Box>
+                </Stack>
+              </Stack>
+
               <Stack direction="row">
                 <Box
                   sx={{

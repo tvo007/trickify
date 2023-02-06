@@ -1,9 +1,9 @@
 import { GetStaticProps } from "next";
-import SamplerCard from "../components/SamplerCard";
-import { getSamplers } from "../lib/api";
+import SamplerCard from "../../components/SamplerCard";
+import { getSamplers } from "../../lib/api";
 import { Box, Grid, Stack, Typography } from "@mui/material";
 
-export default function Home({ samplers }) {
+export default function Samplers({ samplers }) {
   // if (!data) return <div>Loading...</div>;
 
   return (

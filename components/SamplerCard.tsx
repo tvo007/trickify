@@ -18,7 +18,7 @@ function SamplerCard({ sampler }: SamplerCardProps) {
         <Box fontWeight={"medium"}>
           <Typography
             component={Link}
-            href={`/${sampler.id}`}
+            href={`/samplers/${sampler.id}`}
             color={"text.primary"}
           >
             {sampler.name}
@@ -35,7 +35,7 @@ function SamplerCard({ sampler }: SamplerCardProps) {
         </Typography>
       </Box>
       <Stack direction="row">
-        <Link href={`/${sampler.id}`} passHref>
+        <Link href={`/samplers/${sampler.id}`} passHref>
           <Button size="small">View Sampler</Button>
         </Link>
         {isAuth && (

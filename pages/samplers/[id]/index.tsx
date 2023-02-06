@@ -4,13 +4,13 @@ import { useQuery } from "react-query";
 import { GetStaticProps, GetStaticPaths, GetServerSideProps } from "next";
 // import Breadcrumbs from '../components/breadcrumbs';
 
-import SamplerPageContainer from "../../components/sampler-page/SamplerPageContainer";
+import SamplerPageContainer from "../../../components/sampler-page/SamplerPageContainer";
 import {
   getSamplerById,
   getSamplers,
   getScenesBySamplerId,
-} from "../../lib/api";
-import { ISampler, IScene } from "../../lib/interfaces";
+} from "../../../lib/api";
+import { ISampler, IScene } from "../../../lib/interfaces";
 
 interface SinglePageProps {
   sampler: ISampler;

@@ -160,7 +160,7 @@ const SamplerPageContainer = ({
               pt: "56.25%",
               mb: "1rem",
               width: { xs: "90vw", md: "93vw" },
-              maxWidth: { xs: "90vw", md: "93vw", lg: "72rem" },
+              maxWidth: { xs: "100%", md: "93vw", lg: "72rem" },
             }}
           >
             <ReactPlayer
@@ -169,7 +169,7 @@ const SamplerPageContainer = ({
               volume={0}
               controls={true}
               playing={isPlaying}
-              width={"100%"}
+              width={"104%"}
               height={"100%"}
               onProgress={(e) =>
                 isPlaying &&
@@ -187,6 +187,7 @@ const SamplerPageContainer = ({
               style={{
                 top: 0,
                 left: 0,
+                width: "100%",
                 position: "absolute",
               }}
             />
