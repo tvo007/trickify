@@ -113,9 +113,9 @@ const CurrentScene: VFC<CurrentSceneProps> = ({
         <Card
           sx={{
             p: "1rem",
-
             justifyContent: "flex-start",
             minHeight: "7rem",
+            maxWidth: { xs: "85vw", md: "93vw" },
           }}
         >
           <Typography

@@ -159,7 +159,7 @@ const SamplerPageContainer = ({
               position: "relative",
               pt: "56.25%",
               mb: "1rem",
-              width: { xs: "90vw", md: "93vw" },
+              width: { xs: "85vw", md: "93vw" },
               maxWidth: { xs: "100%", md: "93vw", lg: "72rem" },
             }}
           >
@@ -169,7 +169,7 @@ const SamplerPageContainer = ({
               volume={0}
               controls={true}
               playing={isPlaying}
-              width={"104%"}
+              width={"100%"}
               height={"100%"}
               onProgress={(e) =>
                 isPlaying &&
