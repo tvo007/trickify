@@ -43,7 +43,7 @@ const ScenePlayerData = ({ sceneData }: ScenePlayerDataProps) => {
         }}
       />
       <Box sx={{ display: "flex" }}>
-        <Link href={`/${sceneData.samplerId}`} passHref>
+        <Link href={`/samplers/${sceneData.samplerId}`} passHref>
           <Button size="small">Go to Sampler Page</Button>
         </Link>
         <IconButton

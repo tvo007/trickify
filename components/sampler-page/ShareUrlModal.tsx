@@ -30,7 +30,7 @@ const ShareUrlModal = ({
   currentScene,
   url,
 }: ShareUrlModalProps) => {
-  const trickifyUrl = `${siteUrl}/${samplerId}?start=${currentScene.timestamp}`;
+  const trickifyUrl = `${siteUrl}/samplers/${samplerId}?start=${currentScene.timestamp}`;
   const youtubeUrl = generateUrl(url, currentScene.timestamp);
   function showSharableUrl(step) {
     switch (step) {
