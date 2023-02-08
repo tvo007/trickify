@@ -1,6 +1,5 @@
 import { Stack, Box, Button, IconButton } from "@mui/material";
 import React from "react";
-import LoopIcon from "@mui/icons-material/Loop";
 
 interface CurrentSceneOptionsProps {
   handleShareModalOpen: () => void;
@@ -35,13 +34,13 @@ const CurrentSceneOptions = ({
         >
           Restart
         </Button>
-        <IconButton
+        {/* <IconButton
           size="small"
           onClick={() => handleLooperToggle()}
           sx={isLooping ? { color: "primary.main" } : { color: "#6B7280" }}
         >
           <LoopIcon />
-        </IconButton>
+        </IconButton> */}
       </Box>
       <Box>
         <Button

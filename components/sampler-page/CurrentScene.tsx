@@ -1,6 +1,15 @@
 import { useState, VFC } from "react";
 import { ICurrentScene, IScene } from "../../lib/interfaces";
-import { Stack, Typography, Box, Card, Button } from "@mui/material";
+import {
+  Stack,
+  Typography,
+  Box,
+  Card,
+  Button,
+  useMediaQuery,
+  useTheme,
+  IconButton,
+} from "@mui/material";
 import { secondsToTime, generateUrl } from "../../lib/helpers";
 import { useRouter } from "next/router";
 import { siteUrl } from "../../lib/api";
@@ -10,6 +19,8 @@ import CurrentSceneOptions from "./CurrentSceneOptions";
 import ShareUrlModal from "./ShareUrlModal";
 import { getSceneByIndex } from "../../lib/hooks/useScenes";
 import ScenesModal from "./ScenesModal";
+import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
+import LoopIcon from "@mui/icons-material/Loop";
 
 interface CurrentSceneProps {
   scenes: IScene[];
@@ -103,6 +114,8 @@ const CurrentScene: VFC<CurrentSceneProps> = ({
         );
     }
   }
+  const theme = useTheme();
+  const matchesMdUp = useMediaQuery(theme.breakpoints.up("md"));
 
   // console.log(currentScene);
 
@@ -114,34 +127,86 @@ const CurrentScene: VFC<CurrentSceneProps> = ({
           sx={{
             p: "1rem",
             justifyContent: "flex-start",
-            minHeight: "7rem",
+            height: "14rem",
             maxWidth: { xs: "85vw", md: "93vw" },
           }}
         >
-          <Typography
-            component={Box}
-            color={"black"}
-            variant="body1"
-            fontWeight={600}
-            align="center"
+          <Stack
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              alignItems: "",
+              height: "100%",
+            }}
           >
-            {`${secondsToTime(currentScene.timestamp)} - ${
-              currentScene.performed_by
-            } - ${currentScene.tricks}`}
-          </Typography>
-          <CurrentSceneControls
-            handlePlayer={handlePlayer}
-            isPlaying={isPlaying}
-            handleNext={handleNext}
-            handlePrev={handlePrev}
-          />
-          <CurrentSceneOptions
-            handleShareModalOpen={handleShareModalOpen}
-            handleScenesModalOpen={handleScenesModalOpen}
-            handleLooperToggle={handleLooperToggle}
-            isLooping={isLooping}
-            handleRestart={handleRestart}
-          />
+            <Stack
+              direction={"row"}
+              alignItems="center"
+              justifyContent={"space-between"}
+            >
+              <Stack direction={"row"} alignItems="center">
+                <Typography
+                  component={Box}
+                  color={"black"}
+                  variant={matchesMdUp ? "body1" : "body2"}
+                  fontWeight={600}
+                  align="left"
+                  sx={{ pr: "4px" }}
+                >
+                  <PersonOutlineIcon fontSize="medium" />{" "}
+                </Typography>
+                <Typography
+                  component={Box}
+                  color={"black"}
+                  variant={"body1"}
+                  fontWeight={600}
+                  align="left"
+                  sx={{ pb: "4px" }}
+                >
+                  {currentScene.performed_by
+                    ? `${currentScene.performed_by}`
+                    : "---"}
+                </Typography>
+              </Stack>
+              <Box>
+                <IconButton
+                  size="small"
+                  onClick={() => handleLooperToggle()}
+                  sx={
+                    isLooping ? { color: "primary.main" } : { color: "#6B7280" }
+                  }
+                >
+                  <LoopIcon />
+                </IconButton>
+              </Box>
+            </Stack>
+            <Typography
+              component={Box}
+              color={"black"}
+              variant={matchesMdUp ? "body1" : "body2"}
+              fontWeight={500}
+              align="center"
+            >
+              {currentScene.tricks ? `${currentScene.tricks}` : "---"}
+            </Typography>
+
+            <Box>
+              <CurrentSceneControls
+                handlePlayer={handlePlayer}
+                isPlaying={isPlaying}
+                handleNext={handleNext}
+                handlePrev={handlePrev}
+              />
+              <CurrentSceneOptions
+                handleShareModalOpen={handleShareModalOpen}
+                handleScenesModalOpen={handleScenesModalOpen}
+                handleLooperToggle={handleLooperToggle}
+                isLooping={isLooping}
+                handleRestart={handleRestart}
+              />
+            </Box>
+          </Stack>
         </Card>
       </Stack>
     </>
