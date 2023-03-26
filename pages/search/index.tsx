@@ -17,6 +17,7 @@ import useLooper from "../../lib/hooks/useLooper";
 import ScenePlayerData from "../../components/search-page/ScenePlayerData";
 import SearchForm from "../../components/search-page/SearchForm";
 import usePlayer from "../../lib/hooks/usePlayer";
+import { initialCurrentScene } from "../../lib/hooks/usePlayer";
 
 const initialSearchState = {
   tricks: "",
@@ -70,7 +71,7 @@ const Search = () => {
     }
   };
 
-  const { isLooping, setIsLooping } = useLooper(playerRef);
+  const { isLooping, setIsLooping } = useLooper(playerRef, true);
   const handleLooperToggle = (e) => {
     setIsLooping(e.target.checked);
   };
@@ -95,6 +96,10 @@ const Search = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (urlState && currentScene) {
+      handleUrl("", "");
+      handleCurrentScene(initialCurrentScene);
+    }
     handleQueryScene();
   };
 
@@ -131,7 +136,7 @@ const Search = () => {
                 <ReactPlayer
                   ref={playerRef}
                   url={urlState}
-                  volume={0.5}
+                  volume={0}
                   controls={true}
                   playing={isPlaying}
                   width={"100%"}

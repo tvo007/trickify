@@ -3,6 +3,15 @@ import ReactPlayer from "react-player";
 import { youtube_parser } from "../helpers";
 import { ICurrentScene, ISampler } from "../interfaces";
 
+export const initialCurrentScene = {
+  id: "",
+  timestamp: 0,
+  endstamp: 0,
+  tricks: "",
+  performed_by: "",
+  index: 0,
+};
+
 export default function usePlayer(
   ref: MutableRefObject<ReactPlayer>,
   initialSamplerUrl?: string,
@@ -23,14 +32,8 @@ export default function usePlayer(
 
   // `https://www.youtube.com/embed/${youtube_parser(url)}?start=${timestamp}&mute=1`
 
-  const [currentScene, setCurrentScene] = useState<ICurrentScene>({
-    id: "",
-    timestamp: 0,
-    endstamp: 0,
-    tricks: "",
-    performed_by: "",
-    index: 0,
-  });
+  const [currentScene, setCurrentScene] =
+    useState<ICurrentScene>(initialCurrentScene);
 
   //useful for switching samplers in the search page
   const handleUrl = (url: string, timestamp: string) => {
