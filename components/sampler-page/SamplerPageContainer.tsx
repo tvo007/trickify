@@ -164,6 +164,11 @@ const SamplerPageContainer = ({
             }}
           >
             <ReactPlayer
+              config={{
+                youtube: {
+                  playerVars: { showinfo: 1 },
+                },
+              }}
               ref={playerRef}
               url={urlState}
               volume={0}

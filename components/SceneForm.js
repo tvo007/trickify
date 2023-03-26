@@ -12,6 +12,7 @@ import { useState, useEffect } from "react";
 import { addScene, getScenesBySamplerId } from "../lib/api";
 import { Fragment } from "react";
 import { useAuth } from "../lib/contexts/AuthContext";
+//beep boop 3.25.23
 
 const intitialState = {
   timestamp: "",
