@@ -1,24 +1,24 @@
-import '../styles/globals.css';
-import createEmotionCache from '../lib/createEmotionCache';
-import {CssBaseline, ThemeProvider} from '@mui/material';
-import theme from '../styles/theme';
-import {CacheProvider} from '@emotion/react';
-import {AuthProvider} from '../lib/contexts/AuthContext';
-import {QueryClientProvider, QueryClient, Hydrate} from 'react-query';
+import "../styles/globals.css";
+import createEmotionCache from "../lib/createEmotionCache";
+import { CssBaseline, ThemeProvider } from "@mui/material";
+import theme from "../styles/theme";
+import { CacheProvider } from "@emotion/react";
+import { AuthProvider } from "../lib/contexts/AuthContext";
+import { QueryClientProvider, QueryClient, Hydrate } from "react-query";
 // import {ReactQueryDevtools} from 'react-query/devtools';
-import Layout from '../components/Layout';
-import '@fontsource/permanent-marker';
-import {useRef} from 'react';
+import Layout from "../components/Layout";
+import "@fontsource/permanent-marker";
+import { useRef } from "react";
 
-const clientSideEmotionCache = createEmotionCache ();
+const clientSideEmotionCache = createEmotionCache();
 
 export default function App({
   Component,
   pageProps,
   emotionCache = clientSideEmotionCache,
 }) {
-  const queryClient = useRef (
-    new QueryClient ({
+  const queryClient = useRef(
+    new QueryClient({
       defaultOptions: {
         queries: {
           refetchOnWindowFocus: false,
@@ -55,3 +55,5 @@ export default function App({
 //   //   return {...appProps, auth: authData};
 //   // }
 // };
+
+//moving
